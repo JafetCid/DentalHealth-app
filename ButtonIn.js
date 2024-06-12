@@ -5,9 +5,7 @@ import { LinearGradient } from 'react-native-svg';
 export default function ButtonIn ({Title, buttonStyle, textStyle}) {
     return(
         <TouchableOpacity style={[styles.button, buttonStyle]}>
-            <LinearGradient>
-                <Text style={[styles.tex, textStyle]}>{Title}</Text>
-            </LinearGradient>
+            <Text style={[styles.tex, textStyle]}>{Title}</Text>
         </TouchableOpacity>
 
     )
@@ -22,6 +20,7 @@ const styles = StyleSheet.create({
         
     button: {
         textAlign: 'center',
+        alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 9,
         width: '80%',
