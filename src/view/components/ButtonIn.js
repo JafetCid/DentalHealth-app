@@ -15,9 +15,7 @@ const styles = StyleSheet.create({
     tex: {
         color: 'white',
         fontSize: 14,
-        
     },
-        
     button: {
         textAlign: 'center',
         alignItems: 'center',
