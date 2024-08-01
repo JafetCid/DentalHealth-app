@@ -2,7 +2,7 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet, Image } from 'react-native';
 
-const GoogleIconButton = () => {
+export default function GoogleIconButton () {
   return (
     <TouchableOpacity style={styles.iconButton}>
       <Image source={require('../../../assets/images/icon-google.png')}/>
@@ -16,4 +16,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GoogleIconButton;
+

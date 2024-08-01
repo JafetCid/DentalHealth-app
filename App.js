@@ -4,7 +4,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import * as React from 'react';
 import Login from './src/view/Login';
-import Stepper from './src/view/Stepper';
+import StepperD from './src/view/StepperD';
+import StepperP from './src/view/StepperP';
 import { ScrollView } from 'react-native';
 
 
@@ -19,7 +20,8 @@ export default function App() {
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={LoginOptions}/>
         <Stack.Screen name="Login" component={Login}/>
-        <Stack.Screen name="Stepper" component={Stepper}/>
+        <Stack.Screen name="StepperD" component={StepperD}/>
+        <Stack.Screen name="StepperP" component={StepperP}/>
       </Stack.Navigator>
     </NavigationContainer>
   )

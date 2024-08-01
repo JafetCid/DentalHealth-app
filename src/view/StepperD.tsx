@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { StyleSheet } from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
 import { View, Text, TextInput, ScrollView} from 'react-native';
 import styles from '../../assets/styles/Stepper';
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import Header from './Header';
+import InputDate from './components/InputDate';
 
-const Stepper = () => {
+const StepperD = () => {
   // const [step1Data, setStep1Data] = useState({ name: '', address: '' });
   // const [step2Data, setStep2Data] = useState({ email: '', username: '' });
   // const [step3Data, setStep3Data] = useState({ password: '', retypePassword: '' });
@@ -13,6 +17,12 @@ const Stepper = () => {
     completedProgressBarColor: '#308CFF',
     completedStepIconColor: '#308CFF', 
   };
+  
+  const [selectedValue, setSelectedValue] = useState<string | undefined>(undefined);
+  const items = [
+    { label: 'Masculino', value: 'masculino' },
+    { label: 'Femenino', value: 'femenino' },
+  ];
 
   return (
 
@@ -44,17 +54,26 @@ const Stepper = () => {
                   // onChangeText={text => setStep1Data({ ...step1Data, address: text })}
                 />
                 <Text style={styles.label}>Genero</Text>
+                <RNPickerSelect 
+                  style={pickerSelectStyles}
+                  onValueChange={(value) => setSelectedValue(value)}
+                  items={items}
+                  placeholder={{label: ''}}
+                  useNativeAndroidPickerStyle={false}
+                  Icon={() => {
+                    return <Icon name="arrow-drop-down" size={24} color="black" />; // Ícono de flecha
+                  }}
+                  >
+                  
+                </RNPickerSelect>
+                {/* input de fecha */}
+                <InputDate/>
+                {/* <Text style={styles.label}>Fecha de nacimiento</Text>
                 <TextInput
                   style={styles.input}
                   // value={step1Data.address}
                   // onChangeText={text => setStep1Data({ ...step1Data, address: text })}
-                />
-                <Text style={styles.label}>Fecha de nacimiento</Text>
-                <TextInput
-                  style={styles.input}
-                  // value={step1Data.address}
-                  // onChangeText={text => setStep1Data({ ...step1Data, address: text })}
-                />
+                /> */}
                 <Text style={styles.label}>Telefono</Text>
                 <TextInput
                   style={styles.input}
@@ -150,4 +169,25 @@ const Stepper = () => {
   );
 };
 
-export default Stepper;
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    height: 55,
+    width: '100%',
+    borderRadius: 10,
+    padding: 10,
+    backgroundColor: '#F7F7F7',
+  },
+  inputAndroid: {
+    height: 55,
+    width: '100%',
+    borderRadius: 10,
+    padding: 10,
+    backgroundColor: '#F7F7F7',
+  },
+  iconContainer: {
+    top: 15,
+    right: 15,
+  },
+});
+
+export default StepperD;

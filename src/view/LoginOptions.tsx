@@ -9,7 +9,6 @@ import styles from '../../assets/styles/LoginO'
 export default function LoginOptions ({ navigation }) {
   const [isVisible, setIsVisible] = useState(false);
   return(
-    //<ScrollView>
       <View style={styles.maincontainer}>
         <Header title={''}/>
         <View style={styles.container}>
@@ -45,12 +44,12 @@ export default function LoginOptions ({ navigation }) {
                 <View style={styles.btnModal}>
                   <Pressable
                     style={[styles.button, styles.buttonClose]}
-                    onPress={() => navigation.navigate('Stepper')}>
+                    onPress={() => navigation.navigate('StepperD')}>
                     <Text style={styles.textStyle}>Doctor</Text>
                   </Pressable>
                   <Pressable
                     style={[styles.button, styles.buttonClose]}
-                    onPress={() => setIsVisible(!isVisible)}>
+                    onPress={() => navigation.navigate('StepperP')}>
                     <Text style={styles.textStyle}>Paciente</Text>
                   </Pressable>
                 </View>
