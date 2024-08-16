@@ -4,10 +4,10 @@ import RNPickerSelect from 'react-native-picker-select';
 import React, { useState } from 'react';
 import { View, Text, TextInput, ScrollView, StyleSheet } from 'react-native';
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
-import Header from './Header';
+import Header from './components/Header';
 import InputDate from './components/InputDate';
 
-const StepperP = () => {
+const StepperP = ({ navigation }) => {
   // const [step1Data, setStep1Data] = useState({ name: '', address: '' });
   // const [step2Data, setStep2Data] = useState({ email: '', username: '' });
   // const [step3Data, setStep3Data] = useState({ password: '', retypePassword: '' });
@@ -107,6 +107,7 @@ const StepperP = () => {
                         </ProgressStep>
                         {/* Progreso 2 */}
                         <ProgressStep previousBtnText="Anterior" finishBtnText="Siguiente"
+                            onSubmit={() => navigation.navigate('Inicio')}
                         // previousBtnStyle={styles.button} nextBtnStyle={styles.button}
                         >
                             <View style={styles.stepContent}>

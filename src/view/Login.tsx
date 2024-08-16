@@ -1,11 +1,10 @@
 import { TextInput, Text, View, ScrollView, TouchableOpacity} from 'react-native';
 import styles from '../../assets/styles/Login';
-import Header from "./Header";
-import {useState} from 'react';
+import Header from "./components/Header";
 import ButtonIn from './components/ButtonIn';
 import GoogleIconButton from './components/GoogleIconB';
 
-export default function Login () {
+export default function Login ({ navigation }) {
     // const [isSelected, setSelection] = useState(false);
     return(
         <ScrollView>
@@ -28,7 +27,8 @@ export default function Login () {
                     </View>
                     <ButtonIn 
                         Title={'Iniciar sesión '} textStyle={{color: '#308CFF'}} 
-                        buttonStyle={{borderColor: '#308CFF', borderWidth: 1, marginTop: 30}} onPress={''}/>
+                        buttonStyle={{borderColor: '#308CFF', borderWidth: 1, marginTop: 30}} 
+                        onPress={() => navigation.navigate('Inicio')}/>
                     <View style={styles.cuent}>
                         <Text>¿Cuentas con una cuenta?</Text>
                         <TouchableOpacity>
