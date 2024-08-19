@@ -4,11 +4,26 @@ import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../../../assets/styles/Header'
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage'; 
 
-export default function Header ({ title, showLogo = true, showArrow = true, showP = false }) {
+
+export default function Header ({ title, showLogo = true, showArrow = true, showP = false, navigation } ) {
 
   const [isVisible, setIsVisible] = useState(false);
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
+
+  const handleLogout = async () => {
+    try {
+        // Elimina el token de AsyncStorage
+        await AsyncStorage.removeItem('token');
+
+        // Navega a la pantalla de inicio de sesión o pantalla pública
+        navigation.navigate('Login');
+    } catch (error) {
+        console.error('Error al cerrar sesión:', error);
+        Alert.alert('Error', 'No se pudo cerrar sesión. Inténtalo de nuevo.');
+    }
+};
 
   return(
     <View style={styles.container}>
@@ -49,7 +64,7 @@ export default function Header ({ title, showLogo = true, showArrow = true, show
                 <Text style={style.modalText}>Perfil</Text>
               </Pressable>
               <Pressable
-                onPress={() => navigation.navigate('LoginO')}>
+                onPress={handleLogout}>
                 <Text style={style.modalText}>Cerrar sesión</Text>
               </Pressable>
             </View>

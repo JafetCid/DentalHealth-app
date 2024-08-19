@@ -5,9 +5,12 @@ import Header from './components/Header';
 
 
 export default function Home({ navigation }) {
+
+
+
   return (
     <View style={styles.container}>
-      <Header title={''} showArrow={false} showP={true}/>
+      <Header title={''} showArrow={false} showP={true} navigation={navigation}/>
       <View style={styles.content}>
         <Text style={styles.text}>Bienvenido</Text>
         <Text style={styles.text}>Doctor [Nombre del doctor]</Text>
