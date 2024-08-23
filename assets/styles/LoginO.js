@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 90,
+    marginTop: '15%',
   },
   contB: {
     alignItems: 'center',

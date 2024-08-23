@@ -6,6 +6,7 @@ import { View, Text, TextInput, ScrollView, StyleSheet } from 'react-native';
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import Header from './components/Header';
 import InputDate from './components/InputDate';
+import InputImage from './components/InputImage';
 
 const StepperP = ({ navigation }) => {
   // const [step1Data, setStep1Data] = useState({ name: '', address: '' });
@@ -66,30 +67,10 @@ const StepperP = ({ navigation }) => {
                                 }}
                             >
                             </RNPickerSelect>
+                            
                             {/* input de fecha */}
                             <InputDate/>
-                            {/* <Text style={styles.label}>Fecha de nacimiento</Text>
-
-                            {showPicker && (
-                                <DateTimePicker
-                                    mode='date'  
-                                    display='spinner'  
-                                    value={date}
-                                    onChange={onChange}
-                                />
-                            )}
-                            {!showPicker && (
-                                <Pressable onPress={toggleDatepicker}>
-                                    <TextInput
-                                        style={styles.input}
-                                        value={dateOfBirth}
-                                        onChangeText={setDateOfBirth}
-                                        placeholder='hola'
-                                        placeholderTextColor='black'
-                                        editable={false}
-                                    />
-                                </Pressable>
-                            )} */}
+                            
                             <Text style={styles.label}>Número de telefono</Text>
                             <TextInput
                                 style={styles.input}
@@ -97,12 +78,9 @@ const StepperP = ({ navigation }) => {
                                 // value={step1Data.address}
                                 // onChangeText={text => setStep1Data({ ...step1Data, address: text })}
                             />
-                            <Text style={styles.label}>Fotografía (Opcional)</Text>
-                            <TextInput
-                                style={styles.input}
-                                // value={step1Data.address}
-                                // onChangeText={text => setStep1Data({ ...step1Data, address: text })}
-                            />
+
+                            {/* Input de fotografia */}
+                            <InputImage/>
                         </View>
                         </ProgressStep>
                         {/* Progreso 2 */}

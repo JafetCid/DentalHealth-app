@@ -9,6 +9,8 @@ import Login from './src/view/Login';
 import StepperD from './src/view/StepperD';
 import StepperP from './src/view/StepperP';
 import Home from './src/view/Home';
+import Promociones from './src/view/Promociones';
+import CrearPromocion from './src/view/CrearPromocion';
 
 export default function App() {
   
@@ -27,8 +29,9 @@ export default function App() {
         <Stack.Screen name="StepperD" component={StepperD}/>
         <Stack.Screen name="StepperP" component={StepperP}/>
         <Stack.Screen name="Inicio" component={Home}/>
+        <Stack.Screen name="Promociones" component={Promociones}/>
+        <Stack.Screen name="CrearPromocion" component={CrearPromocion}/>
       </Stack.Navigator>
     </NavigationContainer>
-
   )
 }

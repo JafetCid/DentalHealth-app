@@ -7,6 +7,7 @@ import styles from '../../assets/styles/Stepper';
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import Header from './components/Header';
 import InputDate from './components/InputDate';
+import InputImage from './components/InputImage';
 
 const StepperD = ({ navigation }) => {
   // const [step1Data, setStep1Data] = useState({ name: '', address: '' });
@@ -63,17 +64,12 @@ const StepperD = ({ navigation }) => {
                   Icon={() => {
                     return <Icon name="arrow-drop-down" size={24} color="black" />; // Ícono de flecha
                   }}
-                  >
-                  
+                >  
                 </RNPickerSelect>
+                
                 {/* input de fecha */}
                 <InputDate/>
-                {/* <Text style={styles.label}>Fecha de nacimiento</Text>
-                <TextInput
-                  style={styles.input}
-                  // value={step1Data.address}
-                  // onChangeText={text => setStep1Data({ ...step1Data, address: text })}
-                /> */}
+
                 <Text style={styles.label}>Telefono</Text>
                 <TextInput
                   style={styles.input}
@@ -81,12 +77,10 @@ const StepperD = ({ navigation }) => {
                   // value={step1Data.address}
                   // onChangeText={text => setStep1Data({ ...step1Data, address: text })}
                 />
-                <Text style={styles.label}>Fotografia</Text>
-                <TextInput
-                  style={styles.input}
-                  // value={step1Data.address}
-                  // onChangeText={text => setStep1Data({ ...step1Data, address: text })}
-                />
+                
+                {/* Input de fotografia */}
+                <InputImage/>
+
               </View>
             </ProgressStep>
             {/* Progreso 2 */}
@@ -141,13 +135,10 @@ const StepperD = ({ navigation }) => {
                   // value={step2Data.username}
                   // onChangeText={text => setStep2Data({ ...step2Data, username: text })}
                 />
-                <Text style={styles.label}>Logo del consultorio</Text>
-                <TextInput
-                  style={styles.input}
-                  secureTextEntry={true}
-                  // value={step3Data.retypePassword}
-                  // onChangeText={text => setStep3Data({ ...step3Data, retypePassword: text })}
-                />
+
+                {/* Input de fotografia */}
+                <InputImage/>
+                
                 <Text style={styles.label}>Dirección del consultorio</Text>
                 <TextInput
                   style={styles.input}

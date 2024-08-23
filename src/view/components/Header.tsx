@@ -45,11 +45,11 @@ export default function Header ({ title, showLogo = true, showArrow = true, show
           <View style={style.centeredView}>
             <View style={style.modalView}>
               <Pressable
-                onPress={() => navigation.navigate('StepperD')}>
+                onPress={() => {navigation.navigate('Promociones'); setIsVisible(false)}}>
                 <Text style={style.modalText}>Perfil</Text>
               </Pressable>
               <Pressable
-                onPress={() => navigation.navigate('LoginO')}>
+                onPress={() => {navigation.navigate('LoginO'); setIsVisible(false)}}>
                 <Text style={style.modalText}>Cerrar sesión</Text>
               </Pressable>
             </View>

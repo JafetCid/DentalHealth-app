@@ -29,7 +29,6 @@ export default function LoginOptions ({ navigation }) {
       </View>
 
       {/* Modal */}
-      
       <View style={styles.centeredView}>
         <Modal
           animationType="slide"
@@ -46,12 +45,12 @@ export default function LoginOptions ({ navigation }) {
               <View style={styles.btnModal}>
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
-                  onPress={() => navigation.navigate('StepperD')}>
+                  onPress={() => {navigation.navigate('StepperD'); setIsVisible(false);}}>
                   <Text style={styles.textStyle}>Doctor</Text>
                 </Pressable>
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
-                  onPress={() => navigation.navigate('StepperP')}>
+                  onPress={() => {navigation.navigate('StepperP'); setIsVisible(false);}}>
                   <Text style={styles.textStyle}>Paciente</Text>
                 </Pressable>
               </View>

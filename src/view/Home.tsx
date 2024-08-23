@@ -4,7 +4,7 @@ import Header from './components/Header';
 
 
 
-export default function Home({ navigation }) {
+export default function Home() {
   return (
     <View style={styles.container}>
       <Header title={''} showArrow={false} showP={true}/>
@@ -24,7 +24,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff', // Color de fondo blanco
   },
   content: {
-    marginTop: '15%',
     alignItems: 'center',
   },
   text: {

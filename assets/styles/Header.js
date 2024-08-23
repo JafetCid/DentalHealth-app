@@ -5,6 +5,7 @@ const {width, height} = Dimensions.get('window');
 const styles = StyleSheet.create({
     container: {
       position: 'relative',
+      marginBottom: '15%',
     },
     arrowLeft: {
       position: 'absolute',
