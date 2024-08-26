@@ -7,13 +7,15 @@ import { useColorScheme } from 'react-native';
 import Calendar from './Calendar';
 import Files from './Files';
 import Notifications from './Notifications';
-import Chat from "./Chat";
+import Chat from './Chat';
+import Patients from './Pacientes';
+import Promotions from './components/Promotions';
 
 const Colors = {
   light: {
-    tint: '#2f95dc',
-    tabIconDefault: '#ccc',
-    background: '#fff',
+    tint: '#ffffff',//ccc
+    tabIconDefault: '#ccc',//#2f95dc,
+    background: '#2f95dc',
   },
   dark: {
     tint: '#fff',
@@ -35,7 +37,6 @@ function Home({ navigation }) {
       <View style={styles.content}>
         <Text style={styles.text}>Bienvenido</Text>
         <Text style={styles.text}>Doctor [Nombre del doctor]</Text>
-        {/* Aquí se incluye la imagen */}
         <Image source={require('../../assets/images/imageHome.png')} style={styles.image} />
         <Text style={styles.textE}>Tus promociones publicadas</Text>
       </View>
@@ -54,11 +55,11 @@ export default function TabNavigator() {
         tabBarStyle: {
           display: route.name === 'Chat' ? 'none' : 'flex',
           backgroundColor: Colors[colorScheme ?? 'light'].background,
-          borderTopWidth: 0,
+          borderTopWidth: 1,
           elevation: 0,
         },
         tabBarLabelStyle: {
-          fontSize: 12,
+          fontSize: 13,
           fontWeight: 'bold',
         },
         tabBarIconStyle: {
@@ -72,18 +73,18 @@ export default function TabNavigator() {
         component={Calendar}
         options={{
           title: 'Citas',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'calendar' : 'calendar-outline'} color={color} />
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="calendar-number-outline" color={color} />
           ),
         }}
       />
       <Tab.Screen
-        name="Files"
-        component={Files}
+        name="Patients"
+        component={Patients}
         options={{
-          title: 'Expedientes',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'folder' : 'folder-outline'} color={color} />
+          title: 'Pacientes',
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="people-circle-outline" color={color} />
           ),
         }}
       />
@@ -92,8 +93,8 @@ export default function TabNavigator() {
         component={Home}
         options={{
           title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="home-outline" color={color} />
           ),
         }}
       />
@@ -102,19 +103,21 @@ export default function TabNavigator() {
         component={Notifications}
         options={{
           title: 'Notificaciones',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'notifications' : 'notifications-outline'} color={color} />
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="notifications-outline" color={color} />
           ),
+          tabBarBadge:'+99',
         }}
       />
       <Tab.Screen
-        name="Chat"
-        component={Chat}
+        name="Promotions"
+        component={Promotions}
         options={{
-          title: 'Chat',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'chatbubble' : 'chatbubble-outline'} color={color} />
+          title: 'Promociones',
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="pricetags-outline" color={color} />
           ),
+          
         }}
       />
     </Tab.Navigator>

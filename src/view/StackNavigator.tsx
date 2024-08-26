@@ -9,6 +9,8 @@ import Home from './Home';
 
 import DentalHealthScreen from './Calendar';
 import AgendaScreen from './AgendaScreen';
+import Patients from './Pacientes';
+import Chat from './Chat';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +24,8 @@ const StackNavigator = () => {
       <Stack.Screen name="Inicio" component={Home} />
       <Stack.Screen name="DentalHealth" component={DentalHealthScreen} /> 
       <Stack.Screen name="AgendaScreen" component={AgendaScreen} />
+      <Stack.Screen name='Pacientes' component={Patients}/>
+      <Stack.Screen name='Chat' component={Chat}/>
     </Stack.Navigator>
   );
 };

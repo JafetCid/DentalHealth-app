@@ -7,22 +7,32 @@ import Calendar from '../Calendar';
 import Files from '../Files';
 import Home from '../Home';
 import Notifications from '../Notifications';
-import Chat from '../Chat';
-import { TabActions } from '@react-navigation/native';
+import Promotions from './Promotions';
+//import Chat from '../Chat';
+//import { TabActions } from '@react-navigation/native';
 
 
-
+const tintColorLight = '#0a7ea4';
+const tintColorDark = '#fff';
 const Colors = {
   light: {
-    tint: '#2f95dc',
-    tabIconDefault: '#ccc',
+    text: '#11181C',
     background: '#fff',
+    tint: tintColorLight,
+    icon: '#687076',
+    tabIconDefault: '#687076',
+    tabIconSelected: tintColorLight,
   },
   dark: {
-    tint: '#fff',
-    tabIconDefault: '#ccc',
-    background: '#000',
+    text: '#ECEDEE',
+    background: '#151718',
+    tint: tintColorDark,
+    icon: '#9BA1A6',
+    tabIconDefault: '#9BA1A6',
+    tabIconSelected: tintColorDark,
   },
+
+  
 };
 
 const Tab = createBottomTabNavigator();
@@ -37,7 +47,7 @@ export default function TabNavigator() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: Colors[colorScheme ?? 'link'].tint,
         tabBarInactiveTintColor: Colors[colorScheme ?? 'light'].tabIconDefault,
         tabBarStyle: {
           display: route.name === 'Chat' ? 'none' : 'flex',
@@ -61,7 +71,7 @@ export default function TabNavigator() {
         options={{
           title: 'Citas',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'calendar' : 'calendar-outline'} color={color} />
+            <TabBarIcon name={focused ? 'calendar-number' : 'calendar-number-outline'} color={color} />
           ),
         }}
       />
@@ -97,7 +107,7 @@ export default function TabNavigator() {
       />
       <Tab.Screen
         name="Chat"
-        component={Chat}
+        component={Promotions}
         options={{
           title: 'Chat',
           tabBarIcon: ({ color, focused }) => (
