@@ -7,8 +7,8 @@ import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-nati
 
 const { width } = Dimensions.get('window');
 
-export default function DentalHealthScreen() {
-  const navigation = useNavigation();
+export default function DentalHealthScreen({navigation}) {
+  //const navigation = useNavigation();
 
   return (
     <View style={styles.container}>

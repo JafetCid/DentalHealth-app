@@ -11,6 +11,9 @@ import DentalHealthScreen from './Calendar';
 import AgendaScreen from './AgendaScreen';
 import Patients from './Pacientes';
 import Chat from './Chat';
+import TabNavigator from './Home';
+import DentalExamScreen from './ExamenAdult';
+import Agenda1 from './Agenda1';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +29,9 @@ const StackNavigator = () => {
       <Stack.Screen name="AgendaScreen" component={AgendaScreen} />
       <Stack.Screen name='Pacientes' component={Patients}/>
       <Stack.Screen name='Chat' component={Chat}/>
+      <Stack.Screen name='TabNavigator' component={TabNavigator}/>
+      <Stack.Screen name='ExamenAdult' component={DentalExamScreen}/>
+      <Stack.Screen name='Agenda' component={Agenda1} />
     </Stack.Navigator>
   );
 };

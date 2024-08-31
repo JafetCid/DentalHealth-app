@@ -13,7 +13,11 @@ export default function Chat({navigation}) {
       <HeaderNoIcon />
       <TouchableOpacity 
         style={styles.backButton} 
-        onPress={() => navigation.navigate('Pacientes')} // Jafet puedes crecar si le puedes componer 
+        onPress={() => navigation.navigate('Agenda')} //Paciente
+        /* Jafet puedes crecar si le puedes componer. 
+        Por que tenemso que ver la 
+        utentificaion pa si es para user o admin y ver en donde la metemos por que la 
+        pide en paciente y agenda tambien*/
       >
         <Ionicons name="arrow-back" size={24} color="black" />  
       </TouchableOpacity>

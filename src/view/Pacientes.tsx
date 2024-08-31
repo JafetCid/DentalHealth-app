@@ -57,6 +57,7 @@ const Patients = ({navigation}) => {
   };
 
   const viewDetails = () => {
+    navigation.navigate('ExamenAdult');
     closeMenu();
   };
 
@@ -66,7 +67,7 @@ const Patients = ({navigation}) => {
         <View style={styles.container}>
           <HeaderNoIcon />
           <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('Pacientes')}>
-            <AntDesign name="left" size={24} color="white" />
+            {/*<AntDesign name="left" size={24} color="white" />*/}
           </TouchableOpacity>
           <Text style={styles.title}>Pacientes</Text>
           <TextInput
@@ -78,7 +79,7 @@ const Patients = ({navigation}) => {
           <View style={styles.mainContent}>
             <View style={styles.alphabetContainer}>
               <TouchableOpacity
-                style={[styles.alphabetButton, styles.fixedLetter]}
+                style={[styles.alphabetButton]}
                 onPress={() => setSelectedLetter(null)}
               >
                 <Text style={styles.alphabetLetter}>#</Text>

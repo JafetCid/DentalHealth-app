@@ -107,7 +107,7 @@ const StepperP = ({ navigation }) => {
                         </ProgressStep>
                         {/* Progreso 2 */}
                         <ProgressStep previousBtnText="Anterior" finishBtnText="Siguiente"
-                            onSubmit={() => navigation.navigate('Inicio')}
+                            onSubmit={() => navigation.navigate('TabNavigator', { screen: 'Home' })}
                         // previousBtnStyle={styles.button} nextBtnStyle={styles.button}
                         >
                             <View style={styles.stepContent}>

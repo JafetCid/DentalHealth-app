@@ -10,6 +10,7 @@ import Notifications from './Notifications';
 import Chat from './Chat';
 import Patients from './Pacientes';
 import Promotions from './components/Promotions';
+import Agenda1 from './Agenda1';
 
 const Colors = {
   light: {
@@ -70,9 +71,9 @@ export default function TabNavigator() {
     >
       <Tab.Screen
         name="Calendar"
-        component={Calendar}
+        component={Agenda1}
         options={{
-          title: 'Citas',
+          title: 'Agenda',
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="calendar-number-outline" color={color} />
           ),
