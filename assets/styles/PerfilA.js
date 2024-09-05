@@ -1,54 +1,60 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
+    text: {
+        fontSize: 25,
+        alignSelf: 'center',
+    },
     content: {
         alignItems: 'center',
         marginTop: '5%',
     },
     
     card: {
-        flexDirection: 'row',
         overflow: 'hidden',
-        justifyContent: 'space-between',
         borderRadius: 25,
         width: '85%',
+        height: 'auto',
         backgroundColor: '#fff',
         elevation: 5,
-    },
-
-    img: {
-        width: '28%',
-        height: 'auto',
-    },
-
-    title: {
-        marginBottom: 3,
-    },
-
-    icon: {
         padding: 8,
     },
 
-    text: {
-        width: '58%',
+    text2: {
+        width: '100%',
         padding: 5,
+        alignContent: 'center',
+        alignItems: 'center',
     },
+    
+    title: {
+        fontSize: 18,
+    },
+
+    icon: {
+        position: 'absolute',
+        width: '100%',
+        alignItems: 'flex-end',
+        marginTop: '4%',
+    },
+    
     // estilos del modal de perfil y cerrar sesion
     centeredView: {
         position: 'absolute',
         padding: 5,
         width: '100%',
+        alignItems: 'flex-end',
+        marginTop: '8%',
     },
     
     modalView: {
         backgroundColor: 'white',
-        marginLeft: '63%',
         width: '30%',
         borderRadius: 8,
-        padding: 10,
+        padding: 5,
         elevation: 5,
     },
-
+    
     modalText: {
         marginBottom: 4,
         fontSize: 12,
@@ -59,7 +65,11 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: 'red',
     },
-
+    info: {
+        borderColor: 'black',
+        borderWidth: 1,
+    }
+    
 });
 
 export default styles;

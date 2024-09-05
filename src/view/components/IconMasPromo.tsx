@@ -3,7 +3,7 @@ import { TouchableOpacity, Image, StyleSheet } from "react-native";
 
 export default function IconMasPromo({ navigation }) {
     return(
-        <TouchableOpacity style={styles.img} onPress={() => navigation.navigate('CrearPromocion')}>
+        <TouchableOpacity style={styles.img} onPress={() => navigation.navigate('CrearP')}>
             <Image source={require('../../../assets/images/PlusCircleFill.png')}/>
         </TouchableOpacity>
     )

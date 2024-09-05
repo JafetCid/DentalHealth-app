@@ -45,7 +45,7 @@ export default function Header ({ title, showLogo = true, showArrow = true, show
           <View style={style.centeredView}>
             <View style={style.modalView}>
               <Pressable
-                onPress={() => {navigation.navigate('Promociones'); setIsVisible(false)}}>
+                onPress={() => {navigation.navigate('PerfilA'); setIsVisible(false)}}>
                 <Text style={style.modalText}>Perfil</Text>
               </Pressable>
               <Pressable

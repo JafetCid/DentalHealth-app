@@ -1,20 +1,23 @@
+// src/components/TabNavigator.tsx
 import React from 'react';
-import { View, StyleSheet, Image, Text } from 'react-native';
-import Header from '../view/components/Header';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { useColorScheme } from 'react-native';
-import Calendar from './Calendar';
-import Files from './Files';
-import Notifications from './Notifications';
-import Chat from "./Chat";
-import Promociones from './Promociones';
+import Calendar from '../Calendar';
+import Files from '../Files';
+import Home from '../Home';
+import Notifications from '../Notifications';
+import Chat from '../Chat';
+import { TabActions } from '@react-navigation/native';
+import Promociones from '../Promociones';
+
+
 
 const Colors = {
   light: {
-    tint: 'white',
-    tabIconDefault: 'white',
-    background: '#308CFF',
+    tint: '#2f95dc',
+    tabIconDefault: '#ccc',
+    background: '#fff',
   },
   dark: {
     tint: '#fff',
@@ -24,24 +27,10 @@ const Colors = {
 };
 
 const Tab = createBottomTabNavigator();
-const TabBarIcon = ({ name, color }) => {
-  return <Ionicons name={name} size={30} color={color} />;
-};
 
-function Home() {
-  return (
-    <View style={styles.container}>
-      <Header title={''} showArrow={false} showP={true} />
-      <View style={styles.content}>
-        <Text style={styles.text}>Bienvenido</Text>
-        <Text style={styles.text}>Doctor [Nombre del doctor]</Text>
-        {/* Aquí se incluye la imagen */}
-        <Image source={require('../../assets/images/imageHome.png')}/>
-        <Text style={styles.textE}>Tus promociones publicadas</Text>
-      </View>
-    </View>
-  );
-}
+const TabBarIcon = ({ name, color }) => {
+  return <Ionicons name={name} size={24} color={color} />;
+};
 
 export default function TabNavigator() {
   const colorScheme = useColorScheme();
@@ -55,10 +44,7 @@ export default function TabNavigator() {
           display: route.name === 'Chat' ? 'none' : 'flex',
           backgroundColor: Colors[colorScheme ?? 'light'].background,
           borderTopWidth: 0,
-          height: '8%',
           elevation: 0,
-          // borderColor: 'black',
-          // borderWidth: 3,
         },
         tabBarLabelStyle: {
           fontSize: 12,
@@ -84,7 +70,7 @@ export default function TabNavigator() {
         name="Files"
         component={Files}
         options={{
-          title: 'Pacientes',
+          title: 'Expedientes',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'folder' : 'folder-outline'} color={color} />
           ),
@@ -114,31 +100,12 @@ export default function TabNavigator() {
         name="Promociones"
         component={Promociones}
         options={{
-          title: 'Promocion',
+          title: 'Promociones',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'pricetag' : 'pricetag-outline'} color={color} />
+            <TabBarIcon name={focused ? 'chatbubble' : 'chatbubble-outline'} color={color} />
           ),
         }}
       />
     </Tab.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff', // Color de fondo blanco
-  },
-  content: {
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 24,
-    marginBottom: 20,
-  },
-  textE: {
-    fontSize: 20,
-    marginBottom: 20,
-    marginTop: 15,
-  },
-});

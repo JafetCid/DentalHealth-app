@@ -31,10 +31,10 @@ export default function CardPromociones() {
                         <View>
                             <View style={styles.modalView}>
                                 <Pressable 
-                                    onPress={() => navigation.navigate('CrearPromocion')}>
+                                    onPress={() => navigation.navigate('CrearP')}>
                                     <Text style={styles.modalText}>Editar</Text>
                                 </Pressable>
-                                <Pressable onPress={() => navigation.navigate('CrearPromocion')}>
+                                <Pressable onPress={() => navigation.navigate('CrearP')}>
                                     <Text style={styles.modalTextE}>Eliminar</Text>
                                 </Pressable>
                             </View>
