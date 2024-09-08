@@ -14,7 +14,7 @@ import Agenda1 from './Agenda1';
 
 const Colors = {
   light: {
-    tint: '#ffffff',//ccc
+    tint: '#FFFFFF',//ccc
     tabIconDefault: '#ccc',//#2f95dc,
     background: '#2f95dc',
   },
@@ -58,13 +58,16 @@ export default function TabNavigator() {
           backgroundColor: Colors[colorScheme ?? 'light'].background,
           borderTopWidth: 1,
           elevation: 0,
+          //height: 80, // Aumenta la altura del tabBar
+          //paddingBottom: 15, // Opcional: Ajusta el padding inferior para que los íconos estén centrados
         },
+        
         tabBarLabelStyle: {
           fontSize: 13,
           fontWeight: 'bold',
         },
         tabBarIconStyle: {
-          marginBottom: -3,
+          marginBottom: 5,
         },
         headerShown: false,
       })}

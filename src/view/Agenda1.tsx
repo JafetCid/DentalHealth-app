@@ -40,7 +40,7 @@ const ScheduleView = ({ navigation }) => {
     console.log("Cancelar cita");
     closeMenu();
   };
-
+  
   return (
     <Provider>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
