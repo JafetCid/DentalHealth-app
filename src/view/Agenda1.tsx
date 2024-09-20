@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { Menu, Provider } from 'react-native-paper';
 import HeaderNoIcon from './components/HeaderNoIcon';
 
 const getCurrentWeekDates = () => {
   const currentDate = new Date();
-  const firstDayOfWeek = currentDate.getDate() - currentDate.getDay() + 1; // Monday as the first day of the week
+  const firstDayOfWeek = currentDate.getDate() - currentDate.getDay() + 1; // Lunes como primer día de la semana
   const dates = [];
   for (let i = 0; i < 7; i++) {
     const date = new Date(currentDate.setDate(firstDayOfWeek + i));
@@ -20,9 +20,25 @@ const ScheduleView = ({ navigation }) => {
   const weekDates = getCurrentWeekDates();
   const today = new Date().getDate();
 
-  const [menuVisible, setMenuVisible] = useState(null);
+  const [appointments, setAppointments] = useState([]);
+  const [menuVisible, setMenuVisible] = useState<string | null>(null);
 
-  const openMenu = (appointmentId) => {
+  // Llamar a la API para obtener las citas
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        const response = await fetch('http://192.168.0.7:3000/appointments'); // URL de la API
+        const data = await response.json();
+        setAppointments(data);
+      } catch (error) {
+        console.error("Error fetching appointments:", error);
+      }
+    };
+
+    fetchAppointments();
+  }, []);
+
+  const openMenu = (appointmentId: string) => {
     setMenuVisible(appointmentId);
   };
 
@@ -32,7 +48,6 @@ const ScheduleView = ({ navigation }) => {
 
   const handleContact = () => {
     navigation.navigate('Chat');
-    //console.log("Contactar al paciente");
     closeMenu();
   };
 
@@ -40,7 +55,7 @@ const ScheduleView = ({ navigation }) => {
     console.log("Cancelar cita");
     closeMenu();
   };
-  
+
   return (
     <Provider>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -59,16 +74,7 @@ const ScheduleView = ({ navigation }) => {
         </View>
         <Text style={styles.todayLabel}>Hoy</Text>
         <View style={styles.appointmentsContainer}>
-          {[
-            { time: '9:00 AM', name: 'Ultima cita', id: '1' },
-            { time: '10:00 AM', name: 'Jafet Primer cita', id: '2' },
-            { time: '11:00 AM', name: 'Victor Primer cita', id: '3' },
-            { time: '11:00 AM', name: 'Victor Primer cita', id: '4' },
-            { time: '11:00 AM', name: 'Victor Primer cita', id: '5' },
-            { time: '11:00 AM', name: 'Victor Primer cita', id: '6' },
-            { time: '11:00 AM', name: 'Victor Primer cita', id: '7' },
-
-          ].map((appointment) => (
+          {appointments.map((appointment) => (
             <View key={appointment.id} style={styles.card}>
               <View style={styles.appointment}>
                 <View style={styles.circle} />
@@ -76,7 +82,6 @@ const ScheduleView = ({ navigation }) => {
                   <Text style={styles.time}>{appointment.time}</Text>
                   <Text style={styles.name}>{appointment.name}</Text>
                 </View>
-                {/* Menú de elipsis */}
                 <Menu
                   visible={menuVisible === appointment.id}
                   onDismiss={closeMenu}
@@ -96,6 +101,12 @@ const ScheduleView = ({ navigation }) => {
             </View>
           ))}
         </View>
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={() => navigation.navigate('AgendaScreen')}
+        >
+          <Ionicons name="add-outline" size={50} color="white" />
+        </TouchableOpacity>
       </ScrollView>
     </Provider>
   );
@@ -178,6 +189,21 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: 'white',
   },
+  addButton: {
+    position: 'absolute',
+    bottom: 30,
+    right: 30,
+    backgroundColor: '#2f95dc',
+    borderRadius: 25,
+    shadowColor: '#ccc', // Color de la sombra
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+    
+    },
 });
 
 export default ScheduleView;

@@ -4,10 +4,10 @@ import Header from '../view/components/Header';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { useColorScheme } from 'react-native';
-import Calendar from './Calendar';
-import Files from './Files';
+//import Calendar from './Calendar';
+//import Files from './Files';
 import Notifications from './Notifications';
-import Chat from './Chat';
+//import Chat from './Chat';
 import Patients from './Pacientes';
 import Promotions from './components/Promotions';
 import Agenda1 from './Agenda1';
@@ -27,8 +27,9 @@ const Colors = {
 
 const Tab = createBottomTabNavigator();
 
+const color={}
 const TabBarIcon = ({ name, color }) => {
-  return <Ionicons name={name} size={24} color={color} />;
+  return <Ionicons name={name} size={35} color={color} />;
 };
 
 function Home({ navigation }) {
@@ -51,23 +52,25 @@ export default function TabNavigator() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        tabBarInactiveTintColor: Colors[colorScheme ?? 'light'].tabIconDefault,
+        tabBarActiveTintColor: Colors[colorScheme ?? 'dark'].tint,
+        tabBarInactiveTintColor: Colors[colorScheme ?? 'dark'].tabIconDefault,
         tabBarStyle: {
           display: route.name === 'Chat' ? 'none' : 'flex',
           backgroundColor: Colors[colorScheme ?? 'light'].background,
           borderTopWidth: 1,
-          elevation: 0,
-          //height: 80, // Aumenta la altura del tabBar
+          //elevation: 10,
+          height: 80, // Aumenta la altura del tabBar
           //paddingBottom: 15, // Opcional: Ajusta el padding inferior para que los íconos estén centrados
         },
         
         tabBarLabelStyle: {
           fontSize: 13,
           fontWeight: 'bold',
+          paddingVertical:5,
+        
         },
         tabBarIconStyle: {
-          marginBottom: 5,
+          marginBottom: 1,
         },
         headerShown: false,
       })}
@@ -78,7 +81,7 @@ export default function TabNavigator() {
         options={{
           title: 'Agenda',
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="calendar-number-outline" color={color} />
+            <TabBarIcon name="calendar-number" color={color} />
           ),
         }}
       />
@@ -88,7 +91,7 @@ export default function TabNavigator() {
         options={{
           title: 'Pacientes',
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="people-circle-outline" color={color} />
+            <TabBarIcon name="people-circle" color={color} />
           ),
         }}
       />
@@ -98,7 +101,7 @@ export default function TabNavigator() {
         options={{
           title: 'Home',
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="home-outline" color={color} />
+            <TabBarIcon name="home" color={color} />
           ),
         }}
       />
@@ -108,7 +111,7 @@ export default function TabNavigator() {
         options={{
           title: 'Notificaciones',
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="notifications-outline" color={color} />
+            <TabBarIcon name="notifications" color={color} />
           ),
           tabBarBadge:'+99',
         }}
@@ -119,7 +122,7 @@ export default function TabNavigator() {
         options={{
           title: 'Promociones',
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="pricetags-outline" color={color} />
+            <TabBarIcon name="pricetags" color={color} />
           ),
           
         }}
