@@ -7,16 +7,16 @@ import { useColorScheme } from 'react-native';
 import Calendar from './Calendar';
 import Files from './Files';
 import Notifications from './Notifications';
-import Chat from './Chat';
-import Patients from './Pacientes';
-import Promociones from './Promociones';
+import Chat from "./Chat";
+import Pacientes from "./Pacientes";
 import Agenda1 from './Agenda1';
+import Promociones from './Promociones';
 
 const Colors = {
   light: {
-    tint: '#ffffff',//ccc
-    tabIconDefault: '#ccc',//#2f95dc,
-    background: '#2f95dc',
+    tint: 'white',
+    tabIconDefault: '#ccc',
+    background: '#308CFF',
   },
   dark: {
     tint: '#fff',
@@ -84,7 +84,7 @@ export default function TabNavigator() {
       />
       <Tab.Screen
         name="Patients"
-        component={Patients}
+        component={Pacientes}
         options={{
           title: 'Pacientes',
           tabBarIcon: ({ color, focused }) => (

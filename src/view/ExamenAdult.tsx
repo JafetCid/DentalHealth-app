@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        // backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
     colorWheel: {
         width: 300,
@@ -330,6 +330,9 @@ const styles = StyleSheet.create({
         top: 45,
         left: 20,
     },
+    colorText: {
+        color: 'black',
+    }
 });
 
 export default DentalExamCreateScreen;
