@@ -6,7 +6,7 @@ import Header from './components/Header';
 
 const { width, height } = Dimensions.get('window');
 
-export default function AgendaScreen() {
+export default function AgendaScreen({navigation}) {
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
 

@@ -8,8 +8,8 @@ import Header from './components/Header';
 
 const { width } = Dimensions.get('window');
 
-export default function DentalHealthScreen() {
-  const navigation = useNavigation();
+export default function DentalHealthScreen({navigation}) {
+  //const navigation = useNavigation();
 
   return (
     <View style={styles.container}>

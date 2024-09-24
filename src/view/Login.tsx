@@ -28,7 +28,7 @@ export default function Login ({ navigation }) {
                     <ButtonIn 
                         Title={'Iniciar sesión '} textStyle={{color: '#308CFF'}} 
                         buttonStyle={{borderColor: '#308CFF', borderWidth: 1, marginTop: 30}} 
-                        onPress={() => navigation.navigate('Inicio')}/>
+                        onPress={() => navigation.navigate('TabNavigator', { screen: 'Home' })}/>
                     <View style={styles.cuent}>
                         <Text>¿Cuentas con una cuenta?</Text>
                         <TouchableOpacity>

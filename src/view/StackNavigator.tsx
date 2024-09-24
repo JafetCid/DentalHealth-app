@@ -8,6 +8,11 @@ import StepperP from './StepperP';
 import Home from './Home';
 import DentalHealthScreen from './Calendar';
 import AgendaScreen from './AgendaScreen';
+import Patients from './Pacientes';
+import Chat from './Chat';
+import TabNavigator from './Home';
+import DentalExamScreen from './ExamenAdult';
+import Agenda1 from './Agenda1';
 import Promociones from './Promociones';
 import CrearPromocion from './CrearPromocion';
 import PerfilA from './PerfilA';
@@ -27,6 +32,11 @@ const StackNavigator = () => {
       <Stack.Screen name="PerfilA" component={PerfilA} />
       <Stack.Screen name="DentalHealth" component={DentalHealthScreen} /> 
       <Stack.Screen name="AgendaScreen" component={AgendaScreen} />
+      <Stack.Screen name='Pacientes' component={Patients}/>
+      <Stack.Screen name='Chat' component={Chat}/>
+      <Stack.Screen name='TabNavigator' component={TabNavigator}/>
+      <Stack.Screen name='ExamenAdult' component={DentalExamScreen}/>
+      <Stack.Screen name='Agenda' component={Agenda1} />
     </Stack.Navigator>
   );
 };

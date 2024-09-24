@@ -1,29 +1,39 @@
 // src/components/TabNavigator.tsx
-import React from 'react';
+{/*import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { useColorScheme } from 'react-native';
-import Calendar from '../Calendar';
+//import Calendar from '../Calendar';
 import Files from '../Files';
 import Home from '../Home';
 import Notifications from '../Notifications';
-import Chat from '../Chat';
-import { TabActions } from '@react-navigation/native';
-import Promociones from '../Promociones';
+import Promotions from './Promotions';
+import Agenda1 from '../Agenda1';
+//import Chat from '../Chat';
+//import { TabActions } from '@react-navigation/native';
 
 
-
+const tintColorLight = '#0a7ea4';
+const tintColorDark = '#fff';
 const Colors = {
   light: {
-    tint: '#2f95dc',
-    tabIconDefault: '#ccc',
+    text: '#11181C',
     background: '#fff',
+    tint: tintColorLight,
+    icon: '#687076',
+    tabIconDefault: '#687076',
+    tabIconSelected: tintColorLight,
   },
   dark: {
-    tint: '#fff',
-    tabIconDefault: '#ccc',
-    background: '#000',
+    text: '#ECEDEE',
+    background: '#151718',
+    tint: tintColorDark,
+    icon: '#9BA1A6',
+    tabIconDefault: '#9BA1A6',
+    tabIconSelected: tintColorDark,
   },
+
+
 };
 
 const Tab = createBottomTabNavigator();
@@ -37,8 +47,9 @@ export default function TabNavigator() {
 
   return (
     <Tab.Navigator
+      initialRouteName="Home" // Agrega esta línea
       screenOptions={({ route }) => ({
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: Colors[colorScheme ?? 'link'].tint,
         tabBarInactiveTintColor: Colors[colorScheme ?? 'light'].tabIconDefault,
         tabBarStyle: {
           display: route.name === 'Chat' ? 'none' : 'flex',
@@ -57,12 +68,12 @@ export default function TabNavigator() {
       })}
     >
       <Tab.Screen
-        name="Calendar"
-        component={Calendar}
+        name="Agenda"
+        component={Agenda1}
         options={{
-          title: 'Citas',
+          title: 'Agenda',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'calendar' : 'calendar-outline'} color={color} />
+            <TabBarIcon name={focused ? 'calendar-number' : 'calendar-number-outline'} color={color} />
           ),
         }}
       />
@@ -97,8 +108,8 @@ export default function TabNavigator() {
         }}
       />
       <Tab.Screen
-        name="Promociones"
-        component={Promociones}
+        name="Chat"
+        component={Promotions}
         options={{
           title: 'Promociones',
           tabBarIcon: ({ color, focused }) => (
@@ -107,5 +118,6 @@ export default function TabNavigator() {
         }}
       />
     </Tab.Navigator>
+
   );
-}
+}*/}

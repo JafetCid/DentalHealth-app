@@ -1,21 +1,25 @@
 import HeaderNoIcon from './components/HeaderNoIcon';
 import { StyleSheet, TextInput, TouchableOpacity, View, Text, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+
 
 const { width, height } = Dimensions.get('window');
 
-export default function TabTwoScreen() {
-  const navigation = useNavigation();
+export default function Chat({navigation}) {
+    //const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
       <HeaderNoIcon />
       <TouchableOpacity 
         style={styles.backButton} 
-        onPress={() => navigation.navigate('Home')} // Cambiado a navigate
+        onPress={() => navigation.navigate('Agenda')} //Paciente
+        /* Jafet puedes crecar si le puedes componer. 
+        Por que tenemso que ver la 
+        utentificaion pa si es para user o admin y ver en donde la metemos por que la 
+        pide en paciente y agenda tambien*/
       >
-        <Ionicons name="arrow-back" size={24} color="black" />
+        <Ionicons name="arrow-back" size={24} color="black" />  
       </TouchableOpacity>
       <Text style={styles.text}>
         Nombre del Doctor

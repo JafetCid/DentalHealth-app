@@ -7,14 +7,16 @@ import { useColorScheme } from 'react-native';
 import Calendar from './Calendar';
 import Files from './Files';
 import Notifications from './Notifications';
-import Chat from "./Chat";
+import Chat from './Chat';
+import Patients from './Pacientes';
 import Promociones from './Promociones';
+import Agenda1 from './Agenda1';
 
 const Colors = {
   light: {
-    tint: 'white',
-    tabIconDefault: 'white',
-    background: '#308CFF',
+    tint: '#ffffff',//ccc
+    tabIconDefault: '#ccc',//#2f95dc,
+    background: '#2f95dc',
   },
   dark: {
     tint: '#fff',
@@ -61,7 +63,7 @@ export default function TabNavigator() {
           // borderWidth: 3,
         },
         tabBarLabelStyle: {
-          fontSize: 12,
+          fontSize: 13,
           fontWeight: 'bold',
         },
         tabBarIconStyle: {
@@ -72,17 +74,17 @@ export default function TabNavigator() {
     >
       <Tab.Screen
         name="Calendar"
-        component={Calendar}
+        component={Agenda1}
         options={{
-          title: 'Citas',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'calendar' : 'calendar-outline'} color={color} />
+          title: 'Agenda',
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="calendar-number-outline" color={color} />
           ),
         }}
       />
       <Tab.Screen
-        name="Files"
-        component={Files}
+        name="Patients"
+        component={Patients}
         options={{
           title: 'Pacientes',
           tabBarIcon: ({ color, focused }) => (
@@ -95,8 +97,8 @@ export default function TabNavigator() {
         component={Home}
         options={{
           title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="home-outline" color={color} />
           ),
         }}
       />
@@ -105,9 +107,10 @@ export default function TabNavigator() {
         component={Notifications}
         options={{
           title: 'Notificaciones',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'notifications' : 'notifications-outline'} color={color} />
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="notifications-outline" color={color} />
           ),
+          tabBarBadge:'+99',
         }}
       />
       <Tab.Screen
@@ -118,6 +121,7 @@ export default function TabNavigator() {
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'pricetag' : 'pricetag-outline'} color={color} />
           ),
+          
         }}
       />
     </Tab.Navigator>
