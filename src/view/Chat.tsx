@@ -4,7 +4,7 @@ import { StyleSheet, TextInput, TouchableOpacity, View, Text, Dimensions, FlatLi
 import { Ionicons } from '@expo/vector-icons';
 import io from 'socket.io-client';
 
-const socket = io(''); // dirección IP
+const socket = io('http://192.168.0.7:3000'); // dirección IP
 
 export default function Chat({ navigation }) {
   const [message, setMessage] = useState('');
