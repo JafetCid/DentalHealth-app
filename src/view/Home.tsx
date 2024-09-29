@@ -4,8 +4,8 @@ import Header from '../view/components/Header';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { useColorScheme } from 'react-native';
-import Calendar from './Calendar';
-import Files from './Files';
+//import Calendar from './Calendar';
+//import Files from './Files';
 import Notifications from './Notifications';
 import Chat from "./Chat";
 import Pacientes from "./Pacientes";
@@ -51,8 +51,8 @@ export default function TabNavigator() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        tabBarInactiveTintColor: Colors[colorScheme ?? 'light'].tabIconDefault,
+        tabBarActiveTintColor: Colors[colorScheme ?? 'dark'].tint,
+        tabBarInactiveTintColor: Colors[colorScheme ?? 'dark'].tabIconDefault,
         tabBarStyle: {
           display: route.name === 'Chat' ? 'none' : 'flex',
           backgroundColor: Colors[colorScheme ?? 'light'].background,
@@ -62,12 +62,15 @@ export default function TabNavigator() {
           // borderColor: 'black',
           // borderWidth: 3,
         },
+        
         tabBarLabelStyle: {
           fontSize: 13,
           fontWeight: 'bold',
+          paddingVertical:5,
+        
         },
         tabBarIconStyle: {
-          marginBottom: -3,
+          marginBottom: 1,
         },
         headerShown: false,
       })}
@@ -78,7 +81,7 @@ export default function TabNavigator() {
         options={{
           title: 'Agenda',
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="calendar-number-outline" color={color} />
+            <TabBarIcon name="calendar-number" color={color} />
           ),
         }}
       />
@@ -88,7 +91,7 @@ export default function TabNavigator() {
         options={{
           title: 'Pacientes',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'folder' : 'folder-outline'} color={color} />
+            <TabBarIcon name={focused ? 'people' : 'people-outline'} color={color} />
           ),
         }}
       />
@@ -98,7 +101,7 @@ export default function TabNavigator() {
         options={{
           title: 'Home',
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="home-outline" color={color} />
+            <TabBarIcon name="home" color={color} />
           ),
         }}
       />
@@ -108,7 +111,7 @@ export default function TabNavigator() {
         options={{
           title: 'Notificaciones',
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="notifications-outline" color={color} />
+            <TabBarIcon name="notifications" color={color} />
           ),
           tabBarBadge:'+99',
         }}

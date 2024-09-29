@@ -4,26 +4,30 @@ import ButtonIn from './components/ButtonIn';
 import GoogleIconButton from './components/GoogleIconB';
 import Header from './components/Header';
 import { useState } from 'react';
-import styles from '../../assets/styles/LoginO'
+import styles from '../../assets/styles/LoginO';
 
-export default function LoginOptions ({ navigation }) {
-
+export default function LoginOptions({ navigation }) {
   const [isVisible, setIsVisible] = useState(false);
 
-  return(
+  return (
     <View style={styles.maincontainer}>
-      <Header title={''} showArrow={false}/>
+      <Header title={''} showArrow={false} />
       <View style={styles.container}>
-        <Text style={styles.title}>Bienvenido </Text>
+        <Text style={styles.title}>Bienvenido</Text>
         <View style={styles.contB}>
-          <ButtonIn 
-            Title={'Crear cuenta '} textStyle={{color: 'white'}} buttonStyle={{backgroundColor: '#308CFF'}}
-            onPress={() => setIsVisible(true) }/>
-          <ButtonIn 
-            Title={'Iniciar sesión '} textStyle={{color: '#308CFF'}} 
-            buttonStyle={{borderColor: '#308CFF', borderWidth: 1, }}
-            onPress={() => navigation.navigate('Login')}/>
-          <GoogleIconButton/>
+          <ButtonIn
+            Title={'Crear cuenta '}
+            textStyle={{ color: 'white' }}
+            buttonStyle={{ backgroundColor: '#308CFF' }}
+            onPress={() => setIsVisible(true)} // Abre el modal
+          />
+          <ButtonIn
+            Title={'Iniciar sesión '}
+            textStyle={{ color: '#308CFF' }}
+            buttonStyle={{ borderColor: '#308CFF', borderWidth: 1 }}
+            onPress={() => navigation.navigate('Login')} // Redirige a la pantalla de login
+          />
+          <GoogleIconButton />
         </View>
         <StatusBar style="auto" />
       </View>
@@ -41,13 +45,18 @@ export default function LoginOptions ({ navigation }) {
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <Text style={styles.modalText}>¿Eres doctor o eres paciente?</Text>
-              <Text style={styles.modalText2}>Dependiendo del tipo de usuario el registro será diferente.</Text>
+              <Text style={styles.modalText2}>
+                Dependiendo del tipo de usuario el registro será diferente.
+              </Text>
               <View style={styles.btnModal}>
+                {/* Botón Doctor redirige a StepperD */}
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
                   onPress={() => {navigation.navigate('StepperD'); setIsVisible(false);}}>
                   <Text style={styles.textStyle}>Doctor</Text>
                 </Pressable>
+
+                {/* Botón Paciente redirige a StepperP */}
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
                   onPress={() => {navigation.navigate('StepperP'); setIsVisible(false);}}>
@@ -59,6 +68,5 @@ export default function LoginOptions ({ navigation }) {
         </Modal>
       </View>
     </View>
-    //</ScrollView>
-  )
+  );
 }

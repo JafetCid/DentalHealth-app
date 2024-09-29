@@ -132,7 +132,7 @@ const Patients = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
+    //backgroundColor: 'red',
   },
   backButton: {
     position: 'absolute',
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     borderRightWidth: 1,
     borderRightColor: '#ddd',
-    backgroundColor: '#f8f9fa',
+    //backgroundColor: '#f8f9fa',
   },
   alphabetButton: {
     paddingVertical: 5,

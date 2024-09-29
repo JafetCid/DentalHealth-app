@@ -1,16 +1,68 @@
+import { Ionicons } from '@expo/vector-icons';
 import HeaderNoIcon from './components/HeaderNoIcon';
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity, ScrollView } from 'react-native';
-import { Calendar, DateObject } from 'react-native-calendars';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { Calendar, DateObject, LocaleConfig } from 'react-native-calendars';
 import Header from './components/Header';
+import dayjs from 'dayjs';
 
-const { width, height } = Dimensions.get('window');
 
-export default function AgendaScreen({navigation}) {
+const { width } = Dimensions.get('window');
+
+// Configuración del calendario en español
+LocaleConfig.locales['es'] = {
+  monthNames: [
+    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
+    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+  ],
+  monthNamesShort: [
+    'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 
+    'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
+  ],
+  dayNames: [
+    'Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'
+  ],
+  dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+  today: 'Hoy'
+};
+LocaleConfig.defaultLocale = 'es'; 
+
+export default function AgendaScreen({ navigation }) {
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [busyDays, setBusyDays] = useState<string[]>([]);
+
+  const today = dayjs().format('YYYY-MM-DD');
+
+  useEffect(() => {
+    const fetchBusyDays = async () => {
+      const fetchedBusyDays = []; 
+      setBusyDays(fetchedBusyDays);
+    };
+    fetchBusyDays();
+  }, []);
 
   const handleDayPress = (day: DateObject) => {
+    const dayOfWeek = dayjs(day.dateString).locale('es').format('dddd');
+
+    // Verificar si es domingo
+    if (dayOfWeek === 'domingo') {
+      Alert.alert('Día no disponible', 'No se puede seleccionar el día domingo.');
+      return;
+    }
+
+    // Verificar si el día seleccionado es antes del día actual
+    if (day.dateString < today) {
+      Alert.alert('Fecha inválida', 'No se pueden seleccionar días pasados.');
+      return;
+    }
+
+    // Verificar si el día está ocupado
+    if (busyDays.includes(day.dateString)) {
+      Alert.alert('Día ocupado', 'Este día ya está ocupado.');
+      return;
+    }
+
     setSelectedDay(day.dateString);
   };
 
@@ -88,6 +140,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  backButton: {
+    position: 'absolute',
+    top: 30,
+    left: 10,
+    zIndex: 1,
+  },
   text: {
     fontSize: 24,
     fontWeight: 'bold',
@@ -111,13 +169,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
   },
+  timeSlotsContainer: {
+    alignSelf: 'center',
+    marginBottom: 10,
+  },
   timeSlot: {
-    padding: 10,
-    borderWidth: 1,
+    padding: 25,
+    borderWidth: 0.5,
     borderColor: '#ccc',
     borderRadius: 5,
-    marginBottom: 10,
-    alignItems: 'center',
+    marginRight: 15,
   },
   selectedTimeSlot: {
     backgroundColor: '#007bff',
@@ -126,7 +187,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#007bff',
     paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     borderRadius: 5,
     marginBottom: '8%',
   },
