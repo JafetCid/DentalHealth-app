@@ -182,6 +182,7 @@ const styles = StyleSheet.create({
   },
   selectedTimeSlot: {
     backgroundColor: '#007bff',
+    flexDirection:'row',
     borderColor: '#007bff',
   },
   button: {
