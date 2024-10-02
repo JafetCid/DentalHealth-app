@@ -14,6 +14,7 @@ import Chat from './Chat';
 import TabNavigator from './Home';
 import DentalExamScreen from './ExamenAdult';
 import Agenda1 from './Agenda1';
+import CrearPromocion from './CrearPromociones';
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +33,7 @@ const StackNavigator = () => {
       <Stack.Screen name='TabNavigator' component={TabNavigator}/>
       <Stack.Screen name='ExamenAdult' component={DentalExamScreen}/>
       <Stack.Screen name='Agenda' component={Agenda1} />
+      <Stack.Screen name="CrearP" component={CrearPromocion} />
     </Stack.Navigator>
   );
 };
