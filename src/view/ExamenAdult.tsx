@@ -11,6 +11,7 @@ import {
 import { Provider } from 'react-native-paper';
 import HeaderNoIcon from './components/HeaderNoIcon';
 import { AntDesign } from '@expo/vector-icons';
+import Header from './components/Header';
 
 const DentalExamCreateScreen = ({ navigation }) => {
     const [selectedType, setSelectedType] = useState('Adulto');
@@ -59,21 +60,14 @@ const DentalExamCreateScreen = ({ navigation }) => {
     return (
         <Provider>
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                <HeaderNoIcon />
+                <Header showLogo={false} title={'Crear examen dental'} onPress={() => navigation.goBack()}/>
                     {/**Papi tengo dudas aqui tambien haber si le pedes checar por
                      * que no me muesta nosla vista actualizada :,C
                      */}
-                    <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('Pacientes')}> 
-
-                        <AntDesign name="left" size={24} color="white" />
-                    </TouchableOpacity>
                 <View style={styles.container}>
-                    <View style={styles.header}>
-                        <Text style={styles.headerTitle}>Crear examen dental</Text>
-                    </View>
-
                     {/* Title */}
                     <Text style={styles.title}>Examen Dental</Text>
+                    <Text style={styles.textT}>Odontograma</Text>
 
                     {/* Odontogram Table */}
                     <View style={styles.odontogramTable}>
@@ -85,6 +79,7 @@ const DentalExamCreateScreen = ({ navigation }) => {
                     </View>
 
                     {/* Adulto/Niño Buttons */}
+                    <Text style={styles.teethTitle}>Nomenclatura FDI</Text>
                     <View style={styles.selectionContainer}>
                         <TouchableOpacity
                             style={[styles.selectionButton, selectedType === 'Adulto' && styles.selectedButton]}
@@ -102,7 +97,6 @@ const DentalExamCreateScreen = ({ navigation }) => {
 
                     {/* Teeth Quadrants */}
                     <View style={styles.teethSection}>
-                        <Text style={styles.teethTitle}>Nomenclatura FDI</Text>
                         {teethQuadrants.map((quadrant) => (
                             <View key={quadrant.quadrant} style={styles.quadrant}>
                                 <Text style={styles.quadrantTitle}>{quadrant.quadrant}</Text>
@@ -125,7 +119,7 @@ const DentalExamCreateScreen = ({ navigation }) => {
                     </View>
 
                     {/* Seleccion del color Modal */}
-                    <Modal visible={showColorSelector} transparent={true} animationType="slide">
+                    {/* <Modal visible={showColorSelector} transparent={true} animationType="slide">
                         <View style={styles.modalOverlay}>
                             <View style={styles.colorWheel}>
                                 <TouchableOpacity
@@ -160,7 +154,83 @@ const DentalExamCreateScreen = ({ navigation }) => {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                    </Modal>
+                    </Modal> */}
+                    <Modal visible={showColorSelector} transparent={true} animationType="slide">
+  <View style={styles.modalOverlay}>
+    <View style={styles.colorWheel}>
+      {/* Cariado */}
+      <TouchableOpacity
+        style={[styles.colorOption, styles.red, styles.topLeft]}
+        onPress={() => applyColorToTooth('red')}
+      >
+        <Text style={styles.colorText}>Cariado</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.colorOption, styles.topOrange]}
+        onPress={() => applyColorToTooth('')}
+      >
+        <Text style={styles.colorText}>Sano</Text>
+      </TouchableOpacity>
+
+      {/* Obturado */}
+      <TouchableOpacity
+        style={[styles.colorOption, styles.blue, styles.topRight]}
+        onPress={() => applyColorToTooth('blue')}
+      >
+        <Text style={styles.colorText}>Obturado</Text>
+      </TouchableOpacity>
+
+      {/* OD Perdido */}
+      <TouchableOpacity
+        style={[styles.colorOption, styles.transparent, styles.bottomRight]}
+        onPress={() => applyColorToTooth('transparent')}
+      >
+        <Text style={styles.colorText}>OD Perdido</Text>
+      </TouchableOpacity>
+
+      {/* OD Reemplazado */}
+      <TouchableOpacity
+        style={[styles.colorOption, styles.green, styles.bottomLeft]}
+        onPress={() => applyColorToTooth('green')}
+      >
+        <Text style={styles.colorText}>OD Reemplazado</Text>
+      </TouchableOpacity>
+
+      {/* Prótese fija */}
+      <TouchableOpacity
+        style={[styles.colorOption, styles.dashed, styles.centerLeft]}
+        onPress={() => applyColorToTooth('yellow')}
+      >
+        <Text style={styles.colorText1}>Pro fija</Text>
+      </TouchableOpacity>
+
+      {/* Prótese parcial */}
+      <TouchableOpacity
+        style={[styles.colorOption, styles.dotted, styles.centerRight]}
+        onPress={() => applyColorToTooth('grey')}
+      >
+        <Text style={styles.colorText}>Prótese parcial</Text>
+      </TouchableOpacity>
+
+      {/* Ext. indicada */}
+      <TouchableOpacity
+        style={[styles.colorOption, styles.dottedRed, styles.centerLeftR]}
+        onPress={() => applyColorToTooth('pink')}
+      >
+        <Text style={styles.colorText}>Ext. indicada</Text>
+      </TouchableOpacity>
+
+      {/* Botón de cerrar */}
+      <TouchableOpacity
+        style={styles.closeButton}
+        onPress={() => setShowColorSelector(false)}
+      >
+        <Text style={styles.closeButtonText}>X</Text>
+      </TouchableOpacity>
+    </View>
+  </View>
+</Modal>
+
 
                     {/* Save Button */}
                     <TouchableOpacity style={styles.saveButton}>
@@ -178,23 +248,14 @@ const styles = StyleSheet.create({
         padding: 25,
         top:-50,
     },
-    header: {
-        borderBottomLeftRadius: 20,
-        borderBottomRightRadius: 20,
-        alignItems: 'center',
-    },
-    headerTitle: {
-        fontSize: 30,
-        color: '#fff',
-        fontWeight: 'bold',
-        top: -80,
-    },
     title: {
-        fontSize: 25,
-        fontWeight: 'bold',
+        fontSize: 20,
         textAlign: 'center',
-        marginVertical: 20,
-        top: -80,
+        marginBottom: 30,
+    },
+    textT: {
+        fontSize: 16,
+        marginBottom: 10,
     },
     odontogramTable: {
         borderWidth: 1,
@@ -235,8 +296,7 @@ const styles = StyleSheet.create({
     },
     teethTitle: {
         fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 10,
+        marginBottom: 20,
         textAlign: 'center',
     },
     quadrant: {
@@ -263,56 +323,122 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
     },
+
+    // estilos de modal
     modalOverlay: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        // backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    },
-    colorWheel: {
+      },
+      colorWheel: {
         width: 300,
         height: 300,
         borderRadius: 150,
         backgroundColor: '#fff',
         justifyContent: 'center',
         alignItems: 'center',
+        position: 'relative',
         padding: 20,
-    },
-    colorOption: {
-        width: 80,
-        height: 80,
-        borderRadius: 100,
+      },
+      colorOption: {
+        width: 70,
+        height: 70,
+        borderRadius: 50,
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 10,
-    },
-    red: {
-        backgroundColor: 'red',
-    },
-    blue: {
-        backgroundColor: 'blue',
-    },
-    green: {
-        backgroundColor: 'green',
-    },
-    transparent: {
-        backgroundColor: 'transparent',
-    },
-    closeButton: {
         position: 'absolute',
+      },
+    //rojo
+    topLeft: {
         top: 10,
+        left: 70,
+    },
+    //azul
+    topRight: {
+        top: 10,
+        right: 70,
+      },
+    //verde
+    bottomLeft: {
+        top: 220,
+        right: 70,
+    },
+    //linea roja
+    bottomRight: {
+        right: 8,
+        top: 75,
+    },
+    //lineas negras
+    centerLeft: {
+        top: 220,
+        left: 70,
+    },
+    //protesis parcial
+    centerRight: {
+        top: 160,
         right: 10,
-        width: 30,
-        height: 30,
-        borderRadius: 15,
-        backgroundColor: 'white',
+    },
+    //liena roja punteada
+    centerLeftR: {
+        top: 160,
+        left: 10,
+        borderColor: 'black',
+        borderWidth: 1,
+    },
+    //sano
+    topOrange: {
+        left: 8,
+        top: 75,
+        borderWidth: 1,
+    },
+      red: {
+        backgroundColor: '#FF1010',
+      },
+      blue: {
+        backgroundColor: '#308CFF',
+      },
+      green: {
+        backgroundColor: '#00ff00',
+      },
+      transparent: {
+        borderWidth: 1,
+        borderColor: '#ff0000',
+      },
+      dashed: {
+        borderWidth: 2,
+        borderColor: 'black',
+        borderStyle: 'dashed',
+      },
+      dotted: {
+        borderWidth: 2,
+        borderColor: 'grey',
+        borderStyle: 'dotted',
+      },
+      dottedRed: {
+        borderWidth: 2,
+        borderColor: 'grey',
+        borderStyle: 'dotted',
+      },
+      colorText1: {
+        color: 'black',
+        textAlign: 'center',
+      },
+      closeButton: {
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        backgroundColor: 'red',
         justifyContent: 'center',
         alignItems: 'center',
-    },
-    closeButtonText: {
-        color: 'red',
-        fontSize: 16,
-    },
+        position: 'absolute',
+        zIndex: 1,
+      },
+      closeButtonText: {
+        color: 'white',
+        fontSize: 24,
+        fontWeight: 'bold',
+      },
+
     saveButton: {
         backgroundColor: '#4A90E2',
         borderRadius: 50,

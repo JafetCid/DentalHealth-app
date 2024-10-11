@@ -1,12 +1,12 @@
-import styles from '../../assets/styles/Stepper';
+import styles from '../../../assets/styles/Stepper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import RNPickerSelect from 'react-native-picker-select';
 import React, { useState } from 'react';
 import { View, Text, TextInput, ScrollView, StyleSheet } from 'react-native';
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
-import Header from './components/Header';
-import InputDate from './components/InputDate';
-import InputImage from './components/InputImage';
+import Header from '../components/Header';
+import InputDate from '../components/InputDate';
+import InputImage from '../components/InputImage';
 
 const StepperP = ({ navigation }) => {
   // const [step1Data, setStep1Data] = useState({ name: '', address: '' });
@@ -30,7 +30,7 @@ const StepperP = ({ navigation }) => {
 
         <ScrollView>
             <View style={styles.container}>
-                <Header title={'Crear Cuenta'} showLogo={false}/>
+                <Header title={'Crear Cuenta'} showLogo={false} onPress={''}/>
                 <View style={styles.cont}>
                     <ProgressSteps style={styles.stepContent} {...buttonTextStyle}>
                         {/* Progreso 1 */}

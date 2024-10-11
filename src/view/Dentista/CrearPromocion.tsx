@@ -1,13 +1,13 @@
-import ButtonIn from "./components/ButtonIn";
-import Header from "./components/Header";
+import ButtonIn from "../components/ButtonIn";
+import Header from "../components/Header";
 import { View, Text, TextInput, StyleSheet, Image, ScrollView } from "react-native";
-import InputImage from "./components/InputImage";
+import InputImage from "../components/InputImage";
 
 export default function CrearPromocion({ navigation }) {
     return(
         <ScrollView>
             <View>
-                <Header title={'Crear promoción'} showLogo={false}/>
+                <Header title={'Crear promoción'} showLogo={false} onPress={() => navigation.goBack()}/>
                 <View style={styles.form}>
                     <View style={styles.conten}>
                         <Text style={styles.label}>Nombre</Text>

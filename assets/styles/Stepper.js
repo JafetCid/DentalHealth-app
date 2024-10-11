@@ -5,10 +5,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   cont: {
+    
     flex: 1,
-    width: '80%',
     alignSelf: 'center',
-    alignContent: 'center',
+    width: '80%',
   },
   stepContent: {
     
@@ -18,12 +18,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   text: {
-      fontSize: 20,
+    textAlign: 'center',
+    fontSize: 20,
   },
   label:{
     fontSize: 16,
     marginHorizontal:5,
-    marginTop:10
   },
   input: {
     height: 55,
@@ -32,13 +32,42 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: '#F7F7F7',
     color: 'black',
+    marginBottom: 15,
   },
-  // button: {
-  //     paddingHorizontal: 2,
-  //     marginHorizontal: -30,
-  //     borderColor: 'red',
-  //     borderWidth: 2,
-  // },
+
+  //estilos del form Crear Expediente
+  contenS: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    flexWrap: 'wrap', 
+    width: '100%',
+  },
+  inputContainer: {
+    width: '45%',
+  },
+  labelI: {
+    fontSize: 16,
+    marginTop:10,
+    marginHorizontal:5,
+  },
+  inputI: {
+    height: 55,
+    padding: 10,
+    color: 'black',
+    borderRadius: 10,
+    backgroundColor: '#F7F7F7',
+  },
+  contCBT: {
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  contCheckBox: {
+    width: '90%',
+    alignItems: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
 });
 
 export default styles;

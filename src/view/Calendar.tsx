@@ -13,7 +13,7 @@ export default function DentalHealthScreen({navigation}) {
 
   return (
     <View style={styles.container}>
-      <Header title={''} />
+      <Header title={''} onPress={''} />
       <View style={styles.content}>
         <Text style={styles.greeting}>¡Hola [Nombre del Paciente]!</Text>
         <Text style={styles.message}>Actualmente, no tenemos una cita registrada a tu nombre.</Text>

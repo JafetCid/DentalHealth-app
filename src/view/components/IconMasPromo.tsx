@@ -1,18 +1,23 @@
 import { TouchableOpacity, Image, StyleSheet } from "react-native";
+import { Ionicons } from '@expo/vector-icons';
 
 
 export default function IconMasPromo({ navigation }) {
     return(
         <TouchableOpacity style={styles.img} onPress={() => navigation.navigate('CrearP')}>
-            <Image source={require('../../../assets/images/PlusCircleFill.png')}/>
+            <Ionicons name="add-outline" size={50} color="white" />
         </TouchableOpacity>
     )
 }
 
 const styles = StyleSheet.create({
     img: {
-        marginTop: 50,
-        alignItems: 'center',
+        backgroundColor: '#2f95dc',
+        alignSelf: 'center',
+        borderRadius: 25,
         marginBottom: 20,
+        marginTop: 50,
+        elevation: 4,
+        width: 50,
     }
 })

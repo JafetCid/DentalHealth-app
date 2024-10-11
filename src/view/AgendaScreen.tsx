@@ -1,16 +1,68 @@
-import HeaderNoIcon from './components/HeaderNoIcon';
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity, ScrollView } from 'react-native';
-import { Calendar, DateObject } from 'react-native-calendars';
+import { Ionicons } from '@expo/vector-icons';
 import Header from './components/Header';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { Calendar, LocaleConfig, DateObject } from 'react-native-calendars';
+import dayjs from 'dayjs';
+import 'dayjs/locale/es'; //  español
+import ButtonIn from './components/ButtonIn';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
-export default function AgendaScreen({navigation}) {
+// Configuración del calendario en español
+LocaleConfig.locales['es'] = {
+  monthNames: [
+    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
+    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+  ],
+  monthNamesShort: [
+    'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 
+    'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
+  ],
+  dayNames: [
+    'Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'
+  ],
+  dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+  today: 'Hoy'
+};
+LocaleConfig.defaultLocale = 'es'; 
+
+export default function AgendaScreen({ navigation }) {
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [busyDays, setBusyDays] = useState<string[]>([]);
+
+  const today = dayjs().format('YYYY-MM-DD');
+
+  useEffect(() => {
+    const fetchBusyDays = async () => {
+      const fetchedBusyDays = []; 
+      setBusyDays(fetchedBusyDays);
+    };
+    fetchBusyDays();
+  }, []);
 
   const handleDayPress = (day: DateObject) => {
+    const dayOfWeek = dayjs(day.dateString).locale('es').format('dddd');
+
+    // Verificar si es domingo
+    if (dayOfWeek === 'domingo') {
+      Alert.alert('Día no disponible', 'No se puede seleccionar el día domingo.');
+      return;
+    }
+
+    // Verificar si el día seleccionado es antes del día actual
+    if (day.dateString < today) {
+      Alert.alert('Fecha inválida', 'No se pueden seleccionar días pasados.');
+      return;
+    }
+
+    // Verificar si el día está ocupado
+    if (busyDays.includes(day.dateString)) {
+      Alert.alert('Día ocupado', 'Este día ya está ocupado.');
+      return;
+    }
+
     setSelectedDay(day.dateString);
   };
 
@@ -19,61 +71,78 @@ export default function AgendaScreen({navigation}) {
   };
 
   return (
-    <ScrollView> 
-      <View style={styles.container}>
-        <Header title={''} showLogo={false}/>
-        <View style={styles.cont}>
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <Header title={''} showLogo={false} onPress={() => navigation.goBack()}/>
+        {/* <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.navigate('Agenda')}
+        >
+          <Ionicons name="arrow-back-outline" size={35} color="black" />
+        </TouchableOpacity> */}
+        <View style={styles.contAgenda}>
           <Text style={styles.text}>Citas</Text>
           <Calendar
             onDayPress={handleDayPress}
             markedDates={{
+              ...busyDays.reduce((acc, date) => {
+                acc[date] = { selected: true, marked: true, selectedColor: 'red' };
+                return acc;
+              }, {}),
               [selectedDay || '']: { selected: true, marked: true, selectedColor: 'blue' },
             }}
+            minDate={today}
             theme={{
               calendarBackground: 'transparent',
               textSectionTitleColor: '#000000',
               dayTextColor: '#000000',
               todayTextColor: '#0000ff',
               selectedDayTextColor: '#ffffff',
-              selectedDayBackgroundColor: '#0000ff',
+              selectedDayBackgroundColor: 'blue',
             }}
             style={styles.calendar}
           />
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Horarios disponibles</Text>
             <Text style={styles.subTitle}>Mañana</Text>
-            {['9:00 am', '10:00 am', '11:00 am'].map((time) => (
-              <TouchableOpacity
-                key={time}
-                style={[
-                  styles.timeSlot,
-                  selectedTime === time && styles.selectedTimeSlot,
-                ]}
-                onPress={() => handleTimeSelect(time)}
-              >
-                <Text>{time}</Text>
-              </TouchableOpacity>
-            ))}
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.timeSlotsContainer}>
+              {['9:00 am', '10:00 am', '11:00 am'].map((time) => (
+                <TouchableOpacity
+                  key={time}
+                  style={[
+                    styles.timeSlot,
+                    selectedTime === time && styles.selectedTimeSlot,
+                  ]}
+                  onPress={() => handleTimeSelect(time)}
+                >
+                  <Text>{time}</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
             <Text style={styles.subTitle}>Tarde</Text>
-            {['1:00 pm', '2:00 pm', '5:00 pm'].map((time) => (
-              <TouchableOpacity
-                key={time}
-                style={[
-                  styles.timeSlot,
-                  selectedTime === time && styles.selectedTimeSlot,
-                ]}
-                onPress={() => handleTimeSelect(time)}
-              >
-                <Text>{time}</Text>
-              </TouchableOpacity>
-            ))}
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.timeSlotsContainer}>
+              {['1:00 pm', '2:00 pm', '5:00 pm'].map((time) => (
+                <TouchableOpacity
+                  key={time}
+                  style={[
+                    styles.timeSlot,
+                    selectedTime === time && styles.selectedTimeSlot,
+                  ]}
+                  onPress={() => handleTimeSelect(time)}
+                >
+                  <Text>{time}</Text>
+                </TouchableOpacity>
+              ))}
+              <ButtonIn 
+                Title={'Agendar'} 
+                buttonStyle={{backgroundcolor: '#308CFF'}} 
+                textStyle={{ color: 'white' }}
+                onPress={''}/>
+            </ScrollView>
           </View>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Solicitar cita</Text>
-          </TouchableOpacity>
         </View>
-      </View> 
-    </ScrollView>
+      </ScrollView>
+    </View> 
   );
 }
 
@@ -83,10 +152,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     
   },
-  cont: {
+  scrollViewContent: {
     flexGrow: 1,
     justifyContent: 'center',
+  },
+  contAgenda: {
     alignItems: 'center',
+  },
+  backButton: {
+    position: 'absolute',
+    top: 30,
+    left: 10,
+    zIndex: 1,
   },
   text: {
     fontSize: 24,
@@ -102,6 +179,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   sectionTitle: {
+    alignSelf: 'center',
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
@@ -111,13 +189,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
   },
+  timeSlotsContainer: {
+    alignSelf: 'center',
+    marginBottom: 10,
+  },
   timeSlot: {
-    padding: 10,
-    borderWidth: 1,
+    padding: 25,
+    borderWidth: 0.5,
     borderColor: '#ccc',
     borderRadius: 5,
-    marginBottom: 10,
-    alignItems: 'center',
+    marginRight: 15,
   },
   selectedTimeSlot: {
     backgroundColor: '#007bff',
@@ -126,9 +207,10 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#007bff',
     paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     borderRadius: 5,
-    marginBottom: '8%',
+    marginBottom: 20,
+    
   },
   buttonText: {
     color: '#fff',

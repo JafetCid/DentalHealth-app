@@ -4,6 +4,7 @@ import { AntDesign } from '@expo/vector-icons';
 //import { useNavigation } from '@react-navigation/native';
 import { Menu, Provider } from 'react-native-paper';
 import HeaderNoIcon from './components/HeaderNoIcon';
+import Header from './components/Header';
 
 const Patients = ({navigation}) => {
   //const navigation = useNavigation();
@@ -65,10 +66,7 @@ const Patients = ({navigation}) => {
     <Provider>
       <ScrollView>
         <View style={styles.container}>
-          <HeaderNoIcon />
-          <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('Pacientes')}>
-            {/*<AntDesign name="left" size={24} color="white" />*/}
-          </TouchableOpacity>
+          <Header title={''} onPress={''} showLogo={false} showArrow={false}/>
           <Text style={styles.title}>Pacientes</Text>
           <TextInput
             style={styles.searchInput}
@@ -132,7 +130,7 @@ const Patients = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
+    //backgroundColor: 'red',
   },
   backButton: {
     position: 'absolute',
@@ -140,8 +138,7 @@ const styles = StyleSheet.create({
     left: 20,
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: 25,
     color: 'white',
     marginTop: 60,
     marginLeft: 25,
@@ -151,15 +148,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 15,
     borderRadius: 10,
-    marginVertical: 20,
     alignSelf: 'center',
     width: '90%',
-    top: -210,
+    top: -100,
   },
   mainContent: {
     flexDirection: 'row',
     flex: 1,
-    top: -145,
+    top: -70,
+    
   },
   alphabetContainer: {
     justifyContent: 'center',
@@ -167,7 +164,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     borderRightWidth: 1,
     borderRightColor: '#ddd',
-    backgroundColor: '#f8f9fa',
+    //backgroundColor: '#f8f9fa',
   },
   alphabetButton: {
     paddingVertical: 5,

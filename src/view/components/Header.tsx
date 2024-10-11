@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import styles from '../../../assets/styles/Header'
 import { Ionicons } from '@expo/vector-icons';
 
-export default function Header ({ title, showLogo = true, showArrow = true, showP = false }) {
+export default function Header ({ title, showLogo = true, showArrow = true, showP = false, onPress }) {
 
   const [isVisible, setIsVisible] = useState(false);
   const navigation = useNavigation();
@@ -21,7 +21,7 @@ export default function Header ({ title, showLogo = true, showArrow = true, show
         source={require('../../../assets/images/Union.png')}
       />
       {showArrow && (
-        <TouchableOpacity style={styles.arrowLeft}>
+        <TouchableOpacity style={styles.arrowLeft} onPress={onPress}>
           <Image source={require('../../../assets/images/ArrowLeft.png')}/>
         </TouchableOpacity>
       )}
@@ -45,11 +45,11 @@ export default function Header ({ title, showLogo = true, showArrow = true, show
           <View style={style.centeredView}>
             <View style={style.modalView}>
               <Pressable
-                onPress={() => {navigation.navigate('PerfilA'); setIsVisible(false)}}>
+                onPress={() => {navigation.navigate('PerfilD'); setIsVisible(false)}}>
                 <Text style={style.modalText}>Perfil</Text>
               </Pressable>
               <Pressable
-                onPress={() => {navigation.navigate('LoginO'); setIsVisible(false)}}>
+                onPress={() => {navigation.navigate('CrearExpediente'); setIsVisible(false)}}>
                 <Text style={style.modalText}>Cerrar sesión</Text>
               </Pressable>
             </View>
