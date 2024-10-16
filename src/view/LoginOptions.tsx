@@ -11,7 +11,7 @@ export default function LoginOptions({ navigation }) {
 
   return (
     <View style={styles.maincontainer}>
-      <Header title={''} showArrow={false} />
+      <Header title={''} showArrow={false} onPress={''}/>
       <View style={styles.container}>
         <Text style={styles.title}>Bienvenido</Text>
         <View style={styles.contB}>
@@ -32,7 +32,7 @@ export default function LoginOptions({ navigation }) {
         <StatusBar style="auto" />
       </View>
 
-      {/* Modal */}
+      {/* Modal para seleccionar tipo de usuario */}
       <View style={styles.centeredView}>
         <Modal
           animationType="slide"
@@ -52,14 +52,20 @@ export default function LoginOptions({ navigation }) {
                 {/* Botón Doctor redirige a StepperD */}
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
-                  onPress={() => {navigation.navigate('StepperD'); setIsVisible(false);}}>
+                  onPress={() => {
+                    setIsVisible(false); // Cierra el modal
+                    navigation.navigate('StepperD'); // Redirige a la pantalla de registro de Doctor
+                  }}>
                   <Text style={styles.textStyle}>Doctor</Text>
                 </Pressable>
 
                 {/* Botón Paciente redirige a StepperP */}
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
-                  onPress={() => {navigation.navigate('StepperP'); setIsVisible(false);}}>
+                  onPress={() => {
+                    setIsVisible(false); // Cierra el modal
+                    navigation.navigate('StepperP'); // Redirige a la pantalla de registro de Paciente
+                  }}>
                   <Text style={styles.textStyle}>Paciente</Text>
                 </Pressable>
               </View>

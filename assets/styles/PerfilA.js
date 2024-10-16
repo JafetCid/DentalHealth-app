@@ -11,13 +11,13 @@ const styles = StyleSheet.create({
     },
     
     card: {
-        overflow: 'hidden',
-        borderRadius: 25,
-        width: '85%',
-        height: 'auto',
-        backgroundColor: '#fff',
-        elevation: 5,
         padding: 8,
+        elevation: 5,
+        borderRadius: 25,
+        width: '80%',
+        height: 'auto',
+        overflow: 'hidden',
+        backgroundColor: '#fff',
     },
 
     text2: {
@@ -29,47 +29,69 @@ const styles = StyleSheet.create({
     
     title: {
         fontSize: 18,
+        marginBottom: 10,
     },
 
     icon: {
-        position: 'absolute',
         width: '100%',
-        alignItems: 'flex-end',
         marginTop: '4%',
+        position: 'absolute',
+        alignItems: 'flex-end',
     },
     
     // estilos del modal de perfil y cerrar sesion
     centeredView: {
-        position: 'absolute',
         padding: 5,
         width: '100%',
-        alignItems: 'flex-end',
         marginTop: '8%',
+        position: 'absolute',
+        alignItems: 'flex-end',
     },
     
     modalView: {
-        backgroundColor: 'white',
-        width: '30%',
-        borderRadius: 8,
         padding: 5,
+        width: '30%',
         elevation: 5,
+        borderRadius: 8,
+        backgroundColor: 'white',
     },
     
     modalText: {
-        marginBottom: 4,
         fontSize: 12,
+        marginBottom: 4,
     },
 
     modalTextE: {
         marginBottom: 4,
         fontSize: 12,
-        color: 'red',
     },
     info: {
-        borderColor: 'black',
-        borderWidth: 1,
-    }
+        padding: 5,
+    },
     
+    infoContCard: {
+        fontSize: 18,
+        marginBottom: 8,
+        flexDirection: 'row',
+        
+    },
+    iconCard: {
+        width: 30,
+        height: 32,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    infoContText: {
+        left: 5,
+        width: '88%',
+        alignSelf: 'center',
+        
+    },
+    textEnd: {
+        width: '75%',
+        color:'#888888',
+        alignSelf: 'center',
+    },    
 });
 
 export default styles;

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { Menu, Provider } from 'react-native-paper';
-import HeaderNoIcon from './components/HeaderNoIcon';
+import Header from './components/Header';
 
 const getCurrentWeekDates = () => {
   const currentDate = new Date();
@@ -15,6 +15,15 @@ const getCurrentWeekDates = () => {
   return dates;
 };
 
+//Fecha del dia en el que nos econtramos abreviada 
+const today = new Date();
+const monthShort = today.toLocaleDateString('es-ES', { month: 'long' }).substring(0, 3);
+// Formatea el día y el año
+const day = today.getDate();
+const year = today.getFullYear();
+// Formatea la fecha final como "Mes Día, Año" (Ej: "May 5, 2024")
+const formattedDate = `${monthShort.charAt(0).toUpperCase() + monthShort.slice(1)} ${day}, ${year}`;
+
 const ScheduleView = ({ navigation }) => {
   const weekDays = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
   const weekDates = getCurrentWeekDates();
@@ -23,11 +32,11 @@ const ScheduleView = ({ navigation }) => {
   const [appointments, setAppointments] = useState([]);
   const [menuVisible, setMenuVisible] = useState<string | null>(null);
 
-  // Llamar a la API para obtener las citas
+  
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const response = await fetch('http://192.168.0.7:3000/appointments'); // URL de la API
+        const response = await fetch(''); 
         const data = await response.json();
         setAppointments(data);
       } catch (error) {
@@ -59,7 +68,7 @@ const ScheduleView = ({ navigation }) => {
   return (
     <Provider>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <HeaderNoIcon />
+        <Header showLogo={false} onPress={''} title={''} showArrow={false}/>
         <View style={styles.header}>
           {weekDays.map((day, index) => (
             <View key={index} style={styles.dayContainer}>
@@ -72,6 +81,7 @@ const ScheduleView = ({ navigation }) => {
             </View>
           ))}
         </View>
+        <Text style={styles.dateAbreviate}>{formattedDate}</Text>
         <Text style={styles.todayLabel}>Hoy</Text>
         <View style={styles.appointmentsContainer}>
           {appointments.map((appointment) => (
@@ -126,24 +136,38 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dayText: {
-    fontWeight: 'bold',
+    fontSize: 18,
+    // fontWeight: 'bold',
+    color: 'white',
   },
   dateText: {
+    fontSize: 18,
     color: 'white',
   },
   highlightedDay: {
     color: 'white',
+    fontWeight: 'bold',
+    borderBottomWidth: 2,
+    borderBottomColor: 'white',
+    paddingBottom: 1,
   },
   highlightedDate: {
     color: 'white',
     fontWeight: 'bold',
+    
+  },
+  dateAbreviate: {
+    color: 'white',
+    fontSize: 25,
+    top: -300,
+    left: 38,
   },
   todayLabel: {
     marginVertical: 10,
     fontSize: 25,
-    fontWeight: 'bold',
-    top: -290,
-    padding: 25,
+    color: 'white',
+    top: -310,
+    left: 40,
   },
   appointmentsContainer: {
     marginTop: -150,
@@ -191,7 +215,7 @@ const styles = StyleSheet.create({
   },
   addButton: {
     position: 'absolute',
-    bottom: 30,
+    bottom: -300,
     right: 30,
     backgroundColor: '#2f95dc',
     borderRadius: 25,
@@ -202,6 +226,7 @@ const styles = StyleSheet.create({
     elevation: 4,
     alignItems: 'center',
     justifyContent: 'center',
+    
     
     },
 });

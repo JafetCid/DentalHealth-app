@@ -1,11 +1,11 @@
 import { Ionicons } from '@expo/vector-icons';
-import HeaderNoIcon from './components/HeaderNoIcon';
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity, ScrollView, Alert } from 'react-native';
-import { Calendar, DateObject, LocaleConfig } from 'react-native-calendars';
 import Header from './components/Header';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { Calendar, LocaleConfig, DateObject } from 'react-native-calendars';
 import dayjs from 'dayjs';
-
+import 'dayjs/locale/es'; //  español
+import ButtonIn from './components/ButtonIn';
 
 const { width } = Dimensions.get('window');
 
@@ -70,62 +70,80 @@ export default function AgendaScreen({ navigation }) {
     setSelectedTime(time);
   };
 
+  // Validación al presionar el botón "Agendar"
+  const handleAgendarPress = () => {
+    if (!selectedDay || !selectedTime) {
+      Alert.alert('Error', 'Por favor, seleccione una fecha y un horario.');
+      return;
+    }
+    // Aquí puedes agregar la lógica para agendar la cita
+    Alert.alert('Cita agendada', `Cita programada para el ${selectedDay} a las ${selectedTime}.`);
+  };
+
   return (
-    <ScrollView> 
-      <View style={styles.container}>
-        <Header title={''} showLogo={false}/>
-        <View style={styles.cont}>
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <Header title={''} showLogo={false} onPress={() => navigation.goBack()} />
+        <View style={styles.contAgenda}>
           <Text style={styles.text}>Citas</Text>
           <Calendar
             onDayPress={handleDayPress}
             markedDates={{
-              [selectedDay || '']: { selected: true, marked: true, selectedColor: 'blue' },
+              ...busyDays.reduce((acc, date) => {
+                acc[date] = { selected: true, marked: true, selectedColor: 'red' };
+                return acc;
+              }, {}),
+              [selectedDay || '']: { selected: true, marked: true, selectedColor: '#308CFF' },
             }}
+            minDate={today}
             theme={{
               calendarBackground: 'transparent',
               textSectionTitleColor: '#000000',
               dayTextColor: '#000000',
               todayTextColor: '#0000ff',
               selectedDayTextColor: '#ffffff',
-              selectedDayBackgroundColor: '#0000ff',
+              selectedDayBackgroundColor: 'blue',
             }}
             style={styles.calendar}
           />
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Horarios disponibles</Text>
             <Text style={styles.subTitle}>Mañana</Text>
-            {['9:00 am', '10:00 am', '11:00 am'].map((time) => (
-              <TouchableOpacity
-                key={time}
-                style={[
-                  styles.timeSlot,
-                  selectedTime === time && styles.selectedTimeSlot,
-                ]}
-                onPress={() => handleTimeSelect(time)}
-              >
-                <Text>{time}</Text>
-              </TouchableOpacity>
-            ))}
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.timeSlotsContainer}>
+              {['9:00 am', '10:00 am', '11:00 am'].map((time) => (
+                <TouchableOpacity
+                  key={time}
+                  style={[styles.timeSlot, selectedTime === time && styles.selectedTimeSlot]}
+                  onPress={() => handleTimeSelect(time)}
+                >
+                  <Text>{time}</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
             <Text style={styles.subTitle}>Tarde</Text>
-            {['1:00 pm', '2:00 pm', '5:00 pm'].map((time) => (
-              <TouchableOpacity
-                key={time}
-                style={[
-                  styles.timeSlot,
-                  selectedTime === time && styles.selectedTimeSlot,
-                ]}
-                onPress={() => handleTimeSelect(time)}
-              >
-                <Text>{time}</Text>
-              </TouchableOpacity>
-            ))}
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.timeSlotsContainer}>
+              {['1:00 pm', '2:00 pm', '5:00 pm'].map((time) => (
+                <TouchableOpacity
+                  key={time}
+                  style={[styles.timeSlot, selectedTime === time && styles.selectedTimeSlot]}
+                  onPress={() => handleTimeSelect(time)}
+                >
+                  <Text>{time}</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+            <View style={styles.buttonContainer}>
+              <ButtonIn 
+                Title="Agendar"
+                buttonStyle={styles.buttonAgendar} 
+                textStyle={styles.buttonText} 
+                onPress={handleAgendarPress} // Validación de fecha y hora
+              />
+            </View>
           </View>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Solicitar cita</Text>
-          </TouchableOpacity>
         </View>
-      </View> 
-    </ScrollView>
+      </ScrollView>
+    </View> 
   );
 }
 
@@ -133,18 +151,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    
   },
-  cont: {
+  scrollViewContent: {
     flexGrow: 1,
     justifyContent: 'center',
-    alignItems: 'center',
   },
-  backButton: {
-    position: 'absolute',
-    top: 30,
-    left: 10,
-    zIndex: 1,
+  contAgenda: {
+    alignItems: 'center',
   },
   text: {
     fontSize: 24,
@@ -160,6 +173,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   sectionTitle: {
+    alignSelf: 'center',
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
@@ -181,16 +195,19 @@ const styles = StyleSheet.create({
     marginRight: 15,
   },
   selectedTimeSlot: {
-    backgroundColor: '#007bff',
-    flexDirection:'row',
-    borderColor: '#007bff',
+    backgroundColor: '#308CFF',
+    borderColor: '#308CFF',
   },
-  button: {
-    backgroundColor: '#007bff',
+  buttonContainer: {
+    marginTop: 20,
+    width: '100%', // Asegura que el contenedor ocupe todo el ancho
+    alignItems: 'center', // Centra el botón horizontalmente
+  },
+  buttonAgendar: {
+    backgroundColor: '#308CFF',
     paddingVertical: 10,
-    paddingHorizontal: 10,
+    paddingHorizontal: 20, // Aumenta el padding horizontal para que se vea mejor
     borderRadius: 5,
-    marginBottom: '8%',
   },
   buttonText: {
     color: '#fff',

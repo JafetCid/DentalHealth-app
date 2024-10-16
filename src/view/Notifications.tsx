@@ -1,18 +1,8 @@
-import HeaderNoIcon from './components/HeaderNoIcon';
+import Header from './components/Header';
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, Image, Modal, Pressable, Alert, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Header from './components/Header';
 import axios from 'axios';
-
-const { width } = Dimensions.get('window');
-
-const notifications = [
-  { id: '1', title: 'Se cancelo la', body: 'Esta es la primera notificacion CAMPEÓN.' },
-  { id: '2', title: 'Tines cita pt', body: 'Esta es la segunda perro.' },
-  { id: '3', title: 'Notificación 3', body: 'Esta es la tercera notificación.' },
-  // Añade más notificaciones aquí si es necesario
-];
 
 export default function NotificationScreen() {
   const [notifications, setNotifications] = useState([]);
@@ -25,7 +15,7 @@ export default function NotificationScreen() {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const response = await axios.get('http://192.168.0.7:3000/notifications/');
+        const response = await axios.get('');
         setNotifications(response.data);
         setLoading(false);
       } catch (error) {
@@ -90,9 +80,9 @@ export default function NotificationScreen() {
 
   return (
     <View style={styles.container}>
-      <Header title={'Notificaciones'} showLogo={false}/>
+      <Header title={'Notificaciones'} showLogo={false} onPress={''} showArrow={false}/>
       <View style={styles.content}>
-        <Text style={styles.title1}>Notificaciones</Text>
+        
         {notifications.length > 0 ? (
           <FlatList
             data={notifications}
@@ -152,8 +142,10 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: 20, // Espacio a los lados
-    paddingTop: 10, // Espacio adicional en la parte superior del contenido
+    paddingHorizontal: 20,
+    paddingTop: -70,
+
+
   },
   notificationItem: {
     backgroundColor: '#ffffff',

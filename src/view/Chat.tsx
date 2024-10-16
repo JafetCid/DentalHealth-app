@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import HeaderNoIcon from './components/HeaderNoIcon';
 import { StyleSheet, TextInput, TouchableOpacity, View, Text, Dimensions, FlatList } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import io from 'socket.io-client';
+import Header from './components/Header';
 
 const socket = io(''); // dirección IP
 
@@ -30,14 +30,13 @@ export default function Chat({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <HeaderNoIcon />
-      <TouchableOpacity 
-        style={styles.backButton} 
-        onPress={() => navigation.navigate('Agenda')}
-      >
-        <Ionicons name="arrow-back" size={24} color="black" />  
-      </TouchableOpacity>
-      <Text style={styles.text}>Nombre del Doctor</Text>
+      <Header title={''} showLogo={false} onPress={() => navigation.goBack()}/>
+      <View style={styles.contLT}>
+        <FontAwesome name="user-circle-o" size={60} color="white" />
+        <View style={styles.contName}>
+          <Text style={styles.name}>Nombre del paciente</Text>
+        </View>
+      </View>
       <View style={styles.chatArea}>
         <FlatList
           data={messages}
@@ -148,5 +147,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#007AFF',
     borderRadius: 20,
     padding: 10,
+  },
+  contLT: {
+    justifyContent: 'space-around',
+    position: 'absolute',
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginTop: '30%',
+    width: '90%',
+    padding: 10,
+  },
+  contName: {
+    width: '70%',
+  },
+  name: {
+    color: 'white',
+    fontSize: 24,
   },
 });

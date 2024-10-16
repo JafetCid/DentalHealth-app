@@ -9,7 +9,7 @@ export default function Login ({ navigation }) {
     return(
         <ScrollView>
             <View>
-                <Header title={''}/>
+                <Header title={''} onPress={''} showArrow={false}/>
                 <View style={styles.container}>
                     <Text style={styles.title}> Bienvenido de nuevo </Text>
                 </View>
