@@ -45,21 +45,25 @@ export default function Header ({ title, showLogo = true, showArrow = true, show
           <View style={style.centeredView}>
             <View style={style.modalView}>
               <Pressable
-                onPress={() => {navigation.navigate('PerfilD'); setIsVisible(false)}}>
+                onPress={() => { 
+                  setIsVisible(false);
+                  navigation.navigate('PerfilD')}}>
                 <Text style={style.modalText}>Perfil</Text>
               </Pressable>
               <Pressable
-                onPress={() => {navigation.navigate('CrearExpediente'); setIsVisible(false)}}>
+                onPress={() => { 
+                  setIsVisible(false); 
+                  navigation.navigate('CrearExpediente')}}>
                 <Text style={style.modalText}>Cerrar sesión</Text>
               </Pressable>
             </View>
           </View>
         </Modal>
       </View>
-
       <View style={styles.logoC}>
         {showLogo && (
-          <Image source={require('../../../assets/images/logo.png')}/>
+          <Image source={require('../../../assets/images/Genshi.jpeg')} style={styles.imgLogo}/>
+          // <Image source={require('../../../assets/images/logo.png')} style={styles.imgLogo}/>
         )}
         <Text style={styles.title}>{title}</Text>
       </View>

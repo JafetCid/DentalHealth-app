@@ -16,7 +16,7 @@ export default function PerfilD({ navigation }) {
 
   return (
     <View>
-        <Header title={''} onPress={() => navigation.goBack()} showP={true}/>
+        <Header title={''} onPress={() => navigation.goBack('Inicio')} showP={true}/>
         <Text style={styles.text}>Nombre del Doctor</Text>
         <View style={styles.content}>
             <View style={styles.card}>

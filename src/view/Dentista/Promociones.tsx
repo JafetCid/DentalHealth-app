@@ -15,7 +15,7 @@ export default function Promociones() {
 
     return(
         <ScrollView>
-                <Header title={'Promociones'} showLogo={false} onPress={''}/>
+                <Header title={'Promociones'} showLogo={false} onPress={() => navigation.goBack()}/>
                 <CardPromociones/>
                 <CardPromociones/>
                 <IconMasPromo navigation={navigation}/>

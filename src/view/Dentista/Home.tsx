@@ -66,17 +66,19 @@ function Home() {
 
   return (
     <View style={styles.container}>
-      <Header title={''} showArrow={false} showP={true} onPress={''} />
-      <View style={styles.content}>
-        <Text style={styles.textT}>Bienvenido</Text>
-        <Text style={styles.textT}>Doctor [Nombre del doctor]</Text>
-        {/* Carrusel */}
-        {/* <View style={styles.cont}>
-          <Text style={styles.text}>React Native carousel with react-native-snap-carousel</Text>
-          <MyCarousel data={dummyData} />
-        </View> */}
-        <Text style={styles.textE}>Tus promociones publicadas</Text>
-      </View>
+      <ScrollView>
+        <Header title={''} showArrow={false} showP={true} onPress={''} />
+        <View style={styles.content}>
+          <Text style={styles.textT}>Bienvenido</Text>
+          <Text style={styles.textT}>Doctor [Nombre del doctor]</Text>
+          {/* Carrusel */}
+          {/* <View style={styles.cont}>
+            <Text style={styles.text}>React Native carousel with react-native-snap-carousel</Text>
+            <MyCarousel data={dummyData} />
+          </View> */}
+          <Text style={styles.textE}>Tus promociones publicadas</Text>
+        </View>
+      </ScrollView>
     </View>
   );
 }

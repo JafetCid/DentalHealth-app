@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, TextInput, TouchableOpacity, View, Text, Dimensions, FlatList } from 'react-native';
+import { StyleSheet, TextInput, TouchableOpacity, View, Text, Dimensions, FlatList, Image } from 'react-native';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import io from 'socket.io-client';
 import Header from './components/Header';
@@ -32,7 +32,8 @@ export default function Chat({ navigation }) {
     <View style={styles.container}>
       <Header title={''} showLogo={false} onPress={() => navigation.goBack()}/>
       <View style={styles.contLT}>
-        <FontAwesome name="user-circle-o" size={60} color="white" />
+        <FontAwesome name="user-circle-o" size={60} color="white" style={styles.icon}/>
+        {/* <Image source={require('../../assets/images/Genshi.jpeg')} style={styles.icon}/> */}
         <View style={styles.contName}>
           <Text style={styles.name}>Nombre del paciente</Text>
         </View>
@@ -156,6 +157,11 @@ const styles = StyleSheet.create({
     marginTop: '30%',
     width: '90%',
     padding: 10,
+  },
+  icon: {
+    width: 61,
+    height: 61,
+    borderRadius: 35,
   },
   contName: {
     width: '70%',
