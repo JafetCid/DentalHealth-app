@@ -1,21 +1,20 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
   },
   cont: {
-    
-    flex: 1,
-    alignSelf: 'center',
     width: '80%',
+    alignSelf: 'center',
+    marginTop: -20,
   },
   stepContent: {
-    
   },
   context: {
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 30,
   },
   text: {
     textAlign: 'center',
@@ -60,14 +59,30 @@ const styles = StyleSheet.create({
   contCBT: {
     alignItems: 'center',
     marginBottom: 10,
+
   },
   contCheckBox: {
     width: '90%',
     alignItems: 'center',
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
   },
+  textArchivo: {
+    alignSelf: 'center',
+    color: '#888888',
+  },
+  contIA: {
+    justifyContent: 'center',
+  },
+  iconClip: {
+    position: 'absolute',
+    right: 0,
+    padding: 10,
+    // borderWidth: 2,
+  },
+  nameFile: {
+    left: 5,
+},
 });
 
 export default styles;

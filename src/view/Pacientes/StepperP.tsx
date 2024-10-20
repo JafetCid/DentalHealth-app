@@ -30,7 +30,7 @@ const StepperP = ({ navigation }) => {
 
         <ScrollView>
             <View style={styles.container}>
-                <Header title={'Crear Cuenta'} showLogo={false} onPress={''}/>
+                <Header title={'Crear Cuenta'} showLogo={false} onPress={() => navigation.goBack()}/>
                 <View style={styles.cont}>
                     <ProgressSteps style={styles.stepContent} {...buttonTextStyle}>
                         {/* Progreso 1 */}
@@ -168,6 +168,7 @@ const pickerSelectStyles = StyleSheet.create({
         borderRadius: 10,
         padding: 10,
         backgroundColor: '#F7F7F7',
+        marginBottom: 15,
     },
     iconContainer: {
         top: 15,

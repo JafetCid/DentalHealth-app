@@ -18,6 +18,10 @@ import CrearPromocion from './Dentista/CrearPromocion';
 import PerfilD from './Dentista/PerfilD';
 import FormCrearE from './Dentista/FormCrearE';
 import PerfilP from './Pacientes/PerfilP';
+import PatientsDetalles from './PatientsDetalles';
+import ExpedienteList from './components/ExpedienteList';
+import ExamenesDentalesScreen from './ExamenDental';
+import ExpedienteDentalesScreen from './ExpedienteDental';
 
 const Stack = createNativeStackNavigator();
 
@@ -41,6 +45,10 @@ const StackNavigator = () => {
       <Stack.Screen name='TabNavigator' component={TabNavigator}/>
       <Stack.Screen name='ExamenAdult' component={DentalExamScreen}/>
       {/* <Stack.Screen name='Agenda' component={Agenda1} /> */}
+      <Stack.Screen name='Pdetalles' component={PatientsDetalles}/>
+      {/*<Stack.Screen name='ExpedientList' component={ExpedienteList} />*/}
+      <Stack.Screen name='ExamDent' component={ExamenesDentalesScreen}/>
+      <Stack.Screen name='ExpedienteLista' component={ExpedienteDentalesScreen}/>
     </Stack.Navigator>
   );
 };

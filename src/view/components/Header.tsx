@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import styles from '../../../assets/styles/Header'
 import { Ionicons } from '@expo/vector-icons';
 
-export default function Header ({ title, showLogo = true, showArrow = true, showP = false, onPress }) {
+export default function Header ({ title, showLogo = true, showArrow = true, showP = false, onPress}) {
 
   const [isVisible, setIsVisible] = useState(false);
   const navigation = useNavigation();
@@ -47,7 +47,7 @@ export default function Header ({ title, showLogo = true, showArrow = true, show
               <Pressable
                 onPress={() => { 
                   setIsVisible(false);
-                  navigation.navigate('PerfilD')}}>
+                  navigation.navigate('PerfilP')}}>
                 <Text style={style.modalText}>Perfil</Text>
               </Pressable>
               <Pressable
@@ -62,8 +62,8 @@ export default function Header ({ title, showLogo = true, showArrow = true, show
       </View>
       <View style={styles.logoC}>
         {showLogo && (
-          <Image source={require('../../../assets/images/Genshi.jpeg')} style={styles.imgLogo}/>
-          // <Image source={require('../../../assets/images/logo.png')} style={styles.imgLogo}/>
+          // <Image source={require('../../../assets/images/Genshi.jpeg')} style={styles.imgLogo}/>
+          <Image source={require('../../../assets/images/logo.png')} style={styles.imgLogo}/>
         )}
         <Text style={styles.title}>{title}</Text>
       </View>

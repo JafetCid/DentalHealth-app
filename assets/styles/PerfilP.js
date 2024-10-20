@@ -1,7 +1,11 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-    text: {
+    container: {
+        borderWidth: 5,
+
+    },
+    name: {
         fontSize: 25,
         alignSelf: 'center',
     },
@@ -18,9 +22,10 @@ const styles = StyleSheet.create({
         height: 'auto',
         overflow: 'hidden',
         backgroundColor: '#fff',
+        marginBottom: 30,
     },
 
-    text2: {
+    text: {
         width: '100%',
         padding: 5,
         alignContent: 'center',
@@ -50,7 +55,7 @@ const styles = StyleSheet.create({
     
     modalView: {
         padding: 5,
-        width: '30%',
+        // width: '30%',
         elevation: 5,
         borderRadius: 8,
         backgroundColor: 'white',
@@ -71,9 +76,8 @@ const styles = StyleSheet.create({
     
     infoContCard: {
         fontSize: 18,
-        marginBottom: 8,
+        marginBottom: 10,
         flexDirection: 'row',
-        
     },
     iconCard: {
         width: 30,
@@ -83,15 +87,43 @@ const styles = StyleSheet.create({
     },
     infoContText: {
         left: 5,
-        width: '88%',
+        width: '80%',
         alignSelf: 'center',
         
     },
+    textInf: {
+        fontSize: 18,
+    },
+    textCard: {
+        color:'#888888',
+        fontSize: 15,
+    },
     textEnd: {
+        fontSize: 18,
         width: '75%',
         color:'#888888',
         alignSelf: 'center',
-    },    
+
+    },  
+    
+    //Estilos de los botones 
+    buttonContainer: {
+        flexDirection: 'row',         
+        justifyContent: 'space-around', 
+        // width: '80%',           
+        // marginTop: 90,               
+    },
+    buttonAgendar: {
+        backgroundColor: '#308CFF',
+        padding: 10,
+        borderRadius: 100,
+        width: 'auto',
+    },
+    buttonText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
 });
 
 export default styles;

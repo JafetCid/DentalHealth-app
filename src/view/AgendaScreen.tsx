@@ -70,16 +70,20 @@ export default function AgendaScreen({ navigation }) {
     setSelectedTime(time);
   };
 
+  // Validación al presionar el botón "Agendar"
+  const handleAgendarPress = () => {
+    if (!selectedDay || !selectedTime) {
+      Alert.alert('Error', 'Por favor, seleccione una fecha y un horario.');
+      return;
+    }
+    // Aquí puedes agregar la lógica para agendar la cita
+    Alert.alert('Cita agendada', `Cita programada para el ${selectedDay} a las ${selectedTime}.`);
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <Header title={''} showLogo={false} onPress={() => navigation.goBack()}/>
-        {/* <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.navigate('Agenda')}
-        >
-          <Ionicons name="arrow-back-outline" size={35} color="black" />
-        </TouchableOpacity> */}
         <View style={styles.contAgenda}>
           <Text style={styles.text}>Citas</Text>
           <Calendar
@@ -89,7 +93,7 @@ export default function AgendaScreen({ navigation }) {
                 acc[date] = { selected: true, marked: true, selectedColor: 'red' };
                 return acc;
               }, {}),
-              [selectedDay || '']: { selected: true, marked: true, selectedColor: 'blue' },
+              [selectedDay || '']: { selected: true, marked: true, selectedColor: '#308CFF' },
             }}
             minDate={today}
             theme={{
@@ -109,10 +113,7 @@ export default function AgendaScreen({ navigation }) {
               {['9:00 am', '10:00 am', '11:00 am'].map((time) => (
                 <TouchableOpacity
                   key={time}
-                  style={[
-                    styles.timeSlot,
-                    selectedTime === time && styles.selectedTimeSlot,
-                  ]}
+                  style={[styles.timeSlot, selectedTime === time && styles.selectedTimeSlot]}
                   onPress={() => handleTimeSelect(time)}
                 >
                   <Text>{time}</Text>
@@ -124,21 +125,21 @@ export default function AgendaScreen({ navigation }) {
               {['1:00 pm', '2:00 pm', '5:00 pm'].map((time) => (
                 <TouchableOpacity
                   key={time}
-                  style={[
-                    styles.timeSlot,
-                    selectedTime === time && styles.selectedTimeSlot,
-                  ]}
+                  style={[styles.timeSlot, selectedTime === time && styles.selectedTimeSlot]}
                   onPress={() => handleTimeSelect(time)}
                 >
                   <Text>{time}</Text>
                 </TouchableOpacity>
               ))}
-              <ButtonIn 
-                Title={'Agendar'} 
-                buttonStyle={{backgroundcolor: '#308CFF'}} 
-                textStyle={{ color: 'white' }}
-                onPress={''}/>
             </ScrollView>
+            <View style={styles.buttonContainer}>
+              <ButtonIn 
+                Title="Agendar"
+                buttonStyle={styles.buttonAgendar} 
+                textStyle={styles.buttonText} 
+                onPress={handleAgendarPress} // Validación de fecha y hora
+              />
+            </View>
           </View>
         </View>
       </ScrollView>
@@ -150,7 +151,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    
   },
   scrollViewContent: {
     flexGrow: 1,
@@ -158,12 +158,6 @@ const styles = StyleSheet.create({
   },
   contAgenda: {
     alignItems: 'center',
-  },
-  backButton: {
-    position: 'absolute',
-    top: 30,
-    left: 10,
-    zIndex: 1,
   },
   text: {
     fontSize: 24,
@@ -201,16 +195,19 @@ const styles = StyleSheet.create({
     marginRight: 15,
   },
   selectedTimeSlot: {
-    backgroundColor: '#007bff',
-    borderColor: '#007bff',
+    backgroundColor: '#308CFF',
+    borderColor: '#308CFF',
   },
-  button: {
-    backgroundColor: '#007bff',
+  buttonContainer: {
+    marginTop: 20,
+    width: '100%', // Asegura que el contenedor ocupe todo el ancho
+    alignItems: 'center', // Centra el botón horizontalmente
+  },
+  buttonAgendar: {
+    backgroundColor: '#308CFF',
     paddingVertical: 10,
-    paddingHorizontal: 10,
+    paddingHorizontal: 20, // Aumenta el padding horizontal para que se vea mejor
     borderRadius: 5,
-    marginBottom: 20,
-    
   },
   buttonText: {
     color: '#fff',

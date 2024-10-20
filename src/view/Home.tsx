@@ -1,19 +1,22 @@
-import * as React from 'react';
-import { View, StyleSheet, Image, Text, useColorScheme, Dimensions, ScrollView } from 'react-native';
-import Header from '../../view/components/Header';
+import React from 'react';
+import { View, StyleSheet, Image, Text } from 'react-native';
+import Header from '../view/components/Header';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import Notifications from '../Notifications';
-import Pacientes from '../Pacientes';
-import Agenda1 from '../Agenda1';
-import Promociones from './Promociones';
+import { useColorScheme } from 'react-native';
+//import Calendar from './Calendar';
+//import Files from './Files';
+import Notifications from './Notifications';
+import Chat from "./Chat";
+import Pacientes from "./Pacientes";
+import Agenda1 from './Agenda1';
+import Promociones from './Dentista/Promociones';
 
-const { width } = Dimensions.get('window');
 const Colors = {
   light: {
-    tint: '#FFFFFF',//ccc
-    tabIconDefault: '#F1F1F1',//#2f95dc,
-    background: '#2f95dc',
+    tint: 'white',
+    tabIconDefault: '#ccc',
+    background: '#308CFF',
   },
   dark: {
     tint: '#fff',
@@ -21,64 +24,23 @@ const Colors = {
     background: '#000',
   },
 };
- 
-const Tab = createBottomTabNavigator();
 
-const color={}
+const Tab = createBottomTabNavigator();
 const TabBarIcon = ({ name, color }) => {
-  return <Ionicons name={name} size={35} color={color} />;
+  return <Ionicons name={name} size={30} color={color} />;
 };
 
-// const { width: screenWidth } = Dimensions.get('window');
-// const dummyData = [
-//   { id: 1, title: 'Title 1' },
-//   { id: 2, title: 'Title 2' },
-//   { id: 3, title: 'Title 3' },
-//   { id: 4, title: 'Title 4' },
-//   { id: 5, title: 'Title 5' }
-// ];
-
-// const MyCarousel = ({ data }) => {
-//   const renderItem = ({ item }) => (
-//     <View style={styles.card}>
-//       <Text style={styles.title}>{item.title}</Text>
-//     </View>
-//   );
-
-//   return (
-//     <Carousel
-//       data={data}
-//       renderItem={renderItem}
-//       sliderWidth={screenWidth}
-//       itemWidth={screenWidth}
-//       layout={'default'}
-//     />
-//   );
-// };
-
 function Home() {
-
-  // const data = [
-  //   { id: 1, image: require('../../../assets/images/imageHome.png')},
-  //   { id: 2, image: require('../../../assets/images/imageHome.png')},
-  //   { id: 3, image: require('../../../assets/images/imageHome.png')},
-  // ];
-
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <Header title={''} showArrow={false} showP={true} onPress={''}/>
-        <View style={styles.content}>
-          <Text style={styles.textT}>Bienvenido</Text>
-          <Text style={styles.textT}>Doctor [Nombre del doctor]</Text>
-          {/* Carrusel */}
-          {/* <View style={styles.cont}>
-            <Text style={styles.text}>React Native carousel with react-native-snap-carousel</Text>
-            <MyCarousel data={dummyData} />
-          </View> */}
-          <Text style={styles.textE}>Tus promociones publicadas</Text>
-        </View>
-      </ScrollView>
+      <Header title={''} showArrow={false} showP={true} onPress={''}/>
+      <View style={styles.content}>
+        <Text style={styles.text}>Bienvenido</Text>
+        <Text style={styles.text}>Doctor [Nombre del doctor]</Text>
+        {/* Aquí se incluye la imagen */}
+        <Image source={require('../../assets/images/imageHome.png')}/>
+        <Text style={styles.textE}>Tus promociones publicadas</Text>
+      </View>
     </View>
   );
 }
@@ -97,6 +59,8 @@ export default function TabNavigator() {
           borderTopWidth: 0,
           height: '8%',
           elevation: 0,
+          // borderColor: 'black',
+          // borderWidth: 3,
         },
         
         tabBarLabelStyle: {
@@ -126,8 +90,8 @@ export default function TabNavigator() {
         component={Pacientes}
         options={{
           title: 'Pacientes',
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="people-circle" color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'people' : 'people-outline'} color={color} />
           ),
         }}
       />
@@ -156,9 +120,9 @@ export default function TabNavigator() {
         name="Promociones"
         component={Promociones}
         options={{
-          title: 'Promociones',
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="pricetags" color={color} />
+          title: 'Promocion',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'pricetag' : 'pricetag-outline'} color={color} />
           ),
           
         }}
@@ -175,7 +139,7 @@ const styles = StyleSheet.create({
   content: {
     alignItems: 'center',
   },
-  textT: {
+  text: {
     fontSize: 24,
     marginBottom: 20,
   },

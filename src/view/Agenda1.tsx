@@ -32,20 +32,20 @@ const ScheduleView = ({ navigation }) => {
   const [appointments, setAppointments] = useState([]);
   const [menuVisible, setMenuVisible] = useState<string | null>(null);
 
-  // Llamar a la API para obtener las citas
-  useEffect(() => {
-    const fetchAppointments = async () => {
-      try {
-        const response = await fetch('http://192.168.0.7:3000/appointments'); // URL de la API
-        const data = await response.json();
-        setAppointments(data);
-      } catch (error) {
-        console.error("Error fetching appointments:", error);
-      }
-    };
+  
+  // useEffect(() => {
+  //   const fetchAppointments = async () => {
+  //     try {
+  //       const response = await fetch(''); 
+  //       const data = await response.json();
+  //       setAppointments(data);
+  //     } catch (error) {
+  //       console.error("Error fetching appointments:", error);
+  //     }
+  //   };
 
-    fetchAppointments();
-  }, []);
+  //   fetchAppointments();
+  // }, []);
 
   const openMenu = (appointmentId: string) => {
     setMenuVisible(appointmentId);
@@ -219,10 +219,7 @@ const styles = StyleSheet.create({
     right: 30,
     backgroundColor: '#2f95dc',
     borderRadius: 25,
-    shadowColor: '#ccc', // Color de la sombra
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
+    // borderWidth: 2,
     elevation: 4,
     alignItems: 'center',
     justifyContent: 'center',

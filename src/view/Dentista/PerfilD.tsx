@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, TouchableOpacity, Pressable } from 'react-native'
 import { Ionicons, MaterialIcons, FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons'
 import Header from '../components/Header'
-import styles from '../../../assets/styles/PerfilA'
+import styles from '../../../assets/styles/PerfilD'
 import { useState } from 'react'
 
 export default function PerfilD({ navigation }) {
@@ -16,7 +16,8 @@ export default function PerfilD({ navigation }) {
 
   return (
     <View>
-        <Header title={''} onPress={() => navigation.goBack('Inicio')} showP={true}/>
+        <Header title={''} 
+            onPress={() => navigation.goBack('Inicio')} showP={true}/>
         <Text style={styles.text}>Nombre del Doctor</Text>
         <View style={styles.content}>
             <View style={styles.card}>
@@ -44,7 +45,7 @@ export default function PerfilD({ navigation }) {
                             <MaterialIcons name="contacts" size={24} color="black" />
                         </View>
                         <View style={styles.infoContText}>
-                            <Text>C.6518106</Text>
+                            <Text style={styles.textInf}>C.6518106</Text>
                         </View>
                     </View>
                     <View style={styles.infoContCard}>
@@ -52,7 +53,7 @@ export default function PerfilD({ navigation }) {
                             <FontAwesome name="mobile-phone" size={30} color="black" />
                         </View>
                         <View style={styles.infoContText}>
-                            <Text>+52 2241158596</Text>
+                            <Text style={styles.textInf}>+52 2241158596</Text>
                         </View>
                     </View>
                     <View style={styles.infoContCard}>
@@ -60,7 +61,7 @@ export default function PerfilD({ navigation }) {
                             <MaterialCommunityIcons name="gmail" size={24} color="black" />
                         </View>
                         <View style={styles.infoContText}>
-                            <Text>josealberto@gmail.com</Text>
+                            <Text style={styles.textInf}>josealberto@gmail.com</Text>
                         </View>
                     </View>
                     <View style={styles.infoContCard}>
@@ -68,7 +69,7 @@ export default function PerfilD({ navigation }) {
                             <Ionicons name="location-sharp" size={24} color="black" />
                         </View>
                         <View style={styles.infoContText}>
-                            <Text>3 Oriente N° 14 entre la calle 8 norte y calle 10 norte</Text>
+                            <Text style={styles.textInf}>3 Oriente N° 14 entre la calle 8 norte y calle 10 norte</Text>
                         </View>
                     </View>
                     <Text style={styles.textEnd}>Tochtepec, Puebla</Text>

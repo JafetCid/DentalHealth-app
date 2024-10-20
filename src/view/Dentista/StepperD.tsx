@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { StyleSheet } from 'react-native';
+import ButtonIn from "../components/ButtonIn";
 import RNPickerSelect from 'react-native-picker-select';
-import { View, Text, TextInput, ScrollView} from 'react-native';
+import { View, Text, TextInput, ScrollView } from 'react-native';
 import styles from '../../../assets/styles/Stepper';
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import Header from '../components/Header';
 import InputDate from '../components/InputDate';
 import InputImage from '../components/InputImage';
+import * as DocumentPicker from 'expo-document-picker';
 
 const StepperD = ({ navigation }) => {
   // const [step1Data, setStep1Data] = useState({ name: '', address: '' });
@@ -25,11 +28,29 @@ const StepperD = ({ navigation }) => {
     { label: 'Femenino', value: 'femenino' },
   ];
 
+  //manejo del nombre del archivo
+  const [fileName, setFileName] = useState(null);
+  const pickDocument = async () => {
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: 'application/pdf', // Permite seleccionar solo PDF
+      });
+      if (result.canceled) {
+        setFileName(null); // limpia el nombre al cancelar
+      } else if (result.assets && result.assets.length > 0) {
+        const { name } = result.assets[0];
+        setFileName(name);
+      }
+    } catch (err) {
+      console.error('Error al seleccionar el archivo:', err);
+    }
+  };
+
   return (
 
     <ScrollView>
       <View style={styles.container}>
-        <Header title={'Crear Cuenta'} showLogo={false} onPress={''}/>
+        <Header title={'Crear Cuenta'} showLogo={false} onPress={() => navigation.goBack()}/>
         <View style={styles.cont}>
           <ProgressSteps style={styles.stepContent} {...buttonTextStyle}>
             {/* Progreso 1 */}
@@ -147,11 +168,13 @@ const StepperD = ({ navigation }) => {
                   // onChangeText={text => setStep2Data({ ...step2Data, username: text })}
                 />
                 <Text style={styles.label}>Archivo de autorización</Text>
-                <TextInput
-                  style={styles.input}
-                  // value={step2Data.username}
-                  // onChangeText={text => setStep2Data({ ...step2Data, username: text })}
-                />
+                <View style= {styles.contIA}>
+                  <ButtonIn buttonStyle={{backgroundColor: '#F7F7F7', width:'100%'}}
+                  Title={'Seleccione un archivo'} textStyle={{color: 'black', fontSize: 16,}}
+                  onPress={pickDocument}/>
+                  <MaterialCommunityIcons name="paperclip" size={24} color="black" style={styles.iconClip} />
+                </View>
+                <Text style={styles.nameFile}>{fileName}</Text>
               </View>
             </ProgressStep>
           </ProgressSteps>
@@ -175,6 +198,7 @@ const pickerSelectStyles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     backgroundColor: '#F7F7F7',
+    marginBottom: 15,
   },
   iconContainer: {
     top: 15,

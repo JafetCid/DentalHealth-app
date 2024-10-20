@@ -18,13 +18,13 @@ export default function LoginOptions({ navigation }) {
           <ButtonIn
             Title={'Crear cuenta '}
             textStyle={{ color: 'white' }}
-            buttonStyle={{ backgroundColor: '#308CFF' }}
+            buttonStyle={{ backgroundColor: '#308CFF'}}
             onPress={() => setIsVisible(true)} // Abre el modal
           />
           <ButtonIn
             Title={'Iniciar sesión '}
             textStyle={{ color: '#308CFF' }}
-            buttonStyle={{ borderColor: '#308CFF', borderWidth: 1 }}
+            buttonStyle={{ borderColor: '#308CFF', borderWidth: 1, marginTop: 15 }}
             onPress={() => navigation.navigate('Login')} // Redirige a la pantalla de login
           />
           <GoogleIconButton />

@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, View, Text, Dimensions } from 'react-native';
-import HeaderNoIcon from './components/HeaderNoIcon';
 import Header from './components/Header';
 
 const { width, height } = Dimensions.get('window');
@@ -8,7 +7,7 @@ const { width, height } = Dimensions.get('window');
 export default function HomeScreen() {
   return (
     <View style={styles.container}>
-        <Header title={''}/>
+        <Header title={''} onPress={''}/>
       <View style={styles.content} >
         <Text style={styles.text}> Expedientes </Text>
       </View>

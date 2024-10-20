@@ -8,17 +8,18 @@ import CardPromociones from "../components/CardPromociones";
 import { ScrollView } from "react-native";
 import IconMasPromo from "../components/IconMasPromo";
 
-export default function Promociones() {
+export default function Promociones({ navigation }) {
     
     const [isVisible, setIsVisible] = useState(false);
-    const navigation = useNavigation();
 
     return(
         <ScrollView>
                 <Header title={'Promociones'} showLogo={false} onPress={() => navigation.goBack()}/>
                 <CardPromociones/>
                 <CardPromociones/>
-                <IconMasPromo navigation={navigation}/>
+                <IconMasPromo 
+                    onPress={() => navigation.navigate('CrearP')} 
+                    iconStyle={{ alignSelf: 'center',}}/>
         </ScrollView>
     )
 }

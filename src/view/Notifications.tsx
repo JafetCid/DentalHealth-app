@@ -12,20 +12,20 @@ export default function NotificationScreen() {
   const [actionType, setActionType] = useState('');
   const navigation = useNavigation();
 
-  useEffect(() => {
-    const fetchNotifications = async () => {
-      try {
-        const response = await axios.get('http://192.168.0.7:3000/notifications/');
-        setNotifications(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error al obtener las notificaciones:', error);
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchNotifications = async () => {
+  //     try {
+  //       const response = await axios.get('');
+  //       setNotifications(response.data);
+  //       setLoading(false);
+  //     } catch (error) {
+  //       console.error('Error al obtener las notificaciones:', error);
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchNotifications();
-  }, []);
+  //   fetchNotifications();
+  // }, []);
 
   const handleAction = (type, notification) => {
     setActionType(type);
