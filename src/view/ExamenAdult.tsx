@@ -99,7 +99,7 @@ const DentalExamCreateScreen = ({ navigation }) => {
     return (
         <Provider>
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                <Header showLogo={false} title={'Crear examen dental'} onPress={() => navigation.goBack()}/>
+                <Header showLogo={false} title={'Crear examen dental'} onPress={() => navigation.goBack()} point={''}/>
                     {/**Papi tengo dudas aqui tambien haber si le pedes checar por
                      * que no me muesta nosla vista actualizada :,C
                      */}

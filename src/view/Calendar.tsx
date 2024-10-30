@@ -4,6 +4,7 @@ import HeaderNoIcon from './components/HeaderNoIcon';
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import Header from './components/Header';
+import ButtonIn from './components/ButtonIn';
 
 
 const { width } = Dimensions.get('window');
@@ -13,13 +14,19 @@ export default function DentalHealthScreen({navigation}) {
 
   return (
     <View style={styles.container}>
-      <Header title={''} onPress={''}/>
+      <Header title={''} point={''} onPress={''}/>
       <View style={styles.content}>
         <Text style={styles.greeting}>¡Hola [Nombre del Paciente]!</Text>
         <Text style={styles.message}>Actualmente, no tenemos una cita registrada a tu nombre.</Text>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('AgendaScreen')}>
+        {/* <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('AgendaScreen')}>
           <Text style={styles.buttonText}>Programar cita</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+        <ButtonIn
+            Title={'Programar cita '}
+            textStyle={{ color: 'white' }}
+            buttonStyle={{ backgroundColor: '#308CFF'}}
+            onPress={() => navigation.navigate('AgendaScreen')}
+          />
 
       </View>
     </View>
@@ -35,7 +42,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 20,
+    // paddingHorizontal: 20,
   },
   greeting: {
     fontSize: 20,

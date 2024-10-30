@@ -11,7 +11,7 @@ export default function LoginOptions({ navigation }) {
 
   return (
     <View style={styles.maincontainer}>
-      <Header title={''} showArrow={false} onPress={''}/>
+      <Header title={''} showArrow={false} onPress={''} point={''}/>
       <View style={styles.container}>
         <Text style={styles.title}>Bienvenido</Text>
         <View style={styles.contB}>

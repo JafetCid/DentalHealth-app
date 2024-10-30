@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import styles from '../../../assets/styles/Header'
 import { Ionicons } from '@expo/vector-icons';
 
-export default function Header ({ title, showLogo = true, showArrow = true, showP = false, onPress}) {
+export default function Header ({ title, showLogo = true, showArrow = true, showP = false, onPress, point}) {
 
   const [isVisible, setIsVisible] = useState(false);
   const navigation = useNavigation();
@@ -47,13 +47,13 @@ export default function Header ({ title, showLogo = true, showArrow = true, show
               <Pressable
                 onPress={() => { 
                   setIsVisible(false);
-                  navigation.navigate('PerfilP')}}>
+                  navigation.navigate(point)}}>
                 <Text style={style.modalText}>Perfil</Text>
               </Pressable>
               <Pressable
                 onPress={() => { 
                   setIsVisible(false); 
-                  navigation.navigate('CrearExpediente')}}>
+                  navigation.navigate('LoginO')}}>
                 <Text style={style.modalText}>Cerrar sesión</Text>
               </Pressable>
             </View>

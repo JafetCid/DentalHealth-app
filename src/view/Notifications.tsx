@@ -12,21 +12,6 @@ export default function NotificationScreen() {
   const [actionType, setActionType] = useState('');
   const navigation = useNavigation();
 
-  // useEffect(() => {
-  //   const fetchNotifications = async () => {
-  //     try {
-  //       const response = await axios.get('');
-  //       setNotifications(response.data);
-  //       setLoading(false);
-  //     } catch (error) {
-  //       console.error('Error al obtener las notificaciones:', error);
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchNotifications();
-  // }, []);
-
   const handleAction = (type, notification) => {
     setActionType(type);
     setSelectedNotification(notification);
@@ -80,7 +65,7 @@ export default function NotificationScreen() {
 
   return (
     <View style={styles.container}>
-      <Header title={'Notificaciones'} showLogo={false} onPress={''} showArrow={false}/>
+      <Header title={'Notificaciones'} showLogo={false} onPress={''} showArrow={false} point={''}/>
       <View style={styles.content}>
         
         {notifications.length > 0 ? (

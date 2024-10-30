@@ -83,7 +83,7 @@ export default function AgendaScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
-        <Header title={''} showLogo={false} onPress={() => navigation.goBack()}/>
+        <Header title={''} showLogo={false} onPress={() => navigation.goBack()} point={''}/>
         <View style={styles.contAgenda}>
           <Text style={styles.text}>Citas</Text>
           <Calendar

@@ -19,6 +19,11 @@ import Agenda1 from "../Agenda1";
 import Promociones from "../Dentista/Promociones";
 import Carousel from "react-native-reanimated-carousel";
 import NotificationScreen from "../Notifications";
+import Chat from "../Chat";
+import PerfilP from "./PerfilP";
+import DentalHealthScreen from "../Calendar";
+import InfoCard from "../components/InfoCard";
+import { CardPerfilP } from "../components/CardPerfilP";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -42,12 +47,12 @@ const TabBarIcon = ({ name, color }) => {
   return <Ionicons name={name} size={35} color={color} />;
 };
 
-function Home() {
+function Home1() {
   const navigation = useNavigation(); // Use navigation hook
   const data = [
     { id: 1, image: require("../../../assets/images/imageHome.png") },
-    { id: 2, image: require("../../../assets/images/promo-1.jpg") },
-    
+    { id: 2, image: require("../../../assets/images/sukuna.jpeg") },
+    { id: 3, image: require("../../../assets/images/Gojo.jpeg") },
     { id: 4, image: require("../../../assets/images/logo.png") },
   ];
 
@@ -58,10 +63,11 @@ function Home() {
   return (
     <View style={styles.container}>
       <ScrollView>
-        <Header title={""} showArrow={false} showP={true} onPress={""} point={'PerfilD'} />
+        <Header title={""} showArrow={false} showP={true} onPress={""} point={'PerfilP'}/>
         <View style={styles.content}>
-          <Text style={styles.textT}>Bienvenido</Text>
-          <Text style={styles.textT}>Doctor [Nombre del Doctor]</Text>
+          {/* <Text style={styles.textT}>Bienvenido</Text>
+          <Text style={styles.textT}>Doctor [Nombre del Paciente]</Text> */}
+          
 
           {/* Carrusel */}
           <Carousel
@@ -81,19 +87,24 @@ function Home() {
             )}
           />
 
-          <Text style={styles.textE}>Tus promociones publicadas</Text>
+          <View style={styles.contTextL}>
+            <Text style={styles.textL}>"Tu sonrisa, nuestra prioridad. Agenda tu cita fácilmente con nuestra app dental."</Text>
+            <Text style={styles.textL2}>Nuestra aplicación está diseñada para ser intuitiva y fácil de usar. 
+              Desde cualquier lugar y en cualquier momento, puedes programar, modificar o cancelar tus citas.</Text>
+          </View>
+          
         </View>
       </ScrollView>
     </View>
   );
 }
 
-export default function TabNavigator1() {
+export default function TabNavigator() {
   const colorScheme = useColorScheme();
 
   return (
     <Tab.Navigator
-    initialRouteName="Home"
+    initialRouteName="Home" 
       screenOptions={({ route }) => ({
         tabBarActiveTintColor: Colors[colorScheme ?? "dark"].tint,
         tabBarInactiveTintColor: Colors[colorScheme ?? "dark"].tabIconDefault,
@@ -116,31 +127,33 @@ export default function TabNavigator1() {
       })}
     >
       <Tab.Screen
-        name="Calendar"
-        component={Agenda1}
+        name="Citas"
+        component={DentalHealthScreen}
         options={{
-          title: "Agenda",
+          title: "Cita",
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="calendar-number" color={color} />
           ),
         }}
       />
       <Tab.Screen
-        name="Patients"
-        component={Pacientes}
+        name="Expedientes"
+        component={CardPerfilP}
         options={{
-          title: "Pacientes",
+          title: "Expedientes",
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="people-circle" color={color} />
+            <TabBarIcon name="file-tray-full" color={color} />
           ),
         }}
       />
       <Tab.Screen
-        name="Home1"
-        component={Home}
+        name="Home"
+        component={Home1}
         options={{
           title: "Home",
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="home" color={color} />
+        ),
         }}
       />
       <Tab.Screen
@@ -155,12 +168,12 @@ export default function TabNavigator1() {
         }}
       />
       <Tab.Screen
-        name="Promociones"
-        component={Promociones}
+        name="Chat"
+        component={Chat}
         options={{
-          title: "Promociones",
+          title: "Chat",
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="pricetags" color={color} />
+            <TabBarIcon name="chatbubble-sharp" color={color} />
           ),
         }}
       />
@@ -179,6 +192,19 @@ const styles = StyleSheet.create({
   textT: {
     fontSize: 24,
     marginBottom: 20,
+  },
+  contTextL: {
+
+    width: '90%',
+    marginTop: 30,
+    alignItems: 'center',
+  },
+  textL:{
+    fontSize:18,
+    marginBottom: 20,
+  },
+  textL2:{
+    fontSize:15,
   },
   textE: {
     fontSize: 20,

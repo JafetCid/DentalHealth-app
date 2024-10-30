@@ -32,21 +32,6 @@ const ScheduleView = ({ navigation }) => {
   const [appointments, setAppointments] = useState([]);
   const [menuVisible, setMenuVisible] = useState<string | null>(null);
 
-  
-  // useEffect(() => {
-  //   const fetchAppointments = async () => {
-  //     try {
-  //       const response = await fetch(''); 
-  //       const data = await response.json();
-  //       setAppointments(data);
-  //     } catch (error) {
-  //       console.error("Error fetching appointments:", error);
-  //     }
-  //   };
-
-  //   fetchAppointments();
-  // }, []);
-
   const openMenu = (appointmentId: string) => {
     setMenuVisible(appointmentId);
   };
@@ -68,7 +53,7 @@ const ScheduleView = ({ navigation }) => {
   return (
     <Provider>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <Header showLogo={false} onPress={''} title={''} showArrow={false}/>
+        <Header showLogo={false} onPress={''} title={''} showArrow={false} point={''}/>
         <View style={styles.header}>
           {weekDays.map((day, index) => (
             <View key={index} style={styles.dayContainer}>

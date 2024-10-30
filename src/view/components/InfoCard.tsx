@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { MaterialIcons, FontAwesome, MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
-import styles from '../../../assets/styles/PerfilD'; // Asegúrate de que la ruta sea correcta
+import styles from '../../../assets/styles/PerfilD'; 
 
 const InfoCard: React.FC = () => {
   return (

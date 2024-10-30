@@ -45,6 +45,9 @@ const styles = StyleSheet.create({
     linkR: {
         textDecorationLine: 'underline',
     },
+    contAviso: {
+        flexDirection: 'row',
+    },
     aviso: {
         marginTop: 10,
     },

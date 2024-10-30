@@ -4,11 +4,27 @@ import InfoCard from './components/InfoCard';
 import Header from './components/Header';
 import ButtonIn from './components/ButtonIn';
 import PerfilP from './Pacientes/PerfilP';
+import { CardPerfilP } from './components/CardPerfilP';
 
 export default function PatientsDetalles({ navigation }) {
     return (
         <View style={{ flex: 1 }}>
-            <PerfilP showButton={true} navigation={navigation} showElipse={false}/>
+            {/* <PerfilP showButton={true} navigation={navigation}/> */}
+            <CardPerfilP navigation={navigation}/>
+            <View style={styles.buttonContainer}> 
+                <ButtonIn
+                Title="Ver expediente"
+                buttonStyle={styles.buttonAgendar}
+                textStyle={styles.buttonText}
+                onPress={() => navigation.navigate('ExpedienteLista')} //ExpedienteLista
+                />
+                <ButtonIn
+                Title="Ver Examen dental"
+                buttonStyle={styles.buttonAgendar}
+                textStyle={styles.buttonText}
+                onPress={() => navigation.navigate('ExamDent')} //ExamenDent
+                />
+            </View> 
         </View>
     );
 }
@@ -16,17 +32,15 @@ export default function PatientsDetalles({ navigation }) {
 const styles = StyleSheet.create({
     buttonContainer: {
         flexDirection: 'row',         
-        justifyContent: 'space-between', 
-        width: '80%',                 
-        marginTop: 90,               
+        justifyContent: 'space-around', 
+        // width: '80%',           
+        // marginTop: 90,               
     },
     buttonAgendar: {
         backgroundColor: '#308CFF',
-        paddingVertical: 10,
-        paddingHorizontal: 20,       
+        padding: 10,
         borderRadius: 100,
-        flex: 1,                      
-        marginHorizontal: 5,          
+        width: 'auto',
     },
     buttonText: {
         color: '#fff',

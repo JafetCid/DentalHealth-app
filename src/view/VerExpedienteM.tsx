@@ -23,7 +23,7 @@ export const VerExpedienteM = ({ navigation }) => {
 
     return (
     <ScrollView>
-        <Header title={''} showLogo={false} onPress={() => navigation.goBack()}/>
+        <Header title={''} showLogo={false} onPress={() => navigation.goBack()} point={''}/>
         <View style={styles.contLT}>
             <Image source={require('../../assets/images/Genshi.jpeg')} style={styles.icon}/>
             <View style={styles.contName}>
@@ -39,7 +39,7 @@ export const VerExpedienteM = ({ navigation }) => {
                 {/* Progreso 1 */}
                 <ProgressStep nextBtnText="Siguiente">
                     <View style={styles.contCardPerfilP}>
-                        <CardPerfilP navigation={navigation} showElipse={false}/>
+                        <CardPerfilP navigation={navigation} showHeader={false}/>
                     </View>
                 </ProgressStep>
                 {/* Progreso 2 */}

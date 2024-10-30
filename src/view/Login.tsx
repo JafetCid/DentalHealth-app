@@ -1,15 +1,26 @@
 import { TextInput, Text, View, ScrollView, TouchableOpacity} from 'react-native';
 import styles from '../../assets/styles/Login';
 import Header from "./components/Header";
+import React, { useState } from 'react';
 import ButtonIn from './components/ButtonIn';
 import GoogleIconButton from './components/GoogleIconB';
+import { Checkbox } from 'react-native-paper';
 
 export default function Login ({ navigation }) {
-    // const [isSelected, setSelection] = useState(false);
+    const [isSelected, setSelected] = useState({
+        check: false,
+    });
+
+    const handleCheckboxChange = (condition) => {
+        setSelected((prevState) => ({
+        ...prevState,
+        [condition]: !prevState[condition],
+        }));
+    };
     return(
         <ScrollView>
             <View>
-                <Header title={''} onPress={''} showArrow={false}/>
+                <Header title={''} onPress={''} showArrow={false} point={''}/>
                 <View style={styles.container}>
                     <Text style={styles.title}> Bienvenido de nuevo </Text>
                 </View>
@@ -35,7 +46,12 @@ export default function Login ({ navigation }) {
                             <Text style={styles.linkR}>Registrarse</Text>
                         </TouchableOpacity>
                     </View>
-                    <View>
+                    <View style={styles.contAviso}>
+                        <Checkbox
+                            status={isSelected.check ? 'checked' : 'unchecked'}
+                            onPress={() => handleCheckboxChange('check')}
+                            color='#308CFF'
+                        />
                         <TouchableOpacity style={styles.aviso}>
                             <Text style={styles.linkR}>Aviso de privacidad</Text>
                         </TouchableOpacity>

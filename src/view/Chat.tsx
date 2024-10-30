@@ -30,7 +30,7 @@ export default function Chat({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Header title={''} showLogo={false} onPress={() => navigation.goBack()}/>
+      <Header title={''} showLogo={false} onPress={() => navigation.goBack()} point={''}/>
       <View style={styles.contLT}>
         <FontAwesome name="user-circle-o" size={60} color="white" style={styles.icon}/>
         {/* <Image source={require('../../assets/images/Genshi.jpeg')} style={styles.icon}/> */}

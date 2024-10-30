@@ -69,7 +69,7 @@ const Patients = ({navigation}) => {
     <Provider>
       <ScrollView>
         <View style={styles.container}>
-          <Header title={''} onPress={''} showLogo={false} showArrow={false}/>
+          <Header title={''} onPress={''} showLogo={false} showArrow={false} point={''}/>
           <Text style={styles.title}>Pacientes</Text>
           <TextInput
             style={styles.searchInput}

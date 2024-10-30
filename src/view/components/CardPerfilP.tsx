@@ -3,8 +3,9 @@ import { View, Text, TouchableOpacity, Pressable } from 'react-native'
 import { Ionicons, MaterialIcons, FontAwesome, FontAwesome5 } from '@expo/vector-icons'
 import styles from '../../../assets/styles/PerfilP'
 import { useState } from 'react'
+import Header from './Header'
 
-export const CardPerfilP = ({ navigation, showElipse = true }) => {
+export const CardPerfilP = ({ navigation, showElipse = false, showHeader = true }) => {
 
     const [isVisible, setIsVisible] = useState(false);
 
@@ -13,7 +14,11 @@ export const CardPerfilP = ({ navigation, showElipse = true }) => {
     };
 
   return (
-    <View style={styles.content}>
+    <View>
+        { showHeader &&(
+            <Header title={''} onPress={() => navigation.goBack()} point={''}/>
+        )}
+        <View style={styles.content}>
         <View style={styles.card}>
             <View style={styles.text}>
                 <Text style={styles.title}>Información</Text>
@@ -81,6 +86,7 @@ export const CardPerfilP = ({ navigation, showElipse = true }) => {
             </View>
             <Text style={styles.textEnd}>Tochtepec, Puebla</Text>
             </View>
+        </View>
         </View>
     </View>
   )

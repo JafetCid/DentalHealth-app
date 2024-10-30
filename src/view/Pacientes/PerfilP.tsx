@@ -7,7 +7,7 @@ import styles from '../../../assets/styles/PerfilP'
 import { useState } from 'react'
 import { CardPerfilP } from '../components/CardPerfilP';
 
-export default function PerfilP({ navigation, showButton = false, showElipse = true }) {
+export default function PerfilP({ navigation }) {
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -17,26 +17,26 @@ export default function PerfilP({ navigation, showButton = false, showElipse = t
 
   return (
     <View>
-      <Header title={''} onPress={() => navigation.goBack('Inicio')} showP={true}/>
+      <Header title={''} onPress={() => navigation.goBack('Inicio')} showP={true} point={''}/>
       <Text style={styles.name}>Noelia</Text>
-      <CardPerfilP navigation={navigation}/>
+      <CardPerfilP navigation={navigation} showElipse={true} showHeader={false}/>
       
-      {showButton && (
+      {/* {showButton && (
         <View style={styles.buttonContainer}> 
         <ButtonIn
           Title="Ver expediente"
           buttonStyle={styles.buttonAgendar}
           textStyle={styles.buttonText}
-          onPress={() => navigation.navigate('ExamDent')} 
+          onPress={() => navigation.navigate('ExpedienteLista')} //ExpedienteLista
         />
         <ButtonIn
           Title="Ver Examen dental"
           buttonStyle={styles.buttonAgendar}
           textStyle={styles.buttonText}
-          onPress={() => navigation.navigate('ExpedienteLista')} 
+          onPress={() => navigation.navigate('ExamDent')} //ExamenDent
           />
         </View>   
-      )}
+      )} */}
     </View>
   )
 }

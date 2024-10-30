@@ -14,11 +14,13 @@ const ExamenesDentalesScreen = ({navigation}) => {
   ];
 
   const handleVerDetalles = (id: string) => {
-    console.log('Ver detalles de examen dental', id);
+    //console.log('Ver detalles de examen dental', id);
+    navigation.navigate('VerExpedienteM', { id }); 
   };
 
   const handleEditar = (id: string) => {
-    console.log('Editar examen dental', id);
+    //console.log('Editar examen dental', id);
+    navigation.navigate('VerExpedienteM', { id }); 
   };
 
   const handleEliminar = (id: string) => {
@@ -27,7 +29,7 @@ const ExamenesDentalesScreen = ({navigation}) => {
 
   return (
     <View>
-        <Header title={'Examenes'} showLogo={true} onPress={() => navigation.goBack()}/>
+        <Header title={'Examenes'} showLogo={true} onPress={() => navigation.goBack()} point={''}/>
       <ExpedienteList
         expedientes={examenes}
         onVerDetalles={handleVerDetalles}

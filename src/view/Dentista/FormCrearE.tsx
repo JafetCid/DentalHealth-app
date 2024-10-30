@@ -47,7 +47,7 @@ export default function FormCrearE({ navigation }) {
 
   return (
     <ScrollView>
-      <Header title={'Crear expediente'} showLogo={false} onPress={() => navigation.goBack()}/>
+      <Header title={'Crear expediente'} showLogo={false} onPress={() => navigation.goBack()} point={''}/>
       <View style={styles.cont}>
         <ProgressSteps {...buttonTextStyle}>
           {/* Progreso 1 */}
