@@ -14,11 +14,13 @@ const ExamenesDentalesScreen = ({navigation}) => {
   ];
 
   const handleVerDetalles = (id: string) => {
-    console.log('Ver detalles de examen dental', id);
+    //console.log('Ver detalles de examen dental', id);
+    navigation.navigate('Examen', { id }); 
   };
 
   const handleEditar = (id: string) => {
-    console.log('Editar examen dental', id);
+    //console.log('Editar examen dental', id);
+    navigation.navigate('Examen', { id }); 
   };
 
   const handleEliminar = (id: string) => {

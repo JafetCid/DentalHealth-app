@@ -5,7 +5,7 @@ import HeaderNoIcon from './components/HeaderNoIcon';
 import { Ionicons } from '@expo/vector-icons';
 import Header from './components/Header';
 
-const ExpedienteDentalesScreen = ({navigation}) => {
+const ExpedienteDentales = ({navigation}) => {
   const expedientes = [
     { id: '1', titulo: 'Expediente N° 01', ultimaCita: '10/06/2024' },
     { id: '2', titulo: 'Expediente N° 02', ultimaCita: '08/06/2024' },
@@ -15,10 +15,12 @@ const ExpedienteDentalesScreen = ({navigation}) => {
 
   const handleVerDetalles = (id: string) => {
     console.log('Ver detalles de examen dental', id);
+    
   };
 
   const handleEditar = (id: string) => {
-    console.log('Editar examen dental', id);
+    //console.log('Editar examen dental', id);
+    //navigation.navigate('Examen', { id }); 
   };
 
   const handleEliminar = (id: string) => {
@@ -56,4 +58,4 @@ addButton: {
 }
 });
 
-export default ExpedienteDentalesScreen;
+export default ExpedienteDentales;

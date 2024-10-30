@@ -1,4 +1,4 @@
-{/*import * as React from "react";
+import * as React from "react";
 import {
   View,
   StyleSheet,
@@ -9,16 +9,19 @@ import {
   ScrollView,
   TouchableOpacity, // Import TouchableOpacity for clickable carousel items
 } from "react-native";
-import Header from "./components/Header";
+import Header from "../components/Header";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native"; // Import useNavigation
 
-import Pacientes from "./Pacientes";
-import Agenda1 from "./Agenda1";
-import Promociones from "./Dentista/Promociones";
+import Pacientes from "../Pacientes";
+import Agenda1 from "../Agenda1";
+import Promociones from "../Dentista/Promociones";
 import Carousel from "react-native-reanimated-carousel";
-import NotificationScreen from "./Notifications";
+import NotificationScreen from "../Notifications";
+import Chat from "../Chat";
+import PerfilP from "./PerfilP";
+import DentalHealthScreen from "../Calendar";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -41,13 +44,13 @@ const TabBarIcon = ({ name, color }) => {
   return <Ionicons name={name} size={35} color={color} />;
 };
 
-function Home() {
+function Home1() {
   const navigation = useNavigation(); // Use navigation hook
   const data = [
-    { id: 1, image: require("../../assets/images/imageHome.png") },
-    { id: 2, image: require("../../assets/images/sukuna.jpeg") },
-    { id: 3, image: require("../../assets/images/Gojo.jpeg") },
-    { id: 4, image: require("../../assets/images/logo.png") },
+    { id: 1, image: require("../../../assets/images/imageHome.png") },
+    { id: 2, image: require("../../../assets/images/sukuna.jpeg") },
+    { id: 3, image: require("../../../assets/images/Gojo.jpeg") },
+    { id: 4, image: require("../../../assets/images/logo.png") },
   ];
 
   const handlePress = (item) => {
@@ -60,9 +63,10 @@ function Home() {
         <Header title={""} showArrow={false} showP={true} onPress={""} />
         <View style={styles.content}>
           <Text style={styles.textT}>Bienvenido</Text>
-          <Text style={styles.textT}>Doctor [Nombre del doctor]</Text>
+          <Text style={styles.textT}>Doctor [Nombre del Paciente]</Text>
+          
 
-          {/* Carrusel 
+          {/* Carrusel */}
           <Carousel
             loop
             width={screenWidth * 0.8}
@@ -80,7 +84,9 @@ function Home() {
             )}
           />
 
-          <Text style={styles.textE}>Tus promociones publicadas</Text>
+          <Text style={styles.textL}>"Tu sonrisa, nuestra prioridad. Agenda tu cita fácilmente con nuestra app dental."</Text>
+          <Text style={styles.textL}>Nuestra aplicación está diseñada para ser intuitiva y fácil de usar. Desde cualquier lugar y en cualquier momento, puedes programar, modificar o cancelar tus citas.</Text>
+          
         </View>
       </ScrollView>
     </View>
@@ -92,6 +98,7 @@ export default function TabNavigator() {
 
   return (
     <Tab.Navigator
+    initialRouteName="Home" 
       screenOptions={({ route }) => ({
         tabBarActiveTintColor: Colors[colorScheme ?? "dark"].tint,
         tabBarInactiveTintColor: Colors[colorScheme ?? "dark"].tabIconDefault,
@@ -114,31 +121,33 @@ export default function TabNavigator() {
       })}
     >
       <Tab.Screen
-        name="Calendar"
-        component={Agenda1}
+        name="Citas"
+        component={DentalHealthScreen}
         options={{
-          title: "Agenda",
+          title: "Cita",
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="calendar-number" color={color} />
           ),
         }}
       />
       <Tab.Screen
-        name="Patients"
-        component={Pacientes}
+        name="Expedientes"
+        component={PerfilP}
         options={{
-          title: "Pacientes",
+          title: "Expedientes",
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="people-circle" color={color} />
+            <TabBarIcon name="file-tray-full" color={color} />
           ),
         }}
       />
       <Tab.Screen
         name="Home"
-        component={Home}
+        component={Home1}
         options={{
           title: "Home",
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="home" color={color} />
+        ),
         }}
       />
       <Tab.Screen
@@ -149,15 +158,16 @@ export default function TabNavigator() {
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="notifications" color={color} />
           ),
+          tabBarBadge: "+99",
         }}
       />
       <Tab.Screen
-        name="Promociones"
-        component={Promociones}
+        name="Chat"
+        component={Chat}
         options={{
-          title: "Promociones",
+          title: "Chat",
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="pricetags" color={color} />
+            <TabBarIcon name="chatbubble-sharp" color={color} />
           ),
         }}
       />
@@ -177,6 +187,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginBottom: 20,
   },
+  textL:{
+    fontSize:20,
+    paddingLeft:20,
+    paddingRight:20,
+    padding:10,
+  },
   textE: {
     fontSize: 20,
     marginBottom: 20,
@@ -192,4 +208,4 @@ const styles = StyleSheet.create({
     height: 200,
     resizeMode: "cover",
   },
-});*/}
+});

@@ -94,13 +94,13 @@ export default function PerfilP({ navigation, showButton = false, showElipse = t
           Title="Ver expediente"
           buttonStyle={styles.buttonAgendar}
           textStyle={styles.buttonText}
-          onPress={() => navigation.navigate('ExamDent')} 
+          onPress={() => navigation.navigate('ExpedienteLista')} //ExpedienteLista
         />
         <ButtonIn
           Title="Ver Examen dental"
           buttonStyle={styles.buttonAgendar}
           textStyle={styles.buttonText}
-          onPress={() => navigation.navigate('ExpedienteLista')} 
+          onPress={() => navigation.navigate('ExamDent')} //ExamenDent
           />
         </View>   
       )}
