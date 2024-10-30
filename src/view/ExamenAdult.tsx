@@ -63,28 +63,28 @@ const DentalExamCreateScreen = ({ navigation }) => {
         // Define el color de fondo y el estilo de borde basado en la opción seleccionada
         switch (color) {
             case 'sano':
-                newToothState = { backgroundColor: 'white' }; // Sano: Rojo de fondo
+                newToothState = { backgroundColor: 'white' }; 
                 break;
             case 'cariado':
-                newToothState = { backgroundColor: '#FF1010' }; // Cariado: Rojo de fondo
+                newToothState = { backgroundColor: '#FF1010' }; 
                 break;
             case 'obturado':
-                newToothState = { backgroundColor: '#308CFF' }; // Obturado: Azul de fondo
+                newToothState = { backgroundColor: '#308CFF' }; 
                 break;
             case 'odPerdido':
-                newToothState = { borderColor: '#FF1010', borderWidth: 2, borderStyle: 'solid' }; // O.d. Perdido
+                newToothState = { borderColor: '#FF1010', borderWidth: 2, borderStyle: 'solid' };
                 break;
             case 'odReemplazado':
-                newToothState = { borderColor: '#308CFF', borderWidth: 2, borderStyle: 'solid' }; // O.d. Reemplazado
+                newToothState = { borderColor: '#308CFF', borderWidth: 2, borderStyle: 'solid' };
                 break;
             case 'extIndicada':
-                newToothState = { backgroundColor: 'white', borderColor: '#FF1010', borderWidth: 2, borderStyle: 'dashed' }; // Otras opciones con contorno punteado
+                newToothState = { backgroundColor: 'white', borderColor: '#FF1010', borderWidth: 2, borderStyle: 'dashed' }; 
                 break;
             case 'protesisFija':
-                newToothState = { backgroundColor: 'white', borderColor: 'black', borderWidth: 2, borderStyle: 'dashed' }; // Otras opciones con contorno punteado
+                newToothState = { backgroundColor: 'white', borderColor: 'black', borderWidth: 2, borderStyle: 'dashed' }; 
                 break;
             case 'protesisParcial':
-                newToothState = { backgroundColor: 'white', borderColor: 'black', borderWidth: 2, borderStyle: 'dotted' }; // Otras opciones con contorno punteado
+                newToothState = { backgroundColor: 'white', borderColor: 'black', borderWidth: 2, borderStyle: 'dotted' }; 
                 break;
         }
     

@@ -2,7 +2,7 @@ import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import Header from '../components/Header';
 import React, { useState } from 'react';
 import { StyleSheet, Dimensions } from 'react-native';
-import styles from '../../../assets/styles/Stepper';
+import styles from '../../../assets/styles/StepperFormCE';
 import { View, Text, TextInput, ScrollView} from 'react-native';
 import { Checkbox } from 'react-native-paper';
 
@@ -182,8 +182,7 @@ export default function FormCrearE({ navigation }) {
           </ProgressStep>
           {/* Progreso 2 */}
           <ProgressStep previousBtnText="Anterior" nextBtnText="Siguiente"
-            // previousBtnStyle={styles.button} nextBtnStyle={styles.button}
-          >
+          previousBtnStyle={styles.botonAnterior}>
             <View style={styles.stepContent}>
               <View style={styles.context}>
                 <Text style={styles.text}>Aparato Cardiovascular</Text>
@@ -233,8 +232,7 @@ export default function FormCrearE({ navigation }) {
           </ProgressStep>
           {/* Progreso 3*/}
           <ProgressStep previousBtnText="Anterior" nextBtnText="Siguiente"
-            // previousBtnStyle={styles.button} nextBtnStyle={styles.button}
-          >
+          previousBtnStyle={styles.botonAnterior}>
             <View style={styles.stepContent}>
               <View style={styles.context}>
                 <Text style={styles.text}>Enfermedades de transmisión sexual</Text>
@@ -270,8 +268,7 @@ export default function FormCrearE({ navigation }) {
           </ProgressStep>
           {/* Progreso 4*/}
           <ProgressStep previousBtnText="Anterior" nextBtnText="Siguiente"
-            // previousBtnStyle={styles.button} nextBtnStyle={styles.button}
-          >
+          previousBtnStyle={styles.botonAnterior}>
             <View style={styles.stepContent}>
               <View style={styles.context}>
                 <Text style={styles.text}>Antecedentes patólogicos</Text>
@@ -404,9 +401,8 @@ export default function FormCrearE({ navigation }) {
           </ProgressStep>
           {/* Progreos 5 */}
           <ProgressStep previousBtnText="Anterior" finishBtnText="Guardar" 
-            onSubmit={() => navigation.navigate('TabNavigator', { screen: 'Home' })}
-            // previousBtnStyle={styles.button} finishBtnStyle={styles.button}
-          >
+          onSubmit={() => navigation.navigate('TabNavigator', { screen: 'Home' })}
+          previousBtnStyle={styles.botonAnterior}>
             <View style={styles.stepContent}>
               <View style={styles.context}>
                 <Text style={styles.text}>Exploración de la cavidad oral</Text>

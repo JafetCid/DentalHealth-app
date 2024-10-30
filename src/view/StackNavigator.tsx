@@ -22,6 +22,7 @@ import PatientsDetalles from './PatientsDetalles';
 import ExpedienteList from './components/ExpedienteList';
 import ExamenesDentalesScreen from './ExamenDental';
 import ExpedienteDentalesScreen from './ExpedienteDental';
+import { VerExpedienteM } from './VerExpedienteM';
 
 const Stack = createNativeStackNavigator();
 
@@ -49,6 +50,7 @@ const StackNavigator = () => {
       {/*<Stack.Screen name='ExpedientList' component={ExpedienteList} />*/}
       <Stack.Screen name='ExamDent' component={ExamenesDentalesScreen}/>
       <Stack.Screen name='ExpedienteLista' component={ExpedienteDentalesScreen}/>
+      <Stack.Screen name='VerExpedienteM' component={VerExpedienteM}/>
     </Stack.Navigator>
   );
 };

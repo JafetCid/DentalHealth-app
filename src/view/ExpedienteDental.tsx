@@ -1,7 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import ExpedienteList from './components/ExpedienteList';
-import HeaderNoIcon from './components/HeaderNoIcon';
 import { Ionicons } from '@expo/vector-icons';
 import Header from './components/Header';
 
@@ -15,10 +14,12 @@ const ExpedienteDentalesScreen = ({navigation}) => {
 
   const handleVerDetalles = (id: string) => {
     console.log('Ver detalles de examen dental', id);
+    navigation.navigate('VerExpedienteM')
   };
 
   const handleEditar = (id: string) => {
     console.log('Editar examen dental', id);
+
   };
 
   const handleEliminar = (id: string) => {

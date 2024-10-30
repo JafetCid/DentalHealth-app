@@ -55,8 +55,7 @@ const StepperD = ({ navigation }) => {
           <ProgressSteps style={styles.stepContent} {...buttonTextStyle}>
             {/* Progreso 1 */}
             <ProgressStep nextBtnText="Siguiente"  
-              // nextBtnStyle={styles.button}
-            >
+            nextBtnStyle={styles.botonSiguiente}>
               <View style={styles.context}>
                 <Text style={styles.text}>Datos personales</Text>
               </View>
@@ -106,8 +105,8 @@ const StepperD = ({ navigation }) => {
             </ProgressStep>
             {/* Progreso 2 */}
             <ProgressStep previousBtnText="Anterior" nextBtnText="Siguiente"
-              // previousBtnStyle={styles.button} nextBtnStyle={styles.button}
-            >
+            previousBtnStyle={styles.botonAnterior} 
+            nextBtnStyle={styles.botonSiguiente}>
               <View style={styles.stepContent}>
                 <View style={styles.context}>
                   <Text style={styles.text}>Formación academica</Text>
@@ -143,9 +142,9 @@ const StepperD = ({ navigation }) => {
             </ProgressStep>
             {/* Progreos 3 */}
             <ProgressStep previousBtnText="Anterior" finishBtnText="Siguiente" 
-              onSubmit={() => navigation.navigate('TabNavigator', { screen: 'Home' })}
-              // previousBtnStyle={styles.button} finishBtnStyle={styles.button}
-            >
+            onSubmit={() => navigation.navigate('TabNavigator', { screen: 'Home' })}
+            previousBtnStyle={styles.botonAnterior} 
+            nextBtnStyle={styles.botonSiguiente}>
               <View style={styles.stepContent}>
                 <View style={styles.context}>
                   <Text style={styles.text}>Información del consultorio</Text>

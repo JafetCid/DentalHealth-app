@@ -34,9 +34,8 @@ const StepperP = ({ navigation }) => {
                 <View style={styles.cont}>
                     <ProgressSteps style={styles.stepContent} {...buttonTextStyle}>
                         {/* Progreso 1 */}
-                        <ProgressStep nextBtnText="Siguiente"  
-                        // nextBtnStyle={styles.button}
-                        >
+                        <ProgressStep nextBtnText="Siguiente"
+                        nextBtnStyle={styles.botonSiguiente}>
                         <View style={styles.context}>
                             <Text style={styles.text}>Datos personales</Text>
                         </View>
@@ -85,9 +84,9 @@ const StepperP = ({ navigation }) => {
                         </ProgressStep>
                         {/* Progreso 2 */}
                         <ProgressStep previousBtnText="Anterior" finishBtnText="Siguiente"
-                            onSubmit={() => navigation.navigate('TabNavigator', { screen: 'Home' })}
-                        // previousBtnStyle={styles.button} nextBtnStyle={styles.button}
-                        >
+                        onSubmit={() => navigation.navigate('TabNavigator', { screen: 'Home' })}
+                        previousBtnStyle={styles.botonAnterior} 
+                        nextBtnStyle={styles.botonSiguiente}>
                             <View style={styles.stepContent}>
                                 <View style={styles.context}>
                                     <Text style={styles.text}>Datos personales</Text>

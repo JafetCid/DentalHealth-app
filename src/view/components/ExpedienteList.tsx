@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     // zIndex: 1, // Z-index bajo por defecto para las tarjetas
   },
   expedienteContainerWithMenu: {
-    // zIndex: 999, // Z-index alto solo cuando el menú está visible
+    zIndex: 999, // Z-index alto solo cuando el menú está visible
   },
   titulo: {
     fontWeight: 'bold',
