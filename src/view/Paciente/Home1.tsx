@@ -74,6 +74,7 @@ function Home1() {
             loop
             width={screenWidth * 0.8}
             height={200}
+            style={styles.carousel}
             autoPlay={true}
             autoPlayInterval={3000}
             data={data}
@@ -86,6 +87,9 @@ function Home1() {
               </TouchableOpacity>
             )}
           />
+
+          <Text style={styles.textS}>Promoción</Text>
+          <Text style={styles.descripcionS}>descripción</Text>
 
           <View style={styles.contTextL}>
             <Text style={styles.textL}>"Tu sonrisa, nuestra prioridad. Agenda tu cita fácilmente con nuestra app dental."</Text>
@@ -189,27 +193,8 @@ const styles = StyleSheet.create({
   content: {
     alignItems: "center",
   },
-  textT: {
-    fontSize: 24,
+  carousel: {
     marginBottom: 20,
-  },
-  contTextL: {
-
-    width: '90%',
-    marginTop: 30,
-    alignItems: 'center',
-  },
-  textL:{
-    fontSize:18,
-    marginBottom: 20,
-  },
-  textL2:{
-    fontSize:15,
-  },
-  textE: {
-    fontSize: 20,
-    marginBottom: 20,
-    marginTop: 15,
   },
   carouselItem: {
     borderRadius: 10,
@@ -220,5 +205,26 @@ const styles = StyleSheet.create({
     width: "100%",
     height: '100%',
     resizeMode: "cover",
+  },
+  textS: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    alignSelf: 'center',
+  },
+  descripcionS: {
+    alignSelf: 'center',
+    fontSize: 16,
+  },
+  contTextL: {
+    width: '90%',
+    marginTop: 30,
+    alignItems: 'center',
+  },
+  textL:{
+    fontSize:18,
+    marginBottom: 20,
+  },
+  textL2:{
+    fontSize:15,
   },
 });

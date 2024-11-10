@@ -1,16 +1,14 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import InfoCard from './components/InfoCard'; 
-import Header from './components/Header';
 import ButtonIn from './components/ButtonIn';
-import PerfilP from './Pacientes/PerfilP';
 import { CardPerfilP } from './components/CardPerfilP';
+// import PerfilP from './Pacientes/PerfilP';
 
 export default function PatientsDetalles({ navigation }) {
     return (
         <View style={{ flex: 1 }}>
             {/* <PerfilP showButton={true} navigation={navigation}/> */}
-            <CardPerfilP navigation={navigation}/>
+            <CardPerfilP navigation={navigation} showArrowV={true}/>
             <View style={styles.buttonContainer}> 
                 <ButtonIn
                 Title="Ver expediente"

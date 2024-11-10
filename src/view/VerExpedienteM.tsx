@@ -1,11 +1,9 @@
+import React from 'react';
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import Header from './components/Header';
-import React, { useState } from 'react';
-import { StyleSheet, Dimensions, Image } from 'react-native';
+import { Image } from 'react-native';
 import styles from '../../assets/styles/StepperVerE';
-import { View, Text, TextInput, ScrollView} from 'react-native';
-import { Checkbox } from 'react-native-paper';
-import PerfilP from './Pacientes/PerfilP';
+import { View, Text, ScrollView} from 'react-native';
 import { CardPerfilP } from './components/CardPerfilP';
 
 export const VerExpedienteM = ({ navigation }) => {

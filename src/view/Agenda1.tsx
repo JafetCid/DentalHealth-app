@@ -53,7 +53,7 @@ const ScheduleView = ({ navigation }) => {
   return (
     <Provider>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <Header showLogo={false} onPress={''} title={''} showArrow={false} point={''}/>
+        <Header onPress={''} title={''} showArrow={false} point={''} showLogo={false}/>
         <View style={styles.header}>
           {weekDays.map((day, index) => (
             <View key={index} style={styles.dayContainer}>

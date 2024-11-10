@@ -3,12 +3,27 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
     container: {
         borderWidth: 5,
-
     },
-    name: {
+    logoC: {
+        position: 'absolute',
+        width: '100%',
+        height: 300,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    imgLogo: {
+        height: 150,
+        width: 150,
+        borderRadius: 80,
+    },
+    titleN: {
         fontSize: 25,
         alignSelf: 'center',
     },
+    // name: {
+    //     fontSize: 25,
+    // },
     content: {
         alignItems: 'center',
         marginTop: '5%',
@@ -46,17 +61,16 @@ const styles = StyleSheet.create({
     
     // estilos del modal de perfil y cerrar sesion
     centeredView: {
-        padding: 5,
-        width: '100%',
-        marginTop: '8%',
-        position: 'absolute',
+        flex: 1,
         alignItems: 'flex-end',
+        justifyContent: 'center',
     },
     
     modalView: {
         padding: 5,
-        // width: '30%',
+        right: '15%',
         elevation: 5,
+        marginTop: '-10%',
         borderRadius: 8,
         backgroundColor: 'white',
     },

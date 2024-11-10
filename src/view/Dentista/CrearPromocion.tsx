@@ -8,7 +8,7 @@ export default function CrearPromocion({ navigation }) {
         <ScrollView>
             <View>
                 <Header title={'Crear promoción'} 
-                    showLogo={false} onPress={() => navigation.goBack()}/>
+                    showLogo={false} onPress={() => navigation.goBack()} point={''}/>
                 <View style={styles.form}>
                     <View style={styles.conten}>
                         <Text style={styles.label}>Nombre</Text>

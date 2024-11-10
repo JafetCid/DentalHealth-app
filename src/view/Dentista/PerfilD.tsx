@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TouchableOpacity, Pressable } from 'react-native'
+import { View, Text, TouchableOpacity, Pressable, Modal, TouchableWithoutFeedback } from 'react-native'
 import { Ionicons, MaterialIcons, FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons'
 import Header from '../components/Header'
 import styles from '../../../assets/styles/PerfilD'
@@ -17,7 +17,7 @@ export default function PerfilD({ navigation }) {
   return (
     <View>
         <Header title={''} 
-            onPress={() => navigation.goBack('Inicio')} showP={true}/>
+            onPress={() => navigation.goBack('Inicio')} showP={true} point={''}/>
         <Text style={styles.text}>Nombre del Doctor</Text>
         <View style={styles.content}>
             <View style={styles.card}>
@@ -28,16 +28,34 @@ export default function PerfilD({ navigation }) {
                     <Ionicons name="ellipsis-vertical" size={22} color="gray" />
                 </TouchableOpacity>
                 {isVisible &&
-                    <Pressable style={styles.centeredView} onPress={toggleModal}>
-                        <View>
+                    // <Pressable style={styles.centeredView} onPress={toggleModal}>
+                    //     <View>
+                    //         <View style={styles.modalView}>
+                    //             <Pressable 
+                    //                 onPress={() => navigation.navigate('StepperD')}>
+                    //                 <Text style={styles.modalText}>Editar perfil</Text>
+                    //             </Pressable>
+                    //         </View>
+                    //     </View>
+                    // </Pressable>
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={isVisible}
+                        onRequestClose={toggleModal}>
+                        <TouchableWithoutFeedback onPress={toggleModal}>
+                            <View style={styles.centeredView}>
                             <View style={styles.modalView}>
-                                <Pressable 
-                                    onPress={() => navigation.navigate('StepperD')}>
-                                    <Text style={styles.modalText}>Editar perfil</Text>
+                                <Pressable
+                                onPress={() => { 
+                                    setIsVisible(false);
+                                    navigation.navigate('StepperD')}}>
+                                <Text style={styles.modalText}>Editar perfil</Text>
                                 </Pressable>
                             </View>
-                        </View>
-                    </Pressable>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    </Modal>
                 }
                 <View style={styles.info}>
                     <View style={styles.infoContCard}>

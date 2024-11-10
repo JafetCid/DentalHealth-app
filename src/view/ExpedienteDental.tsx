@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import ExpedienteList from './components/ExpedienteList';
 import { Ionicons } from '@expo/vector-icons';
 import Header from './components/Header';
@@ -29,7 +29,10 @@ const ExpedienteDentales = ({navigation}) => {
   return (
     <View>
       {/* <ScrollView> */}
-        <Header title={'Expedientes'} showLogo={true} onPress={() => navigation.goBack()} point={''}/>
+        <Header title={'Expedientes'} showLogo={false} onPress={() => navigation.goBack()} point={''}/>
+        <View style={styles.logoC}>
+          <Image source={require('../../assets/images/Perfil.png')} style={styles.imgLogo}/>
+        </View>
         <ExpedienteList
           expedientes={expedientes}
           onVerDetalles={handleVerDetalles}
@@ -54,7 +57,24 @@ addButton: {
   backgroundColor: '#2f95dc',
   borderRadius: 25,
   elevation: 4,
-}
+},
+logoC: {
+  position: 'absolute',
+  width: '100%',
+  height: 300,
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginBottom: 20,
+},
+imgLogo: {
+  height: 150,
+  width: 150,
+  borderRadius: 80,
+},
+titleN: {
+  fontSize: 25,
+  alignSelf: 'center',
+},
 });
 
 export default ExpedienteDentales;

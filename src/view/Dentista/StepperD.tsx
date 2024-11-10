@@ -1,32 +1,109 @@
 import React, { useState } from 'react';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { StyleSheet } from 'react-native';
 import ButtonIn from "../components/ButtonIn";
 import RNPickerSelect from 'react-native-picker-select';
-import { View, Text, TextInput, ScrollView } from 'react-native';
+import { View, Text, TextInput, ScrollView, Alert } from 'react-native';
 import styles from '../../../assets/styles/Stepper';
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import Header from '../components/Header';
 import InputDate from '../components/InputDate';
 import InputImage from '../components/InputImage';
-import * as DocumentPicker from 'expo-document-picker';
+import * as DocumentPicker from 'expo-document-picker'
+import { useNavigation } from '@react-navigation/native';;
+import { validarPaso1, validarPaso2 } from '../../utils/StepperD';
 
-const StepperD = ({ navigation }) => {
-  // const [step1Data, setStep1Data] = useState({ name: '', address: '' });
-  // const [step2Data, setStep2Data] = useState({ email: '', username: '' });
-  // const [step3Data, setStep3Data] = useState({ password: '', retypePassword: '' });
+const StepperD = () => {
+  
+  const navigation = useNavigation();
+  const [stepData, setStepData] = useState({ 
+    nombre: '', 
+    apellidos: '', 
+    genero: '', 
+    telefono: '',
+    licenciatura: '',
+    cedulaProfesional: '',
+    especialidad: '', 
+    cedulaEspecialidad: '',
+  });
+
+  const [errores, setErrores] = useState({
+    nombre: '', 
+    apellidos: '', 
+    genero: '', 
+    telefono: '',
+    licenciatura: '',
+    cedulaProfesional: '',
+    especialidad: '', 
+    cedulaEspecialidad: '',
+  });
+  
+  const [FormValid, setFormValid] = useState(1);
+
+  const handleInputChange = (nombre, value) => {
+    // Primero, actualizamos el estado con el nuevo valor de stepData
+    const nuevoStepData = { ...stepData, [nombre]: value };
+    setStepData(nuevoStepData); // Actualizamos el estado de forma directa
+  
+    // Después de actualizar el estado, validamos el campo actualizado
+    const erroresValidacion = validarPaso1(
+      nuevoStepData.nombre,
+      nuevoStepData.apellidos,
+      nuevoStepData.genero,
+      nuevoStepData.telefono
+    );
+  
+    // Establecer solo el error del campo que se está modificando
+    setErrores((prevErrores) => ({
+      ...prevErrores,
+      [nombre]: erroresValidacion[nombre] || '', // Actualiza solo el campo específico
+    }));
+  };
+  
+  // Valida todos los campos del paso actual
+  const validarStep = () => {
+    let erroresValidacion = {};
+
+    if (FormValid === 1){
+      const erroresValidacion = validarPaso1(
+        stepData.nombre,
+        stepData.apellidos,
+        stepData.genero,
+        stepData.telefono
+      );
+    }
+    if (FormValid === 2){
+      const erroresValidacion = validarPaso2(
+        stepData.licenciatura,
+        stepData.cedulaProfesional,
+        stepData.especialidad,
+        stepData.cedulaEspecialidad
+      );
+    }
+    // setErrores(erroresValidacion); // Actualiza todos los errores
+
+    return Object.keys(erroresValidacion).length === 0;
+  };
+
+  const nextStep = () => {
+    if (validarStep()) {
+      setFormValid((prevFormValid) => prevFormValid + 1);
+    } else {
+      Alert.alert('Error', 'Por favor corrija los errores antes de continuar.');
+    }
+  };
+
+  const prevStep = () => {
+    if (FormValid > 1) {
+        setFormValid(FormValid - 1);
+    }
+  };
+
   const buttonTextStyle = {
     activeStepIconBorderColor: '#308CFF',
     completedProgressBarColor: '#308CFF',
     completedStepIconColor: '#308CFF', 
   };
-  
-  const [selectedValue, setSelectedValue] = useState<string | undefined>(undefined);
-  const items = [
-    { label: 'Masculino', value: 'masculino' },
-    { label: 'Femenino', value: 'femenino' },
-  ];
 
   //manejo del nombre del archivo
   const [fileName, setFileName] = useState(null);
@@ -45,65 +122,80 @@ const StepperD = ({ navigation }) => {
       console.error('Error al seleccionar el archivo:', err);
     }
   };
+  
+  const generoItems = [
+    { label: 'Masculino', value: 'masculino' },
+    { label: 'Femenino', value: 'femenino' },
+  ];
 
   return (
 
     <ScrollView>
       <View style={styles.container}>
-        <Header title={'Crear Cuenta'} showLogo={false} onPress={() => navigation.goBack()}/>
+        <Header title={'Crear Cuenta'} showLogo={false} onPress={() => navigation.goBack()} point={''}/>
         <View style={styles.cont}>
           <ProgressSteps style={styles.stepContent} {...buttonTextStyle}>
             {/* Progreso 1 */}
-            <ProgressStep nextBtnText="Siguiente"  
-            nextBtnStyle={styles.botonSiguiente}>
-              <View style={styles.context}>
-                <Text style={styles.text}>Datos personales</Text>
-              </View>
-              <View>
-                <Text style={styles.label}>Nombre</Text>
-                <TextInput
-                  style={styles.input}
-                  inputMode='text'
-                  // value={step1Data.name}
-                  // onChangeText={text => setStep1Data({ ...step1Data, name: text })}
-                />
-                <Text style={styles.label}>Apellidos</Text>
-                <TextInput
-                  style={styles.input}
-                  inputMode='text'
-                  // value={step1Data.address}
-                  // onChangeText={text => setStep1Data({ ...step1Data, address: text })}
-                />
-                <Text style={styles.label}>Genero</Text>
-                <RNPickerSelect 
-                  style={pickerSelectStyles}
-                  onValueChange={(value) => setSelectedValue(value)}
-                  items={items}
-                  placeholder={{label: ''}}
-                  useNativeAndroidPickerStyle={false}
-                  Icon={() => {
-                    return <Icon name="arrow-drop-down" size={24} color="black" />; // Ícono de flecha
-                  }}
-                >  
-                </RNPickerSelect>
-                
-                {/* input de fecha */}
-                <InputDate/>
+            {/* {FormValid === 1 && ( */}
+              <ProgressStep nextBtnText="Siguiente"  
+                nextBtnStyle={styles.botonSiguiente}
+                onNext={nextStep}
+                >
+                <View style={styles.context}>
+                  <Text style={styles.text}>Datos personales</Text>
+                </View>
+                <View>
+                  <Text style={styles.label}>Nombre</Text>
+                  <TextInput
+                    style={styles.input}
+                    inputMode='text'
+                    value={stepData.nombre}
+                    onChangeText={(value) => handleInputChange('nombre', value)}
+                  />
+                  {errores.nombre && <Text style={{ color: 'red' }}>{errores.nombre}</Text>}
 
-                <Text style={styles.label}>Telefono</Text>
-                <TextInput
-                  style={styles.input}
-                  inputMode='tel'
-                  // value={step1Data.address}
-                  // onChangeText={text => setStep1Data({ ...step1Data, address: text })}
-                />
-                
-                {/* Input de fotografia */}
-                <InputImage/>
+                  <Text style={styles.label}>Apellidos</Text>
+                  <TextInput
+                    style={styles.input}
+                    inputMode='text'
+                    value={stepData.apellidos}
+                    onChangeText={(value) => handleInputChange('apellidos', value)}
+                  />
+                  {errores.apellidos && <Text style={{ color: 'red' }}>{errores.apellidos}</Text>}
 
-              </View>
-            </ProgressStep>
+                  <Text style={styles.label}>Genero</Text>
+                  <RNPickerSelect 
+                    style={pickerSelectStyles}
+                    onValueChange={(value) => handleInputChange('genero', value)}
+                    items={[
+                      { label: 'Masculino', value: 'masculino' },
+                      { label: 'Femenino', value: 'femenino' },
+                    ]}
+                    placeholder={{ label: 'Seleccione su género', value: null }}
+                  > 
+                  </RNPickerSelect>
+                  {errores.genero && <Text style={{ color: 'red' }}>{errores.genero}</Text>}
+                  
+                  {/* input de fecha */}
+                  <InputDate/>
+
+                  <Text style={styles.label}>Telefono</Text>
+                  <TextInput
+                    style={styles.input}
+                    inputMode='tel'
+                    value={stepData.telefono}
+                    onChangeText={(value) => handleInputChange('telefono', value)}
+                  />
+                  {errores.telefono && <Text style={{ color: 'red' }}>{errores.telefono}</Text>}
+                  
+                  {/* Input de fotografia */}
+                  <InputImage/>
+
+                </View>
+              </ProgressStep>
+            {/* )} */}
             {/* Progreso 2 */}
+            {/* {FormValid === 2 && ( */}
             <ProgressStep previousBtnText="Anterior" nextBtnText="Siguiente"
             previousBtnStyle={styles.botonAnterior} 
             nextBtnStyle={styles.botonSiguiente}>
@@ -140,6 +232,7 @@ const StepperD = ({ navigation }) => {
                 />
               </View>
             </ProgressStep>
+            {/* )} */}
             {/* Progreos 3 */}
             <ProgressStep previousBtnText="Anterior" finishBtnText="Siguiente" 
             onSubmit={() => navigation.navigate('TabNav', { screen: 'Home1' })}

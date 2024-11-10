@@ -107,16 +107,7 @@ const DentalExamCreateScreen = ({ navigation }) => {
                     {/* Title */}
                     <Text style={styles.title}>Examen Dental</Text>
                     <Text style={styles.textT}>Odontograma</Text>
-
-                    {/* Odontogram Table */}
-                    {/* <View style={styles.odontogramTable}>
-                        <FlatList
-                            data={odontogramData}
-                            renderItem={renderOdontogramRow}
-                            keyExtractor={(item) => item.description}
-                        />
-                    </View> */}
-
+                    
                     <View style={styles.table}>
                         <View style={styles.row}>
                             <Text style={styles.cell}>Sano</Text>

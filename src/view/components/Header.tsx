@@ -1,5 +1,5 @@
 import { TouchableOpacity, View, Image, 
-  StyleSheet, Text, Modal, Pressable, Alert } from 'react-native';
+  StyleSheet, Text, Modal, Pressable, TouchableWithoutFeedback } from 'react-native';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../../../assets/styles/Header'
@@ -9,6 +9,10 @@ export default function Header ({ title, showLogo = true, showArrow = true, show
 
   const [isVisible, setIsVisible] = useState(false);
   const navigation = useNavigation();
+
+  const toggleModal = () => {
+    setIsVisible(!isVisible)
+  }
 
   return(
     <View style={styles.container}>
@@ -32,34 +36,30 @@ export default function Header ({ title, showLogo = true, showArrow = true, show
         </TouchableOpacity>
       )}
       {/* Modal */}
-
-      <View style={style.centeredView}>
         <Modal
           animationType="slide"
           transparent={true}
           visible={isVisible}
-          onRequestClose={() => {
-            Alert.alert('Modal has been closed.');
-            setIsVisible(!isVisible);
-          }}>
-          <View style={style.centeredView}>
-            <View style={style.modalView}>
-              <Pressable
-                onPress={() => { 
-                  setIsVisible(false);
-                  navigation.navigate(point)}}>
-                <Text style={style.modalText}>Perfil</Text>
-              </Pressable>
-              <Pressable
-                onPress={() => { 
-                  setIsVisible(false); 
-                  navigation.navigate('LoginO')}}>
-                <Text style={style.modalText}>Cerrar sesión</Text>
-              </Pressable>
+          onRequestClose={toggleModal}>
+          <TouchableWithoutFeedback onPress={toggleModal}>
+            <View style={style.centeredView}>
+              <View style={style.modalView}>
+                <Pressable
+                  onPress={() => { 
+                    setIsVisible(false);
+                    navigation.navigate(point)}}>
+                  <Text style={style.modalText}>Perfil</Text>
+                </Pressable>
+                <Pressable
+                  onPress={() => { 
+                    setIsVisible(false); 
+                    navigation.navigate('LoginO')}}>
+                  <Text style={style.modalText}>Cerrar sesión</Text>
+                </Pressable>
+              </View>
             </View>
-          </View>
+          </TouchableWithoutFeedback>
         </Modal>
-      </View>
       <View style={styles.logoC}>
         {showLogo && (
           // <Image source={require('../../../assets/images/Genshi.jpeg')} style={styles.imgLogo}/>
@@ -75,17 +75,16 @@ const style = StyleSheet.create({
   // estilos del modal de perfil y cerrar sesion
   centeredView: {
     flex: 1,
-    position: 'absolute',
-    width: '95%',
     alignItems: 'flex-end',
-    marginTop: '12%',
   },
   modalView: {
-    width: '30%',
     backgroundColor: 'white',
+    marginTop: '12%',
+    width: '30%',
     borderRadius: 8,
-    padding: 10,
     elevation: 5,
+    padding: 10,
+    right: 20,
   },
   modalText: {
     marginBottom: 4,

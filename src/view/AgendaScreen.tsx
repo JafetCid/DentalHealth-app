@@ -1,13 +1,13 @@
-import { Ionicons } from '@expo/vector-icons';
 import Header from './components/Header';
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity, ScrollView, Alert } from 'react-native';
-import { Calendar, LocaleConfig, DateObject } from 'react-native-calendars';
+import { View, Text, TouchableOpacity, ScrollView, Alert, Pressable, Modal} from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
+import styles from '../../assets/styles/AgendaScreen';
+import { Calendar, LocaleConfig } from 'react-native-calendars';
 import dayjs from 'dayjs';
-import 'dayjs/locale/es'; //  español
+import 'dayjs/locale/es';
+import { Checkbox } from 'react-native-paper';
 import ButtonIn from './components/ButtonIn';
-
-const { width } = Dimensions.get('window');
 
 // Configuración del calendario en español
 LocaleConfig.locales['es'] = {
@@ -31,6 +31,14 @@ export default function AgendaScreen({ navigation }) {
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [busyDays, setBusyDays] = useState<string[]>([]);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isSelected, setSelected] = useState({
+    check: false,
+  });
+
+  const toggleModal = () => {
+    setIsVisible(!isVisible)
+  }
 
   const today = dayjs().format('YYYY-MM-DD');
 
@@ -41,6 +49,15 @@ export default function AgendaScreen({ navigation }) {
     };
     fetchBusyDays();
   }, []);
+
+  // Definición del tipo DateObject personalizado
+  interface DateObject {
+    dateString: string; 
+    day: number;
+    month: number;
+    year: number;
+    timestamp: number;
+  }
 
   const handleDayPress = (day: DateObject) => {
     const dayOfWeek = dayjs(day.dateString).locale('es').format('dddd');
@@ -70,6 +87,14 @@ export default function AgendaScreen({ navigation }) {
     setSelectedTime(time);
   };
 
+  //CheckBox
+  const handleCheckboxChange = (condition) => {
+    setSelected((prevState) => ({
+    ...prevState,
+    [condition]: !prevState[condition],
+    }));
+  };
+
   // Validación al presionar el botón "Agendar"
   const handleAgendarPress = () => {
     if (!selectedDay || !selectedTime) {
@@ -78,14 +103,21 @@ export default function AgendaScreen({ navigation }) {
     }
     // Aquí puedes agregar la lógica para agendar la cita
     Alert.alert('Cita agendada', `Cita programada para el ${selectedDay} a las ${selectedTime}.`);
+    navigation.navigate('HomeP')
   };
 
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <Header title={''} showLogo={false} onPress={() => navigation.goBack()} point={''}/>
+        <View style={styles.contLT}>
+          <FontAwesome name="user-circle-o" size={60} color="white" style={styles.icon}/>
+          {/* <Image source={require('../../assets/images/Genshi.jpeg')} style={styles.icon}/> */}
+          <View style={styles.contName}>
+            <Text style={styles.name}>Nombre del Doctor</Text>
+          </View>
+        </View>
         <View style={styles.contAgenda}>
-          <Text style={styles.text}>Citas</Text>
           <Calendar
             onDayPress={handleDayPress}
             markedDates={{
@@ -109,109 +141,88 @@ export default function AgendaScreen({ navigation }) {
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Horarios disponibles</Text>
             <Text style={styles.subTitle}>Mañana</Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.timeSlotsContainer}>
-              {['9:00 am', '10:00 am', '11:00 am'].map((time) => (
-                <TouchableOpacity
+            <View style={styles.contHorarios}>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.timeSlotsContainer}>
+                {['9:00 am', '10:00 am', '11:00 am'].map((time) => (
+                  <TouchableOpacity
                   key={time}
-                  style={[styles.timeSlot, selectedTime === time && styles.selectedTimeSlot]}
-                  onPress={() => handleTimeSelect(time)}
-                >
-                  <Text>{time}</Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
+                    style={[styles.timeSlot, selectedTime === time && styles.selectedTimeSlot]}
+                    onPress={() => handleTimeSelect(time)}
+                  >
+                    <Text style={[selectedTime === time && styles.selectedTimeText]}>{time}</Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </View>
             <Text style={styles.subTitle}>Tarde</Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.timeSlotsContainer}>
-              {['1:00 pm', '2:00 pm', '5:00 pm'].map((time) => (
-                <TouchableOpacity
-                  key={time}
-                  style={[styles.timeSlot, selectedTime === time && styles.selectedTimeSlot]}
-                  onPress={() => handleTimeSelect(time)}
-                >
-                  <Text>{time}</Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-            <View style={styles.buttonContainer}>
-              <ButtonIn 
-                Title="Agendar"
-                buttonStyle={styles.buttonAgendar} 
-                textStyle={styles.buttonText} 
-                onPress={handleAgendarPress} // Validación de fecha y hora
-              />
+            <View style={styles.contHorarios}>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.timeSlotsContainer}>
+                {['1:00 pm', '2:00 pm', '5:00 pm'].map((time) => (
+                  <TouchableOpacity
+                    key={time}
+                    style={[styles.timeSlot, selectedTime === time && styles.selectedTimeSlot]}
+                    onPress={() => handleTimeSelect(time)}
+                  >
+                    <Text style={[selectedTime === time && styles.selectedTimeText]}>{time}</Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
             </View>
           </View>
+        </View>
+        <View style={styles.contCartaC}>
+          <Text style={styles.textCartaC}>Favor de leer con atención la carta de consentimiento.</Text>
+          <View style={styles.contAviso}>
+            <Checkbox
+                status={isSelected.check ? 'checked' : 'unchecked'}
+                onPress={() => handleCheckboxChange('check')}
+                color='#308CFF'
+                 uncheckedColor="#308CFF"
+            />
+            <TouchableOpacity 
+              style={styles.aviso}
+              onPress={() => setIsVisible(true)}>
+                <Text style={styles.linkR}>Aviso de privacidad</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={isVisible}
+          onRequestClose={toggleModal}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={styles.modalText}>Carta de consentimiento</Text>
+                <Text style={styles.modalText2}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed 
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
+                  nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in 
+                  reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
+                  pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa 
+                  qui officia deserunt mollit anim id est laborum.
+                </Text>
+                <View style={styles.btnModal}>
+                  <Pressable
+                    style={styles.buttonCloseM}
+                    onPress={toggleModal}>
+                    <Text style={styles.textStyle}>Aceptar</Text>
+                  </Pressable>
+                </View>
+              </View>
+            </View>
+        </Modal>
+        <View style={styles.buttonContainer}>
+          <ButtonIn
+            Title={'Solicitar cita'}
+            textStyle={{ color: 'white' }}
+            buttonStyle={{ backgroundColor: '#308CFF', marginBottom: '10%',}}
+            onPress={handleAgendarPress}
+          />
         </View>
       </ScrollView>
     </View> 
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  scrollViewContent: {
-    flexGrow: 1,
-    justifyContent: 'center',
-  },
-  contAgenda: {
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginVertical: 20,
-  },
-  calendar: {
-    width: width * 0.9,
-    marginBottom: 20,
-  },
-  section: {
-    width: width * 0.9,
-    marginBottom: 20,
-  },
-  sectionTitle: {
-    alignSelf: 'center',
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  subTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  timeSlotsContainer: {
-    alignSelf: 'center',
-    marginBottom: 10,
-  },
-  timeSlot: {
-    padding: 25,
-    borderWidth: 0.5,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    marginRight: 15,
-  },
-  selectedTimeSlot: {
-    backgroundColor: '#308CFF',
-    borderColor: '#308CFF',
-  },
-  buttonContainer: {
-    marginTop: 20,
-    width: '100%', // Asegura que el contenedor ocupe todo el ancho
-    alignItems: 'center', // Centra el botón horizontalmente
-  },
-  buttonAgendar: {
-    backgroundColor: '#308CFF',
-    paddingVertical: 10,
-    paddingHorizontal: 20, // Aumenta el padding horizontal para que se vea mejor
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-});

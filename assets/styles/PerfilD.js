@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         backgroundColor: '#fff',
     },
-
+    
     text2: {
         width: '100%',
         padding: 5,
@@ -41,17 +41,16 @@ const styles = StyleSheet.create({
     
     // estilos del modal de perfil y cerrar sesion
     centeredView: {
-        padding: 5,
-        width: '100%',
-        marginTop: '8%',
-        position: 'absolute',
+        flex: 1,
         alignItems: 'flex-end',
+        justifyContent: 'center',
     },
     
     modalView: {
         padding: 5,
-        width: '30%',
+        right: '15%',
         elevation: 5,
+        marginTop: '-10%',
         borderRadius: 8,
         backgroundColor: 'white',
     },

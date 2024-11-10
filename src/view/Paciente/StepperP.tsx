@@ -30,7 +30,7 @@ const StepperP = ({ navigation }) => {
 
         <ScrollView>
             <View style={styles.container}>
-                <Header title={'Crear Cuenta'} showLogo={false} onPress={() => navigation.goBack()}/>
+                <Header title={'Crear Cuenta'} showLogo={false} onPress={() => navigation.goBack()} point={''}/>
                 <View style={styles.cont}>
                     <ProgressSteps style={styles.stepContent} {...buttonTextStyle}>
                         {/* Progreso 1 */}

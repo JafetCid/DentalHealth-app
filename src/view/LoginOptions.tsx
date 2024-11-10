@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { Text, View, Modal, Alert, Pressable } from 'react-native';
+import { Text, View, Modal, Alert, Pressable, TouchableNativeFeedback, TouchableWithoutFeedback } from 'react-native';
 import ButtonIn from './components/ButtonIn';
 import GoogleIconButton from './components/GoogleIconB';
 import Header from './components/Header';
@@ -8,6 +8,10 @@ import styles from '../../assets/styles/LoginO';
 
 export default function LoginOptions({ navigation }) {
   const [isVisible, setIsVisible] = useState(false);
+
+  const toggleModal = () => {
+    setIsVisible(!isVisible)
+  }
 
   return (
     <View style={styles.maincontainer}>
@@ -32,16 +36,13 @@ export default function LoginOptions({ navigation }) {
         <StatusBar style="auto" />
       </View>
 
-      {/* Modal para seleccionar tipo de usuario */}
-      <View style={styles.centeredView}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={isVisible}
-          onRequestClose={() => {
-            Alert.alert('Modal has been closed.');
-            setIsVisible(!isVisible);
-          }}>
+      {/* Modal para seleccionar tipo de usuario */} 
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isVisible}
+        onRequestClose={toggleModal}>
+        <TouchableWithoutFeedback onPress={toggleModal}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <Text style={styles.modalText}>¿Eres doctor o eres paciente?</Text>
@@ -71,8 +72,9 @@ export default function LoginOptions({ navigation }) {
               </View>
             </View>
           </View>
-        </Modal>
-      </View>
+
+        </TouchableWithoutFeedback>
+      </Modal>
     </View>
   );
 }

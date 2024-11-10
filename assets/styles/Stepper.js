@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
   label:{
     fontSize: 16,
     marginHorizontal:5,
+    marginTop: 15,
   },
   input: {
     height: 55,
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: '#F7F7F7',
     color: 'black',
-    marginBottom: 15,
+    // marginBottom: 15,
   },
 
   //estilos del form Crear Expediente
