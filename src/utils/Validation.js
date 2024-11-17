@@ -149,7 +149,6 @@ export const validarPaso3 = (nombreConsultorio, direccion, archivoAutorizacion) 
 };
   
 //Validacion del stepPaciente
-
 export const validarPaso1P = (nombre, apellidos, genero, dateOfBirth, telefono) => {
   const errores = {};
 
@@ -206,11 +205,8 @@ export const validarPaso1P = (nombre, apellidos, genero, dateOfBirth, telefono) 
   return errores;
 };
 
-export const validarPaso2P = ( direccion, email, password, confirmPassword) => {
+export const validarPaso2P = ( direccion, procedencia, correo, password, confirmPassword) => {
   const errores = {};
-  // if (!estadoCivil) errores.estadoCivil = 'El estado civil es obligatorio.';
-  // if (!ocupacion) errores.ocupacion = 'La ocupación es obligatoria.';
-  // else if (/\d/.test(ocupacion)) errores.ocupacion = 'La ocupación no puede contener números.';
   if (!direccion) {
     errores.direccion = 'La dirección es obligatoria.';
   } else if (direccion.length < 5) {
@@ -223,10 +219,21 @@ export const validarPaso2P = ( direccion, email, password, confirmPassword) => {
       return 'La dirección contiene caracteres inválidos.';
   }
 
-  if (!email) errores.email = 'El correo electrónico es obligatorio.';
-  else if (!/\S+@\S+\.\S+/.test(email)) errores.email = 'El correo electrónico es inválido.';
+  if (!procedencia) {
+    errores.procedencia = 'La procedencia es obligatoria';
+  }
+
+  if (!correo){
+    errores.correo = 'El correo electrónico es obligatorio.';
+  } 
+  // else if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
+  //   errores.correo = 'El correo electrónico es inválido.';
+  // }
+  
+
   if (!password) errores.password = 'La contraseña es obligatoria.';
   else if (password.length < 6) errores.password = 'La contraseña debe tener al menos 6 caracteres.';
+
   if (password !== confirmPassword) errores.confirmPassword = 'Las contraseñas no coinciden.';
   return errores;
 };
