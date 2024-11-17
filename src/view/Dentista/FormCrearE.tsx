@@ -3,21 +3,48 @@ import Header from '../components/Header';
 import React, { useState } from 'react';
 import { StyleSheet, Dimensions } from 'react-native';
 import styles from '../../../assets/styles/StepperFormCE';
-import { View, Text, TextInput, ScrollView} from 'react-native';
+import { View, Text, TextInput, ScrollView, Alert } from 'react-native';
 import { Checkbox } from 'react-native-paper';
+import { validarFormCE } from '../../utils/Validation';
 
 const { width } = Dimensions.get('window');
 
 
 export default function FormCrearE({ navigation }) {
+  
+  const [stepData, setStepData] = useState({ 
+    peso: '', 
+    talla: '', 
+    ta: '', 
+    fc: '', 
+    fr: '', 
+    t: '', 
+    motivoC: '', 
+    medidaH: '', 
+    salud: '', 
+    padecimientoA: '', 
+    tratamientoM: '', 
+    medicamentoDroga: '', 
+    alergico: '',
+    hospitalizado: ''  ,
+  });
 
-  const buttonTextStyle = {
-    
-    activeStepIconBorderColor: '#308CFF',
-    completedProgressBarColor: '#308CFF',
-    completedStepIconColor: '#308CFF',
-    
-  };
+  const [errores, setErrores] = useState({
+    peso: '', 
+    talla: '', 
+    ta: '', 
+    fc: '', 
+    fr: '', 
+    t: '', 
+    motivoC: '', 
+    medidaH: '', 
+    salud: '', 
+    padecimientoA: '', 
+    tratamientoM: '', 
+    medicamentoDroga: '', 
+    alergico: '',
+    hospitalizado: ''  ,
+  });
   
   const [isSelected, setSelected] = useState({
     colitis: false,
@@ -44,142 +71,338 @@ export default function FormCrearE({ navigation }) {
       [condition]: !prevState[condition],
     }));
   };
+  
+  const handleInputChange = (e, value) => {
 
+    if (e === 'peso') {
+      value = value.replace(/\D/g, ''); 
+      if (value.length > 3) {
+        setErrores(prevErrores => ({
+          ...prevErrores,
+          peso: 'La peso debe estar entre 20 y 120 kg',
+        }));
+        return; 
+      }
+    }
+
+    if (e === 'talla') {
+      value = value.replace(/\D/g, ''); 
+      if (value.length > 3) {
+        setErrores(prevErrores => ({
+          ...prevErrores,
+          talla: 'La talla debe estar entre 50 y 250 cm',
+        }));
+        return; 
+      }
+    }
+
+    if (e === 'ta') {
+      value = value.replace(/[^\d/]/g, ''); 
+      if (value.length > 6) {
+        setErrores(prevErrores => ({
+          ...prevErrores,
+          ta: 'T.A. debe estar en formato 120/80',
+        }));
+        return; 
+      }
+    }
+
+    if (e === 'fc') {
+      value = value.replace(/[^\d/]/g, ''); 
+      if (value.length > 3) {
+        setErrores(prevErrores => ({
+          ...prevErrores,
+          fc: 'F.C. debe estar entre 40 y 200 lpm',
+        }));
+        return; 
+      }
+    }
+
+    if (e === 'fr') {
+      value = value.replace(/[^\d/]/g, ''); 
+      if (value.length > 2) {
+        setErrores(prevErrores => ({
+          ...prevErrores,
+          fr: 'F.R. debe estar entre 8 y 40 respiraciones por minuto',
+        }));
+        return; 
+      }
+    }
+
+    if (e === 't') {
+      value = value.replace(/[^\d/]/g, ''); 
+      if (value.length > 2) {
+        setErrores(prevErrores => ({
+          ...prevErrores,
+        t: 'T debe estar entre 8 y 40 respiraciones por minuto',
+        }));
+        return; 
+      }
+    }
+
+    if (e === 'motivoC' || e === 'medidaH' || e === 'salud' || e === 'padecimientoA' || 
+      e === 'tratamientoM' || e === 'medicamentoDroga' || e === 'alergico' || e === 'hospitalizado') {
+      
+        value = value.replace(/\d/g, '');
+      if (value.length > 20) {
+        setErrores(prevErrores => ({
+          ...prevErrores,
+        t: 'No puedes ',
+        }));
+        return; 
+      }
+    }
+
+    const nuevoStepData = { ...stepData, [e]: value };
+    setStepData(nuevoStepData);
+
+    const erroresValidacion = validarFormCE(
+      nuevoStepData.peso,
+      nuevoStepData.talla,
+      nuevoStepData.ta,
+      nuevoStepData.fc,
+      nuevoStepData.fr,
+      nuevoStepData.t,
+      nuevoStepData.motivoC,
+      nuevoStepData.medidaH,
+      nuevoStepData.salud,
+      nuevoStepData.padecimientoA,
+      nuevoStepData.tratamientoM,
+      nuevoStepData.medicamentoDroga,
+      nuevoStepData.alergico,
+      nuevoStepData.hospitalizado,
+    );
+  
+    const todosCamposLlenos = nuevoStepData.peso && nuevoStepData.talla && nuevoStepData.ta &&
+      nuevoStepData.fc && nuevoStepData.fr && nuevoStepData.t && nuevoStepData.motivoC && 
+      nuevoStepData.medidaH && nuevoStepData.salud && nuevoStepData.padecimientoA &&
+      nuevoStepData.tratamientoM && nuevoStepData.medicamentoDroga && nuevoStepData.alergico &&
+      nuevoStepData.hospitalizado 
+
+    if (todosCamposLlenos) {
+      setErrores(erroresValidacion);
+    } else {
+      setErrores(prevErrores => ({
+        ...prevErrores,
+        [e]: erroresValidacion[e] || '',
+      }));
+    }
+  };
+
+  const handleNextStep1 = () => {
+    const erroresPaso1 = validarFormCE(
+      stepData.peso,
+      stepData.talla,
+      stepData.ta,
+      stepData.fc,
+      stepData.fr,
+      stepData.t,
+      stepData.motivoC,
+      stepData.medidaH,
+      stepData.salud,
+      stepData.padecimientoA,
+      stepData.tratamientoM,
+      stepData.medicamentoDroga,
+      stepData.alergico,
+      stepData.hospitalizado
+    );
+
+    if (Object.keys(erroresPaso1).length > 0) {
+      setErrores(erroresPaso1);
+      Alert.alert('Error', 'Por favor, completa todos los campos correctamente.');
+      return false;
+    }
+    return true; // Permite avanzar al paso 2
+  };
+
+  const handleFinalSubmit = () => {
+    console.log('Datos enviados:', stepData);
+    console.log(errores);
+    const erroresPaso1 = validarFormCE(
+      stepData.peso,
+      stepData.talla,
+      stepData.ta,
+      stepData.fc,
+      stepData.fr,
+      stepData.t,
+      stepData.motivoC,
+      stepData.medidaH,
+      stepData.salud,
+      stepData.padecimientoA,
+      stepData.tratamientoM,
+      stepData.medicamentoDroga,
+      stepData.alergico,
+      stepData.hospitalizado,
+    );
+
+    if (Object.keys(erroresPaso1).length > 0) {
+        setErrores(erroresPaso1);
+        Alert.alert('Error', 'Por favor, completa todos los campos correctamente.');
+        return false;
+    } else {
+        navigation.navigate('ExpedienteLista');
+    }
+
+};
+
+  const buttonTextStyle = {
+    
+    activeStepIconBorderColor: '#308CFF',
+    completedProgressBarColor: '#308CFF',
+    completedStepIconColor: '#308CFF',
+    
+  };
+  
   return (
     <ScrollView>
       <Header title={'Crear expediente'} showLogo={false} onPress={() => navigation.goBack()} point={''}/>
       <View style={styles.cont}>
         <ProgressSteps {...buttonTextStyle}>
           {/* Progreso 1 */}
-          <ProgressStep nextBtnText="Siguiente">
+          <ProgressStep nextBtnText="Siguiente"
+            onNext={handleNextStep1}
+            nextBtnDisabled={Object.keys(errores).length > 0 || !stepData.peso || !stepData.talla ||
+              !stepData.ta || !stepData.fc || !stepData.fr || !stepData.t || !stepData.motivoC ||
+              !stepData.medidaH || !stepData.salud || !stepData.padecimientoA || !stepData.tratamientoM ||
+              !stepData.medicamentoDroga || !stepData.alergico || !stepData.hospitalizado
+            }
+          >
             <View style={styles.context}>
               <Text style={styles.text}>Historia médica</Text>
             </View>
             <View style={styles.stepContent}>
               <View style={styles.contenS}>
                 <View style={styles.inputContainer}>
-                  <Text style={styles.labelI}>Peso</Text>
+                  <Text style={styles.labelI}>Peso (Kg)</Text>
                   <TextInput
                     style={styles.inputI}
-                    inputMode='text'
-                    // value={step1Data.name}
-                    // onChangeText={text => setStep1Data({ ...step1Data, name: text })}
+                    value={stepData.peso}
+                    onChangeText={(value) => handleInputChange('peso', value )}
                   />
+                  {errores.peso && <Text style={{ color: 'red' }}>{errores.peso}</Text>}
+
                 </View>
                 <View style={styles.inputContainer}>
-                  <Text style={styles.labelI}>Talla</Text>
+                  <Text style={styles.labelI}>Talla (cm)</Text>
                   <TextInput
                     style={styles.inputI}
-                    inputMode='text'
-                    // value={step1Data.address}
-                    // onChangeText={text => setStep1Data({ ...step1Data, address: text })}
+                    value={stepData.talla}
+                    onChangeText={(value) => handleInputChange('talla', value )}
                   />
+                  {errores.talla && <Text style={{ color: 'red' }}>{errores.talla}</Text>}
+
                 </View>
                 <View style={styles.inputContainer}>
                   <Text style={styles.labelI}>T.A</Text>
                   <TextInput
                     style={styles.inputI}
-                    inputMode='text'
-                    // value={step1Data.address}
-                    // onChangeText={text => setStep1Data({ ...step1Data, address: text })}
+                    value={stepData.ta}
+                    onChangeText={(value) => handleInputChange('ta', value )}
                   />
+                  {errores.ta && <Text style={{ color: 'red' }}>{errores.ta}</Text>}
+
                 </View>
                 <View style={styles.inputContainer}>
                   <Text style={styles.labelI}>F.C</Text>
                   <TextInput
                     style={styles.inputI}
-                    inputMode='text'
-                    // value={step1Data.address}
-                    // onChangeText={text => setStep1Data({ ...step1Data, address: text })}
+                    value={stepData.fc}
+                    onChangeText={(value) => handleInputChange('fc', value )}
                   />
+                  {errores.fc && <Text style={{ color: 'red' }}>{errores.fc}</Text>}
+
                 </View>
                 <View style={styles.inputContainer}>
                   <Text style={styles.labelI}>F.R</Text>
                   <TextInput
                     style={styles.inputI}
-                    inputMode='text'
-                    // value={step1Data.address}
-                    // onChangeText={text => setStep1Data({ ...step1Data, address: text })}
+                    value={stepData.fr}
+                    onChangeText={(value) => handleInputChange('fr', value )}
                   />
+                  {errores.fr && <Text style={{ color: 'red' }}>{errores.fr}</Text>}
+
                 </View>
                 <View style={styles.inputContainer}>
                   <Text style={styles.labelI}>T</Text>
                   <TextInput
                     style={styles.inputI}
-                    inputMode='text'
-                    // value={step1Data.address}
-                    // onChangeText={text => setStep1Data({ ...step1Data, address: text })}
+                    value={stepData.t}
+                    onChangeText={(value) => handleInputChange('t', value )}
                   />
+                  {errores.t && <Text style={{ color: 'red' }}>{errores.t}</Text>}
+
                 </View>
               </View>
               <Text style={styles.label}>¿Motivo de la consulta?</Text>
               <TextInput
                 style={styles.input}
-                inputMode='text'
-                // value={step1Data.address}
-                // onChangeText={text => setStep1Data({ ...step1Data, address: text })}
+                value={stepData.motivoC}
+                onChangeText={(value) => handleInputChange('motivoC', value )}
               />
+              {errores.motivoC && <Text style={{ color: 'red', marginTop: -15, marginBottom: 10 }}>{errores.motivoC}</Text>}
+
               <Text style={styles.label}>¿Qué medida de higiene oral acostumbra?</Text>
               <TextInput
                 style={styles.input}
-                inputMode='text'
-                // value={step1Data.address}
-                // onChangeText={text => setStep1Data({ ...step1Data, address: text })}
+                value={stepData.medidaH}
+                onChangeText={(value) => handleInputChange('medidaH', value )}
               />
+              {errores.medidaH && <Text style={{ color: 'red', marginTop: -15, marginBottom: 10 }}>{errores.medidaH}</Text>}
+
               <Text style={styles.label}>¿Cómo se encuentra usted de salud?</Text>
               <TextInput
                 style={styles.input}
-                inputMode='text'
-                // value={step1Data.address}
-                // onChangeText={text => setStep1Data({ ...step1Data, address: text })}
+                value={stepData.salud}
+                onChangeText={(value) => handleInputChange('salud', value )}
               />
+              {errores.salud && <Text style={{ color: 'red', marginTop: -15, marginBottom: 10 }}>{errores.salud}</Text>}
+
               <Text style={styles.label}>¿Padecimiento actual?</Text>
               <TextInput
                 style={styles.input}
-                inputMode='text'
-                // value={step1Data.address}
-                // onChangeText={text => setStep1Data({ ...step1Data, address: text })}
+                value={stepData.padecimientoA}
+                onChangeText={(value) => handleInputChange('padecimientoA', value )}
               />
+              {errores.padecimientoA && <Text style={{ color: 'red', marginTop: -15, marginBottom: 10 }}>{errores.padecimientoA}</Text>}
+
               <Text style={styles.label}>¿Esta bajo tratamiento médico?</Text>
               <TextInput
                 style={styles.input}
-                inputMode='text'
-                // value={step1Data.address}
-                // onChangeText={text => setStep1Data({ ...step1Data, address: text })}
+                value={stepData.tratamientoM}
+                onChangeText={(value) => handleInputChange('tratamientoM', value )}
               />
-              <Text style={styles.label}>¿Padecimiento actual?</Text>
-              <TextInput
-                style={styles.input}
-                inputMode='text'
-                // value={step1Data.address}
-                // onChangeText={text => setStep1Data({ ...step1Data, address: text })}
-              />
+              {errores.tratamientoM && <Text style={{ color: 'red', marginTop: -15, marginBottom: 10 }}>{errores.tratamientoM}</Text>}
+
               <Text style={styles.label}>¿Está tomando un tipo de medicamento o droga?</Text>
               <TextInput
                 style={styles.input}
-                inputMode='text'
-                // value={step1Data.address}
-                // onChangeText={text => setStep1Data({ ...step1Data, address: text })}
+                value={stepData.medicamentoDroga}
+                onChangeText={(value) => handleInputChange('medicamentoDroga', value )}
               />
+              {errores.medicamentoDroga && <Text style={{ color: 'red', marginTop: -15, marginBottom: 10 }}>{errores.medicamentoDroga}</Text>}
+
               <Text style={styles.label}>
                 ¿Es Ud. alérgico o intolerante a los medicamentos, 
                 alimentos u otras sustancias?
               </Text>
               <TextInput
                 style={styles.input}
-                inputMode='text'
-                // value={step1Data.address}
-                // onChangeText={text => setStep1Data({ ...step1Data, address: text })}
+                value={stepData.alergico}
+                onChangeText={(value) => handleInputChange('alergico', value )}
               />
+              {errores.alergico && <Text style={{ color: 'red', marginTop: -15, marginBottom: 10 }}>{errores.alergico}</Text>}
+
               <Text style={styles.label}>¿Ha sido hospitalizado quirúrgicamente?</Text>
               <TextInput
                 style={styles.input}
-                inputMode='text'
-                // value={step1Data.address}
-                // onChangeText={text => setStep1Data({ ...step1Data, address: text })}
+                value={stepData.hospitalizado}
+                onChangeText={(value) => handleInputChange('hospitalizado', value )}
               />
+              {errores.hospitalizado && <Text style={{ color: 'red', marginTop: -15, marginBottom: 10 }}>{errores.hospitalizado}</Text>}
+
             </View>
           </ProgressStep>
+
           {/* Progreso 2 */}
           <ProgressStep previousBtnText="Anterior" nextBtnText="Siguiente"
           previousBtnStyle={styles.botonAnterior}>
@@ -230,6 +453,7 @@ export default function FormCrearE({ navigation }) {
               />
             </View>
           </ProgressStep>
+
           {/* Progreso 3*/}
           <ProgressStep previousBtnText="Anterior" nextBtnText="Siguiente"
           previousBtnStyle={styles.botonAnterior}>
@@ -266,6 +490,7 @@ export default function FormCrearE({ navigation }) {
               />
             </View>
           </ProgressStep>
+
           {/* Progreso 4*/}
           <ProgressStep previousBtnText="Anterior" nextBtnText="Siguiente"
           previousBtnStyle={styles.botonAnterior}>
@@ -399,10 +624,13 @@ export default function FormCrearE({ navigation }) {
               
             </View>
           </ProgressStep>
+
           {/* Progreos 5 */}
           <ProgressStep previousBtnText="Anterior" finishBtnText="Guardar" 
-          onSubmit={() => navigation.navigate('TabNavigator', { screen: 'Home' })}
-          previousBtnStyle={styles.botonAnterior}>
+            previousBtnStyle={styles.botonAnterior}
+            onSubmit={handleFinalSubmit}
+            nextBtnDisabled={Object.keys(errores).length > 0}
+          >
             <View style={styles.stepContent}>
               <View style={styles.context}>
                 <Text style={styles.text}>Exploración de la cavidad oral</Text>

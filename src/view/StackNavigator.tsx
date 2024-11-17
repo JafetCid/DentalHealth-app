@@ -34,18 +34,15 @@ const StackNavigator = () => {
       <Stack.Screen name="StepperD" component={StepperD} />
       <Stack.Screen name="StepperP" component={StepperP} />
       <Stack.Screen name="HomeP" component={Home1} />
-      {/* <Stack.Screen name="Promociones" component={Promociones}/> */}
       <Stack.Screen name="CrearP" component={CrearPromocion} />
       <Stack.Screen name="PerfilD" component={PerfilD} />
       <Stack.Screen name="PerfilP" component={PerfilP} />
       <Stack.Screen name="DentalHealth" component={DentalHealthScreen} /> 
       <Stack.Screen name="AgendaScreen" component={AgendaScreen} />
       <Stack.Screen name="CrearExpediente" component={FormCrearE} />
-      {/* <Stack.Screen name='Pacientes' component={Patients}/> */}
       <Stack.Screen name='Chat' component={Chat}/>
       <Stack.Screen name='TabNavigator' component={TabNavigator}/>
       <Stack.Screen name='ExamenAdult' component={DentalExamScreen}/>
-      {/* <Stack.Screen name='Agenda' component={Agenda1} /> */}
       <Stack.Screen name='Pdetalles' component={PatientsDetalles}/>
       {/*<Stack.Screen name='ExpedientList' component={ExpedienteList} />*/}
       <Stack.Screen name='ExamDent' component={ExamenesDentalesScreen}/>
@@ -53,8 +50,8 @@ const StackNavigator = () => {
       {/* <Stack.Screen name='Examen' component={VerDentalExamScreen}/> */}
       <Stack.Screen name='VerExpedienteM' component={VerExpedienteM}/>
       <Stack.Screen name='VerExamenD' component={VerExamenDental}/>
+      {/* <Stack.Screen name='ExpedienteDental' component={ExpedienteDentales}/> */}
       <Stack.Screen name='CardPerfilP' component={CardPerfilP}/>
-
       
       <Stack.Screen name='TabNav'component={TabNavigator1}/>
     </Stack.Navigator>

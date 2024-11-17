@@ -18,7 +18,7 @@ const StepperP = ({ navigation }) => {
         telefono: '',
         direccion: '',
         procedencia: '',
-        correo: '',
+        email: '',
         password: '',
         confirmPassword: '',
     });
@@ -31,18 +31,35 @@ const StepperP = ({ navigation }) => {
         telefono: '',
         direccion: '',
         procedencia: '',
-        correo: '',
+        email: '',
         password: '',
         confirmPassword: '',
     });
 
     const handleInputChange = (e, value) => {
         // Prevenir números en los campos nombre, apellidos y ocupación
-        if (e === 'nombre' || e === 'apellidos' || e === 'ocupacion') {
-            value = value.replace(/\d/g, ''); // Eliminar números
+        if (e === 'nombre') {
+            value = value.replace(/\d/g, '');
+            if (value.length > 20) {
+                setErrores(prevErrores => ({
+                    ...prevErrores,
+                    nombre: 'El nombre no puede tener más de 20 caracteres.',
+                }));
+                return; 
+            }
+        }
+
+        if (e === 'apellidos') {
+            value = value.replace(/\d/g, '');
+            if (value.length > 20) {
+                setErrores(prevErrores => ({
+                    ...prevErrores,
+                    apellidos: 'Los apellidos no puede tener más de 20 caracteres.',
+                }));
+                return; 
+            }
         }
         
-        // Limitar el campo de teléfono a 10 dígitos
         if (e === 'telefono') {
             value = value.replace(/\D/g, ''); // Eliminar cualquier carácter que no sea un dígito
             if (value.length > 10) {
@@ -78,6 +95,11 @@ const StepperP = ({ navigation }) => {
     };
 
     const handleInputChange2 = (e, value) => {
+
+        if (e === 'procedencia') {
+            value = value.replace(/\d/g, ''); // Eliminar números
+        }
+
         // Primero, actualizamos el estado con el nuevo valor de stepData
         const nuevoStepData = { ...stepData, [e]: value };
         setStepData(nuevoStepData); // Actualizamos el estado de forma directa
@@ -85,13 +107,13 @@ const StepperP = ({ navigation }) => {
         const erroresValidacion = validarPaso2P(
             nuevoStepData.direccion,
             nuevoStepData.procedencia,
-            nuevoStepData.correo,
+            nuevoStepData.email,
             nuevoStepData.password,
             nuevoStepData.confirmPassword,
         );
          // Verificar si todos los campos están llenos
-        const todosCamposLlenos = nuevoStepData.direccion && nuevoStepData.correo && 
-            nuevoStepData.procedencia && nuevoStepData.password && nuevoStepData.confirmPassword;
+        const todosCamposLlenos = nuevoStepData.direccion && nuevoStepData.procedencia && 
+            nuevoStepData.email  && nuevoStepData.password && nuevoStepData.confirmPassword;
 
         if (todosCamposLlenos) {
             setErrores(erroresValidacion);
@@ -112,29 +134,32 @@ const StepperP = ({ navigation }) => {
             stepData.telefono
         );
         if (Object.keys(erroresPaso1).length > 0) {
-            console.log(erroresPaso1);
             setErrores(erroresPaso1);
             Alert.alert('Error', 'Por favor, completa todos los campos correctamente.');
             return false;
         }
         return true; // Permite avanzar al paso 2
     };
-
+    
     const handleFinalSubmit = () => {
+        console.log('Datos enviados:', stepData);
+        console.log(errores);
         const erroresPaso2 = validarPaso2P(
             stepData.direccion,
-            stepData.correo,
             stepData.procedencia,
+            stepData.email,
             stepData.password,
             stepData.confirmPassword
         );
+
         if (Object.keys(erroresPaso2).length > 0) {
             setErrores(erroresPaso2);
-            console.log(stepData.correo)
             Alert.alert('Error', 'Por favor, completa todos los campos correctamente.');
             return false;
+        } else {
+            navigation.navigate('TabNavigator', { screen: 'Home' });
         }
-        navigation.navigate('TabNavigator', { screen: 'Home' });
+
     };
     
     const buttonTextStyle = {
@@ -142,8 +167,6 @@ const StepperP = ({ navigation }) => {
         completedProgressBarColor: '#308CFF',
         completedStepIconColor: '#308CFF', 
     };
-
-    
 
     return (
 
@@ -155,9 +178,11 @@ const StepperP = ({ navigation }) => {
                         {/* Progreso 1 */}
                         <ProgressStep nextBtnText="Siguiente"
                             nextBtnStyle={styles.botonSiguiente}
-                            onNext={handleNextStep1} // Valida antes de avanzar al siguiente paso
+                            onNext={handleNextStep1}
                             previousBtnStyle={styles.botonAnterior}
-                            nextBtnDisabled={Object.keys(errores).length > 0 || !stepData.nombre || !stepData.apellidos || !stepData.genero || !stepData.dateOfBirth || !stepData.telefono}  // Deshabilitar si hay errores o campos vacíos
+                            nextBtnDisabled={Object.keys(errores).length > 0 || !stepData.nombre || 
+                                !stepData.apellidos || !stepData.genero || !stepData.dateOfBirth || 
+                                !stepData.telefono}
                         >
                         <View style={styles.context}>
                             <Text style={styles.text}>Datos personales</Text>
@@ -257,10 +282,10 @@ const StepperP = ({ navigation }) => {
                                 <Text style={styles.label}>Correo electrónico</Text>
                                 <TextInput
                                     style={styles.input}
-                                    value={stepData.correo}
-                                    onChangeText={(value) => handleInputChange2('correo', value)}
+                                    value={stepData.email}
+                                    onChangeText={(value) => handleInputChange2('email', value)}
                                 />
-                                {errores.correo && <Text style={{ color: 'red' }}>{errores.correo}</Text>}
+                                {errores.email && <Text style={{ color: 'red' }}>{errores.email}</Text>}
 
                                 <Text style={styles.label}>Contraseña</Text>
                                     <TextInput

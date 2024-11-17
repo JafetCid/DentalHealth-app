@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap', 
     width: '100%',
+    marginBottom: 10,
   },
   inputContainer: {
     width: '45%',
