@@ -11,7 +11,7 @@ import InputDate from '../components/InputDate';
 import InputImage from '../components/InputImage';
 import * as DocumentPicker from 'expo-document-picker'
 import { useNavigation } from '@react-navigation/native';;
-import { validarPaso1, validarPaso2 } from '../../utils/StepperD';
+import { validarPaso1, validarPaso2 } from '../../utils/Validation';
 
 const StepperD = () => {
   
@@ -21,6 +21,7 @@ const StepperD = () => {
     apellidos: '', 
     genero: '', 
     telefono: '',
+    dateOfBirth: '',
     licenciatura: '',
     cedulaProfesional: '',
     especialidad: '', 
@@ -32,17 +33,20 @@ const StepperD = () => {
     apellidos: '', 
     genero: '', 
     telefono: '',
+    dateOfBirth: '',
     licenciatura: '',
     cedulaProfesional: '',
     especialidad: '', 
     cedulaEspecialidad: '',
   });
-  
-  const [FormValid, setFormValid] = useState(1);
 
-  const handleInputChange = (nombre, value) => {
+  const handleInputChange = (e, value) => {
+    if (e === 'nombre' || e === 'apellidos' || e === 'ocupacion') {
+      value = value.replace(/\d/g, ''); // Eliminar números
+    }
+    setStepData({ ...stepData, [e]: value });
     // Primero, actualizamos el estado con el nuevo valor de stepData
-    const nuevoStepData = { ...stepData, [nombre]: value };
+    const nuevoStepData = { ...stepData, [e]: value };
     setStepData(nuevoStepData); // Actualizamos el estado de forma directa
   
     // Después de actualizar el estado, validamos el campo actualizado
@@ -50,54 +54,33 @@ const StepperD = () => {
       nuevoStepData.nombre,
       nuevoStepData.apellidos,
       nuevoStepData.genero,
-      nuevoStepData.telefono
+      nuevoStepData.telefono,
+      nuevoStepData.dateOfBirth,
     );
   
     // Establecer solo el error del campo que se está modificando
     setErrores((prevErrores) => ({
       ...prevErrores,
-      [nombre]: erroresValidacion[nombre] || '', // Actualiza solo el campo específico
+      [e]: erroresValidacion[e] || '', // Actualiza solo el campo específico
     }));
   };
   
-  // Valida todos los campos del paso actual
-  const validarStep = () => {
-    let erroresValidacion = {};
+  const [isNextDisabled, setIsNextDisabled] = useState(false);
 
-    if (FormValid === 1){
-      const erroresValidacion = validarPaso1(
-        stepData.nombre,
-        stepData.apellidos,
-        stepData.genero,
-        stepData.telefono
-      );
-    }
-    if (FormValid === 2){
-      const erroresValidacion = validarPaso2(
-        stepData.licenciatura,
-        stepData.cedulaProfesional,
-        stepData.especialidad,
-        stepData.cedulaEspecialidad
-      );
-    }
-    // setErrores(erroresValidacion); // Actualiza todos los errores
+  const onNextStep = () => {
+     // Validar todos los campos antes de continuar
+     const erroresValidacion = validarPaso1(
+      stepData.nombre,
+      stepData.apellidos,
+      stepData.genero,
+      stepData.telefono,
+      stepData.dateOfBirth
+    );
 
-    return Object.keys(erroresValidacion).length === 0;
+    setErrores(erroresValidacion);
+    setIsNextDisabled(Object.values(erroresValidacion).some(error => error));
   };
 
-  const nextStep = () => {
-    if (validarStep()) {
-      setFormValid((prevFormValid) => prevFormValid + 1);
-    } else {
-      Alert.alert('Error', 'Por favor corrija los errores antes de continuar.');
-    }
-  };
-
-  const prevStep = () => {
-    if (FormValid > 1) {
-        setFormValid(FormValid - 1);
-    }
-  };
 
   const buttonTextStyle = {
     activeStepIconBorderColor: '#308CFF',
@@ -137,9 +120,10 @@ const StepperD = () => {
           <ProgressSteps style={styles.stepContent} {...buttonTextStyle}>
             {/* Progreso 1 */}
             {/* {FormValid === 1 && ( */}
-              <ProgressStep nextBtnText="Siguiente"  
+              <ProgressStep nextBtnText="Siguiente"
                 nextBtnStyle={styles.botonSiguiente}
-                onNext={nextStep}
+                onNext={onNextStep}
+                isNextDisabled={isNextDisabled}
                 >
                 <View style={styles.context}>
                   <Text style={styles.text}>Datos personales</Text>
@@ -177,7 +161,13 @@ const StepperD = () => {
                   {errores.genero && <Text style={{ color: 'red' }}>{errores.genero}</Text>}
                   
                   {/* input de fecha */}
-                  <InputDate/>
+                  <InputDate
+                     dateOfBirth={stepData.dateOfBirth}
+                     setDateOfBirth={(value) => handleInputChange('dateOfBirth', value)}
+                     errorMessage={errores.dateOfBirth}
+                    //  setErrorMessage={(message) => handleInputChange('dateOfBirth', message)}
+                  />
+                   
 
                   <Text style={styles.label}>Telefono</Text>
                   <TextInput

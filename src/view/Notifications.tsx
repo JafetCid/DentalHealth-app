@@ -54,14 +54,7 @@ export default function NotificationScreen() {
     </TouchableOpacity>
   );
 
-  if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#308CFF" />
-        <Text style={styles.loadingText}>Cargando notificaciones...😉</Text>
-      </View>
-    );
-  }
+  //  
 
   return (
     <View style={styles.container}>

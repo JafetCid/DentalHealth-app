@@ -87,7 +87,13 @@ const styles = StyleSheet.create({
     info: {
         padding: 5,
     },
-    
+    infoContCardCake: {
+        fontSize: 18,
+        marginBottom: 10,
+        flexDirection: 'row',
+        width: '100%',
+        right: 4,
+    },
     infoContCard: {
         fontSize: 18,
         marginBottom: 10,

@@ -64,7 +64,7 @@ export const CardPerfilP = ({ navigation, showElipse = false, showHeader = true,
                     </Modal>
                 }
                 <View style={styles.info}>
-                    <View style={styles.infoContCard}>
+                    <View style={styles.infoContCardCake}>
                         <View style={styles.iconCard}>
                             <FontAwesome5 name="birthday-cake" size={24} color="black" />
                         </View>
