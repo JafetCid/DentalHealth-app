@@ -30,7 +30,8 @@ export default function Login ({ navigation }) {
             setErrores({});
             // Aquí puedes manejar la lógica para enviar los datos al servidor o API
             Alert.alert("Login exitoso", "Usuario autenticado correctamente");
-            navigation.navigate('TabNavigator', { screen: 'Home' });
+            // navigation.navigate('TabNavigator', { screen: 'Home' });
+            navigation.navigate('TabNav', { screen: 'Home1' });
         }
     };
 
@@ -92,7 +93,7 @@ export default function Login ({ navigation }) {
                             <Text style={styles.linkR}>Aviso de privacidad</Text>
                         </TouchableOpacity>
                     </View>
-                    <GoogleIconButton/>
+                    {/* <GoogleIconButton/> */}
                 </View> 
             </View>
         </ScrollView>

@@ -12,6 +12,7 @@ import InputImage from '../components/InputImage';
 import * as DocumentPicker from 'expo-document-picker'
 import { useNavigation } from '@react-navigation/native';;
 import { validarPaso1, validarPaso2, validarPaso3 } from '../../utils/Validation';
+import { formatDate } from 'date-fns';
 
 const StepperD = () => {
   
@@ -22,21 +23,30 @@ const StepperD = () => {
     genero: null, 
     dateOfBirth: '',
     telefono: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
     licenciatura: '',
     cedulaProfesional: '',
     especialidad: '', 
     cedulaEspecialidad: '',
     nombreConsultorio: '',
     direccion: '', 
-    archivoAutorizacion: '',
+    archivoAutorizacion: null,
+    profilePicture: null,
+    clinicLogo: null
   });
+
 
   const [errores, setErrores] = useState({
     nombre: '', 
     apellidos: '', 
-    genero: null, 
+    genero: '', 
     dateOfBirth: '',
     telefono: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
     licenciatura: '',
     cedulaProfesional: '',
     especialidad: '', 
@@ -44,6 +54,8 @@ const StepperD = () => {
     nombreConsultorio: '',
     direccion: '', 
     archivoAutorizacion: '',
+    profilePicture: '',
+    clinicLogo: ''
   });
 
   const handleInputChange = (e, value) => {
@@ -58,6 +70,7 @@ const StepperD = () => {
         return; // No actualiza el estado si excede el límite de caracteres
       }
     }
+    
     if (e === 'apellidos') {
       value = value.replace(/\d/g, '');
       if (value.length > 20) {
@@ -86,10 +99,14 @@ const StepperD = () => {
       nuevoStepData.genero,
       nuevoStepData.dateOfBirth,
       nuevoStepData.telefono,
+      nuevoStepData.email,
+      nuevoStepData.password,
+      nuevoStepData.confirmPassword,
     );
   
     const todosCamposLlenos = nuevoStepData.nombre && nuevoStepData.apellidos && 
-      nuevoStepData.genero  && nuevoStepData.dateOfBirth && nuevoStepData.telefono
+      nuevoStepData.genero  && nuevoStepData.dateOfBirth && nuevoStepData.telefono &&
+      nuevoStepData.email && nuevoStepData.password && nuevoStepData.confirmPassword
 
     if (todosCamposLlenos) {
       setErrores(erroresValidacion);
@@ -113,6 +130,7 @@ const StepperD = () => {
         return; // No actualiza el estado si excede el límite de caracteres
       }
     }
+
     if (e === 'especialidad') {
       value = value.replace(/\d/g, '');
       if (value.length > 30) {
@@ -183,11 +201,11 @@ const StepperD = () => {
     const erroresValidacion = validarPaso3(
       nuevoStepData.nombreConsultorio,
       nuevoStepData.direccion,
-      nuevoStepData.archivoAutorizacion
+      // nuevoStepData.archivoAutorizacion
     );
   
-    const todosCamposLlenos = nuevoStepData.nombreConsultorio && nuevoStepData.direccion && 
-      nuevoStepData.archivoAutorizacion
+    const todosCamposLlenos = nuevoStepData.nombreConsultorio && nuevoStepData.direccion
+      // nuevoStepData.archivoAutorizacion
 
     if (todosCamposLlenos) {
       setErrores(erroresValidacion);
@@ -205,7 +223,10 @@ const StepperD = () => {
       stepData.apellidos, 
       stepData.genero, 
       stepData.dateOfBirth, 
-      stepData.telefono
+      stepData.telefono,
+      stepData.email,
+      stepData.password,
+      stepData.confirmPassword,
     );
 
     if (Object.keys(erroresPaso1).length > 0) {
@@ -232,12 +253,12 @@ const StepperD = () => {
     return true;
   };
 
-  const handleFinalSubmit = () => {
+  const handleFinalSubmit = async () => {
     console.log('Datos enviados:', stepData);
     const erroresPaso3 = validarPaso3(
       stepData.nombreConsultorio,
       stepData.direccion,
-      stepData.archivoAutorizacion
+      // stepData.archivoAutorizacion
     );
     
     if (Object.keys(erroresPaso3).length > 0) {
@@ -246,10 +267,85 @@ const StepperD = () => {
       Alert.alert('Error', 'Por favor, completa todos los campos correctamente.');
       return false;
     } else {
-      console.log('errores djdjdjjdjd',erroresPaso3);
-      navigation.navigate('TabNav', { screen: 'Home1' });
-    }
+      // navigation.navigate('TabNav', { screen: 'Home1' });
+      // Crear una instancia de FormData
+      const formDataToSend = new FormData();
 
+      // Agregar los campos de texto
+      formDataToSend.append('name', stepData.nombre);
+      formDataToSend.append('lastName', stepData.apellidos);
+      formDataToSend.append('gender', stepData.genero);
+      formDataToSend.append('birthDate', stepData.dateOfBirth);
+      formDataToSend.append('phoneNumber', stepData.telefono);
+      formDataToSend.append('email', stepData.email);
+      formDataToSend.append('password', stepData.password);
+      // formDataToSend.append('confirmPassword', stepData.confirmPassword);
+      formDataToSend.append('degree', stepData.licenciatura);
+      formDataToSend.append('professionalLicense', stepData.cedulaProfesional);
+      formDataToSend.append('specialty', stepData.especialidad);
+      formDataToSend.append('specialtyLicense', stepData.cedulaEspecialidad);
+      formDataToSend.append('clinicName', stepData.nombreConsultorio);
+      formDataToSend.append('clinicAddress', stepData.direccion);
+      // formDataToSend.append('authorizationFile', stepData.archivoAutorizacion);
+
+      // Agregar los archivos opcionales
+      // Subir la imagen de perfil
+      if (stepData.profilePicture) {
+        const imageName = stepData.profilePicture.split('/').pop();
+        const imageType = stepData.profilePicture.endsWith('.png') ? 'image/png' : 'image/jpeg';
+        formDataToSend.append('profilePicture', {
+          uri: stepData.profilePicture,
+          name: imageName,
+          type: imageType,
+        });
+      }
+
+      // Subir el logo de la clínica si está presente
+      if (stepData.clinicLogo) {
+        const logoName = stepData.clinicLogo.split('/').pop();
+        const logoType = stepData.clinicLogo.endsWith('.png') ? 'image/png' : 'image/jpeg';
+        formDataToSend.append('clinicLogo', {
+          uri: stepData.clinicLogo,
+          name: logoName,
+          type: logoType,
+        });
+      }
+      
+      if (stepData.archivoAutorizacion) {
+          formDataToSend.append('archivoAutorizacion', stepData.archivoAutorizacion);
+      }
+      
+      try {
+          // Enviar el formulario al servidor
+          const response = await fetch('http://192.168.0.113:5000/api/auth/registerDoctor', {
+              method: 'POST',
+              body: formDataToSend,  // Enviar el objeto FormData
+          });
+
+          if (response.ok) {
+              console.log('Formulario enviado con éxito');
+              console.log(formDataToSend);
+
+              // Redirigir al login
+              navigation.navigate('TabNav', { screen: 'Home1' });
+              // router.push('/');
+
+          } else {
+            console.error('Error al enviar el formulario');
+            console.log(formDataToSend);
+            // setErrors((prevErrors) => ({
+            //     ...prevErrors,
+            //     general: 'Error al enviar el formulario. Inténtalo de nuevo.',
+            // }));
+          }
+      } catch (error) {
+          console.error('Error en la solicitud:', error);
+          // setErrors((prevErrors) => ({
+          //     ...prevErrors,
+          //     general: Ocurrió un error al enviar la solicitud. ${error},
+          // }));
+      }
+    }
   };
 
   const buttonTextStyle = {
@@ -259,31 +355,30 @@ const StepperD = () => {
   };
 
   //manejo del nombre del archivo
-  const pickDocument = async () => {
-    try {
-      const result = await DocumentPicker.getDocumentAsync({
-        type: 'application/pdf', // Permite seleccionar solo PDF
-      });
+  // const pickDocument = async () => {
+  //   try {
+  //     const result = await DocumentPicker.getDocumentAsync({
+  //       type: 'application/pdf', // Permite seleccionar solo PDF
+  //     });
       
-      if (result.canceled) {
-        // Si el usuario cancela, limpia el campo de archivo
-        handleInputChange3('archivoAutorizacion', ''); // Llamamos a handleInputChange3
-      } else if (result.assets && result.assets.length > 0) {
-        const { name } = result.assets[0];
-        // Si el usuario selecciona un archivo, actualizamos el estado
-        handleInputChange3('archivoAutorizacion', name); // Llamamos a handleInputChange3
-      }
-    } catch (err) {
-      console.error('Error al seleccionar el archivo:', err);
-      // Si hay un error al seleccionar el archivo, lo mostramos
-      handleInputChange3('archivoAutorizacion', ''); // Llamamos a handleInputChange3 para limpiar
-      setErrores(prevState => ({ ...prevState, archivoAutorizacion: 'Ocurrió un error al seleccionar el archivo.' }));
-    }
-  };
-  
+  //     if (result.canceled) {
+  //       // Si el usuario cancela, limpia el campo de archivo
+  //       handleInputChange3('archivoAutorizacion', ''); // Llamamos a handleInputChange3
+  //     } else if (result.assets && result.assets.length > 0) {
+  //       const { name } = result.assets[0];
+  //       // Si el usuario selecciona un archivo, actualizamos el estado
+  //       handleInputChange3('archivoAutorizacion', name); // Llamamos a handleInputChange3
+  //     }
+  //   } catch (err) {
+  //     console.error('Error al seleccionar el archivo:', err);
+  //     // Si hay un error al seleccionar el archivo, lo mostramos
+  //     handleInputChange3('archivoAutorizacion', ''); // Llamamos a handleInputChange3 para limpiar
+  //     setErrores(prevState => ({ ...prevState, archivoAutorizacion: 'Ocurrió un error al seleccionar el archivo.' }));
+  //   }
+  // };
   
   return (
-
+    
     <ScrollView>
       <View style={styles.container}>
         <Header title={'Crear Cuenta'} showLogo={false} onPress={() => navigation.goBack()} point={''}/>
@@ -295,8 +390,8 @@ const StepperD = () => {
               nextBtnStyle={styles.botonSiguiente}
               onNext={handleNextStep1}
               nextBtnDisabled={Object.keys(errores).length > 0 || !stepData.nombre || 
-                !stepData.apellidos || !stepData.genero || !stepData.dateOfBirth || !stepData.telefono
-              }
+                !stepData.apellidos || !stepData.genero || !stepData.dateOfBirth || !stepData.telefono || 
+                !stepData.email || !stepData.password || !stepData.confirmPassword}
             >
               <View style={styles.context}>
                 <Text style={styles.text}>Datos personales</Text>
@@ -305,7 +400,6 @@ const StepperD = () => {
                 <Text style={styles.label}>Nombre</Text>
                 <TextInput
                   style={styles.input}
-                  inputMode='text'
                   value={stepData.nombre}
                   onChangeText={(value) => handleInputChange('nombre', value)}
                 />
@@ -314,7 +408,6 @@ const StepperD = () => {
                 <Text style={styles.label}>Apellidos</Text>
                 <TextInput
                   style={styles.input}
-                  inputMode='text'
                   value={stepData.apellidos}
                   onChangeText={(value) => handleInputChange('apellidos', value)}
                 />
@@ -351,7 +444,34 @@ const StepperD = () => {
                 {errores.telefono && <Text style={{ color: 'red' }}>{errores.telefono}</Text>}
                 
                 {/* Input de fotografia */}
-                <InputImage/>
+                <InputImage onImageSelect={(image) => setStepData((prevData) => ({
+                    ...prevData,
+                    profilePicture: image.uri, // O puedes almacenar más información si es necesario
+                }))}/>
+
+                <Text style={styles.label}>Correo electrónico</Text>
+                <TextInput
+                  style={styles.input}
+                  value={stepData.email}
+                  onChangeText={(value) => handleInputChange('email', value)}
+                />
+                {errores.email && <Text style={{ color: 'red' }}>{errores.email}</Text>}
+
+                <Text style={styles.label}>Contraseña</Text>
+                <TextInput
+                  style={styles.input}
+                  value={stepData.password}
+                  onChangeText={(value) => handleInputChange('password', value)}
+                />
+                {errores.password && <Text style={{ color: 'red' }}>{errores.password}</Text>}
+
+                <Text style={styles.label}>Confirmar contraseña</Text>
+                    <TextInput
+                    style={styles.input}
+                    value={stepData.confirmPassword}
+                    onChangeText={(value) => handleInputChange('confirmPassword', value)}
+                />
+                {errores.confirmPassword && <Text style={{ color: 'red' }}>{errores.confirmPassword}</Text>}
 
               </View>
             </ProgressStep>
@@ -425,7 +545,10 @@ const StepperD = () => {
                 {errores.nombreConsultorio && <Text style={{ color: 'red' }}>{errores.nombreConsultorio}</Text>}
 
                 {/* Input de fotografia */}
-                <InputImage/>
+                <InputImage onImageSelect={(image) => setStepData((prevData) => ({
+                    ...prevData,
+                    clinicLogo: image.uri, // O puedes almacenar más información si es necesario
+                }))}/>
                 
                 <Text style={styles.label}>Dirección del consultorio</Text>
                 <TextInput
@@ -435,7 +558,7 @@ const StepperD = () => {
                 />
                 {errores.direccion && <Text style={{ color: 'red' }}>{errores.direccion}</Text>}
 
-                <Text style={styles.label}>Archivo de autorización</Text>
+                {/* <Text style={styles.label}>Archivo de autorización</Text>
                 <View style= {styles.contIA}>
                   <ButtonIn 
                     buttonStyle={{backgroundColor: '#F7F7F7', width:'100%'}}
@@ -445,7 +568,7 @@ const StepperD = () => {
                   <MaterialCommunityIcons name="paperclip" size={24} color="black" style={styles.iconClip} />
                 </View>
                 <Text style={styles.nameFile}>{stepData.archivoAutorizacion}</Text>
-                {errores.archivoAutorizacion && <Text style={{ color: 'red', marginTop: -20 }}>{errores.archivoAutorizacion}</Text>}
+                {errores.archivoAutorizacion && <Text style={{ color: 'red', marginTop: -20 }}>{errores.archivoAutorizacion}</Text>} */}
               </View>
             </ProgressStep>
           </ProgressSteps>

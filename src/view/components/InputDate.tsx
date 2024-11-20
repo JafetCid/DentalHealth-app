@@ -82,6 +82,7 @@ export default function InputDate ({ dateOfBirth, setDateOfBirth, errorMessage }
                         style={styles.input}
                         value={dateOfBirth}
                         editable={false}
+                        inputMode='numeric'
                     />
                     <View style={pickerSelectStyles.contIcon}>
                         <Icon name="arrow-drop-down" size={24} color="black" />

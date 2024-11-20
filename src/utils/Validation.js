@@ -20,8 +20,19 @@ export const validateLogin = (email, password) => {
   return errores;
 };
 
+
 // Validacion del stepDentista
-export const validarPaso1 = (nombre, apellidos, genero, dateOfBirth,  telefono) => {
+export const validarPaso1 = (
+  nombre, 
+  apellidos, 
+  genero, 
+  dateOfBirth,  
+  telefono,
+  email,
+  password,
+  confirmPassword,
+  profilePicture
+) => {
   const errores = {};
 
   // Validar solo el campo específico si se proporciona, o todos los campos si no se proporciona uno específico
@@ -76,6 +87,19 @@ export const validarPaso1 = (nombre, apellidos, genero, dateOfBirth,  telefono) 
     if (isNaN(inputDate.getTime())) {
       errores.dateOfBirth = 'La fecha ingresada no es válida';
     }
+
+    if (!email){
+      errores.email = 'El correo electrónico es obligatorio.';
+    } 
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errores.email = 'El correo electrónico es inválido.';
+    }
+    
+  
+    if (!password) errores.password = 'La contraseña es obligatoria.';
+    else if (password.length < 6) errores.password = 'La contraseña debe tener al menos 6 caracteres.';
+  
+    if (password !== confirmPassword) errores.confirmPassword = 'Las contraseñas no coinciden.';
   }
 
 return errores;
@@ -111,7 +135,7 @@ export const validarPaso2 = (licenciatura, cedulaProfesional, especialidad, cedu
   return errores;
 };
 
-export const validarPaso3 = (nombreConsultorio, direccion, archivoAutorizacion) => {
+export const validarPaso3 = (nombreConsultorio, direccion, archivoAutorizacion, clinicLogo) => {
   const errores = {};
 
   // Validación de nombre del consultorio
@@ -131,13 +155,14 @@ export const validarPaso3 = (nombreConsultorio, direccion, archivoAutorizacion) 
   }
 
   // Validación de archivo de autorización
-  if (!archivoAutorizacion) {
-      errores.archivoAutorizacion = 'Debe seleccionar un archivo de autorización';
-  }
+  // if (!archivoAutorizacion) {
+  //     errores.archivoAutorizacion = 'Debe seleccionar un archivo de autorización';
+  // }
 
   return errores;
 };
   
+
 //Validacion del stepPaciente
 export const validarPaso1P = (nombre, apellidos, genero, dateOfBirth, telefono) => {
   const errores = {};
@@ -223,9 +248,10 @@ export const validarPaso2P = ( direccion, procedencia, email, password, confirmP
   return errores;
 };
 
-//Validacion Formulario Crear Expediente
 
+//Validacion Formulario Crear Expediente
 export const validarFormCE = (peso, talla, ta, fc, fr, t, motivoC, medidaH, salud, padecimientoA, tratamientoM, medicamentoDroga, alergico, hospitalizado) => {
+  
   const errores = {}
 
   if (!peso) {

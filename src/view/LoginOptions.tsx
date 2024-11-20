@@ -31,7 +31,7 @@ export default function LoginOptions({ navigation }) {
             buttonStyle={{ borderColor: '#308CFF', borderWidth: 1, marginTop: 15 }}
             onPress={() => navigation.navigate('Login')} // Redirige a la pantalla de login
           />
-          <GoogleIconButton />
+          {/* <GoogleIconButton /> */}
         </View>
         <StatusBar style="auto" />
       </View>
