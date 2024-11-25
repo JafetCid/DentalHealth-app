@@ -12,7 +12,7 @@ import InputImage from '../components/InputImage';
 import * as DocumentPicker from 'expo-document-picker'
 import { useNavigation } from '@react-navigation/native';;
 import { validarPaso1, validarPaso2, validarPaso3 } from '../../utils/Validation';
-import { formatDate } from 'date-fns';
+import * as FileSystem from 'expo-file-system';
 
 const StepperD = () => {
   
@@ -297,7 +297,7 @@ const StepperD = () => {
           uri: stepData.profilePicture,
           name: imageName,
           type: imageType,
-        });
+        }as unknown as Blob);
       }
 
       // Subir el logo de la clínica si está presente
@@ -308,42 +308,32 @@ const StepperD = () => {
           uri: stepData.clinicLogo,
           name: logoName,
           type: logoType,
-        });
+        }as unknown as Blob);
       }
       
       if (stepData.archivoAutorizacion) {
-          formDataToSend.append('archivoAutorizacion', stepData.archivoAutorizacion);
+        formDataToSend.append('archivoAutorizacion', stepData.archivoAutorizacion);
       }
       
       try {
-          // Enviar el formulario al servidor
-          const response = await fetch('http://192.168.0.113:5000/api/auth/registerDoctor', {
-              method: 'POST',
-              body: formDataToSend,  // Enviar el objeto FormData
-          });
+        // Enviar el formulario al servidor
+        const response = await fetch('http://192.168.0.113:5000/api/auth/registerDoctor', {
+          method: 'POST',
+          body: formDataToSend,  // Enviar el objeto FormData
+        });
 
-          if (response.ok) {
-              console.log('Formulario enviado con éxito');
-              console.log(formDataToSend);
+        if (response.ok) {
+          console.log('Formulario enviado con éxito');
+          console.log(formDataToSend);
 
-              // Redirigir al login
-              navigation.navigate('TabNav', { screen: 'Home1' });
-              // router.push('/');
+          navigation.navigate('TabNav', { screen: 'Home1' });
 
-          } else {
-            console.error('Error al enviar el formulario');
-            console.log(formDataToSend);
-            // setErrors((prevErrors) => ({
-            //     ...prevErrors,
-            //     general: 'Error al enviar el formulario. Inténtalo de nuevo.',
-            // }));
-          }
+        } else {
+          console.error('Error al enviar el formulario');
+          console.log(formDataToSend);
+        }
       } catch (error) {
-          console.error('Error en la solicitud:', error);
-          // setErrors((prevErrors) => ({
-          //     ...prevErrors,
-          //     general: Ocurrió un error al enviar la solicitud. ${error},
-          // }));
+        console.error('Error en la solicitud:', error);
       }
     }
   };
@@ -354,7 +344,7 @@ const StepperD = () => {
     completedStepIconColor: '#308CFF', 
   };
 
-  //manejo del nombre del archivo
+  // manejo del nombre del archivo
   // const pickDocument = async () => {
   //   try {
   //     const result = await DocumentPicker.getDocumentAsync({

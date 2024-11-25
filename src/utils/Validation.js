@@ -3,11 +3,10 @@ export const validateLogin = (email, password) => {
   const errores = {};
 
   // Validar el formato del correo
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!email) {
-    errores.email = "El correo es obligatorio.";
-  } else if (!emailRegex.test(email)) {
-    errores.email = "El formato del correo no es válido.";
+  if (!email){
+    errores.email = 'El correo electrónico es obligatorio.';
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    errores.email = 'El correo electrónico es inválido.';
   }
 
   // Validar contraseña
@@ -164,7 +163,7 @@ export const validarPaso3 = (nombreConsultorio, direccion, archivoAutorizacion, 
   
 
 //Validacion del stepPaciente
-export const validarPaso1P = (nombre, apellidos, genero, dateOfBirth, telefono) => {
+export const validarPaso1P = (nombre, apellidos, genero, dateOfBirth, telefono, profilePicture) => {
   const errores = {};
 
   if (!nombre) {
@@ -216,12 +215,24 @@ export const validarPaso1P = (nombre, apellidos, genero, dateOfBirth, telefono) 
   return errores;
 };
 
-export const validarPaso2P = ( direccion, procedencia, email, password, confirmPassword) => {
+export const validarPaso2P = ( estadoC, ocupacion, direccion, procedencia, email, password, confirmPassword) => {
    
   const errores = {};
 
+  if (!estadoC) {
+    errores.estadoC = 'El estado civil es obligatorio';
+  }else if (estadoC.length < 15) {
+    errores.estadoC = 'La dirección no puede tener menos de 15 caracteres';
+  }
+
+  if (!ocupacion) {
+    errores.ocupacion = 'La ocupacion es obligatorio';
+  } else if (ocupacion.length < 15) {
+    errores.ocupacion = 'La dirección no puede tener menos de 15 caracteres';
+  }
+  
   if (!direccion) {
-    errores.direccion = 'La dirección del consultorio es obligatoria';
+    errores.direccion = 'La dirección es obligatoria';
   } else if (direccion.length < 15) {
     errores.direccion = 'La dirección no puede tener menos de 15 caracteres';
   }
@@ -239,7 +250,6 @@ export const validarPaso2P = ( direccion, procedencia, email, password, confirmP
     errores.email = 'El correo electrónico es inválido.';
   }
   
-
   if (!password) errores.password = 'La contraseña es obligatoria.';
   else if (password.length < 6) errores.password = 'La contraseña debe tener al menos 6 caracteres.';
 
@@ -266,12 +276,11 @@ export const validarFormCE = (peso, talla, ta, fc, fr, t, motivoC, medidaH, salu
     errores.talla = 'La talla debe estar entre 50 y 250 cm';
   }
 
-  const taRegex = /^\d{2,3}\/\d{2,3}$/; // Formato como "120/80"
+  // const taRegex = /^\d{2,3}\/\d{2,3}$/; // Formato como "120/80"
   if (!ta) {
     errores.ta = 'T.A es obligatoria';
-  } else if (!ta || !taRegex.test(ta)) {
-      errores.ta = 'T.A. debe estar en formato "120/80';
   }
+  
 
   if (!fc) {
     errores.fc = 'F.C es obligatoria';

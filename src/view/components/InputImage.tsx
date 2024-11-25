@@ -35,7 +35,7 @@ export default function InputImage({ onImageSelect }) {
             onImageSelect({
                 uri: selectedImage.uri,
                 name: selectedImage.fileName,  // Pasar el nombre del archivo
-                type: selectedImage.type || 'image/jpeg', // Asegúrate de asignar el tipo de archivo
+                type: selectedImage.type || 'image/jpg', // Asegúrate de asignar el tipo de archivo
             });
 
         }

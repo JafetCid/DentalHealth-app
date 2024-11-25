@@ -16,24 +16,30 @@ const StepperP = ({ navigation }) => {
         genero: null,
         dateOfBirth: '',
         telefono: '',
-        direccion: '',
-        procedencia: '',
+        profilePicture: null,
         email: '',
         password: '',
         confirmPassword: '',
+        estadoC: null,
+        ocupacion: null,
+        direccion: '',
+        procedencia: '',
     });
 
     const [errores, setErrores] = useState({
         nombre: '',
         apellidos: '',
-        genero: null,
+        genero: '',
         dateOfBirth: '',
         telefono: '',
-        direccion: '',
-        procedencia: '',
+        profilePicture: '',
         email: '',
         password: '',
         confirmPassword: '',
+        estadoC: '',
+        ocupacion: '',
+        direccion: '',
+        procedencia: '',
     });
 
     const handleInputChange = (e, value) => {
@@ -98,6 +104,13 @@ const StepperP = ({ navigation }) => {
 
         if (e === 'procedencia') {
             value = value.replace(/\d/g, ''); // Eliminar números
+            if (value.length > 30) {
+                setErrores(prevErrores => ({
+                  ...prevErrores,
+                  licenciatura: 'La procendencia no puede tener más de 30 caracteres.',
+                }));
+                return; // No actualiza el estado si excede el límite de caracteres
+            }
         }
 
         // Primero, actualizamos el estado con el nuevo valor de stepData
@@ -105,6 +118,8 @@ const StepperP = ({ navigation }) => {
         setStepData(nuevoStepData); // Actualizamos el estado de forma directa
         
         const erroresValidacion = validarPaso2P(
+            nuevoStepData.estadoC,
+            nuevoStepData.ocupacion,
             nuevoStepData.direccion,
             nuevoStepData.procedencia,
             nuevoStepData.email,
@@ -112,8 +127,9 @@ const StepperP = ({ navigation }) => {
             nuevoStepData.confirmPassword,
         );
          // Verificar si todos los campos están llenos
-        const todosCamposLlenos = nuevoStepData.direccion && nuevoStepData.procedencia && 
-            nuevoStepData.email  && nuevoStepData.password && nuevoStepData.confirmPassword;
+        const todosCamposLlenos = nuevoStepData.estadoC && nuevoStepData.ocupacion && nuevoStepData.direccion 
+            && nuevoStepData.procedencia && nuevoStepData.email  && nuevoStepData.password && 
+            nuevoStepData.confirmPassword;
 
         if (todosCamposLlenos) {
             setErrores(erroresValidacion);
@@ -141,10 +157,12 @@ const StepperP = ({ navigation }) => {
         return true; // Permite avanzar al paso 2
     };
     
-    const handleFinalSubmit = () => {
+    const handleFinalSubmit = async () => {
         console.log('Datos enviados:', stepData);
         console.log(errores);
         const erroresPaso2 = validarPaso2P(
+            stepData.estadoC,
+            stepData.ocupacion,
             stepData.direccion,
             stepData.procedencia,
             stepData.email,
@@ -153,11 +171,59 @@ const StepperP = ({ navigation }) => {
         );
 
         if (Object.keys(erroresPaso2).length > 0) {
+            console.log('Datos enviados:', stepData);
             setErrores(erroresPaso2);
             Alert.alert('Error', 'Por favor, completa todos los campos correctamente.');
             return false;
         } else {
-            navigation.navigate('TabNavigator', { screen: 'Home' });
+
+            const formDataToSend = new FormData();
+
+            // Agregar los campos de texto
+            formDataToSend.append('name', stepData.nombre);
+            formDataToSend.append('lastName', stepData.apellidos);
+            formDataToSend.append('gender', stepData.genero);
+            formDataToSend.append('birthDate', stepData.dateOfBirth);
+            formDataToSend.append('phoneNumber', stepData.telefono);
+            formDataToSend.append('email', stepData.email);
+            formDataToSend.append('password', stepData.password);
+            formDataToSend.append('maritalStatus', stepData.estadoC);
+            formDataToSend.append('occupation', stepData.ocupacion);
+            formDataToSend.append('address', stepData.direccion);
+            formDataToSend.append('origin', stepData.procedencia);
+        
+            if (stepData.profilePicture) {
+                const imageName = stepData.profilePicture.split('/').pop();
+                const imageType = stepData.profilePicture.endsWith('.png') ? 'image/png' : 'image/jpeg';
+                formDataToSend.append('profilePicture', {
+                  uri: stepData.profilePicture,
+                  name: imageName,
+                  type: imageType,
+                }as unknown as Blob);
+            }
+
+            try {
+                // Enviar el formulario al servidor
+                const response = await fetch('http://192.168.0.113:5000/api/auth/registerPatient', {
+                    method: 'POST',
+                    body: formDataToSend,  // Enviar el objeto FormData
+                });
+      
+                if (response.ok) {
+                    console.log('Formulario enviado con éxito');
+                    console.log(formDataToSend);
+                    console.log('Datos enviados:', stepData);
+                    
+                    navigation.navigate('TabNavigator', { screen: 'Home' });
+                    // navigation.navigate('TabNav', { screen: 'Home1' });
+      
+                } else {
+                  console.error('Error al enviar el formulario');
+                  console.log(formDataToSend);
+                }
+            } catch (error) {
+                console.error('Error en la solicitud:', error);
+            }
         }
 
     };
@@ -238,7 +304,10 @@ const StepperP = ({ navigation }) => {
                             {errores.telefono && <Text style={{ color: 'red' }}>{errores.telefono}</Text>}
 
                             {/* Input de fotografia */}
-                            <InputImage/>
+                            <InputImage onImageSelect={(image) => setStepData((prevData) => ({
+                                ...prevData,
+                                profilePicture: image.uri, // O puedes almacenar más información si es necesario
+                            }))}/>
                         </View>
                         </ProgressStep>
                         {/* Progreso 2 */}
@@ -257,12 +326,19 @@ const StepperP = ({ navigation }) => {
                                 <Text style={styles.label}>Estado civil (Opcional)</Text>
                                 <TextInput
                                     style={styles.input}
-                                    inputMode='text'
+                                    value={stepData.estadoC}
+                                    onChangeText={(value) => handleInputChange2('estadoC', value)}
                                 />
+                                {errores.estadoC && <Text style={{ color: 'red' }}>{errores.estadoC}</Text>}
+
                                 <Text style={styles.label}>Ocupación (Opcional)</Text>
                                 <TextInput
                                     style={styles.input}
+                                    value={stepData.ocupacion}
+                                    onChangeText={(value) => handleInputChange2('ocupacion', value)}
                                 />
+                                {errores.ocupacion && <Text style={{ color: 'red' }}>{errores.ocupacion}</Text>}
+
                                 <Text style={styles.label}>Dirección</Text>
                                 <TextInput
                                     style={styles.input}

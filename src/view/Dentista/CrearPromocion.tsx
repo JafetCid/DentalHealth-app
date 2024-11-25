@@ -8,7 +8,7 @@ export default function CrearPromocion({ navigation }) {
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [promotionalImage, setImage] = useState(null);
+    const [promotionalImage, setPromotionalImage] = useState(null);
 
     const handleSave = async () => {
 
@@ -18,19 +18,18 @@ export default function CrearPromocion({ navigation }) {
         
         if (promotionalImage) {
             const imageName = promotionalImage.split('/').pop();
-            // Determinar el tipo de imagen (JPEG o PNG según la extensión)
             const imageType = promotionalImage.endsWith('.png') ? 'image/png' : 'image/jpeg';
-            
             // Agregar la imagen al FormData
             formDataToSend.append('promotionalImage', {
                 uri: promotionalImage,
                 name: imageName,
                 type: imageType,
-            });
+            }as unknown as Blob);
+            console.log(promotionalImage)
         }
 
         try {
-            const response = await fetch('http://192.168.0.113:5000/api/promotion/create/1', {
+            const response = await fetch('https://dental-health-api.onrender.com/api/promotion/create/1', {
                 method: 'POST',
                 body: formDataToSend,
             });
@@ -68,7 +67,7 @@ export default function CrearPromocion({ navigation }) {
                             value={description}
                             onChangeText={setDescription}
                         />
-                        <InputImage onImageSelect={setImage}/>
+                        <InputImage onImageSelect={(image) => setPromotionalImage(image.uri)}/>
                         <ButtonIn buttonStyle={{backgroundColor: '#308CFF', width:'100%', marginBottom: '10%'}}
                             Title={'Guardar'} textStyle={{color: 'white'}}
                             onPress={handleSave}/>

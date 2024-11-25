@@ -3,9 +3,9 @@ import styles from '../../assets/styles/Login';
 import Header from "./components/Header";
 import React, { useState } from 'react';
 import ButtonIn from './components/ButtonIn';
-import GoogleIconButton from './components/GoogleIconB';
 import { Checkbox } from 'react-native-paper';
 import { validateLogin } from '../utils/Validation';
+import AsyncStorage from '@react-native-async-storage/async-storage'; 
 
 export default function Login ({ navigation }) {
 
@@ -16,22 +16,93 @@ export default function Login ({ navigation }) {
     type Errores = {
         email?: string; // Clave opcional
         password?: string; // Clave opcional
-      };
+    };
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errores, setErrores] = useState<Errores>({});
-
-
-    const handleLogin = () => {
+      
+    const handleLogin = async () => {
         const validationErrores = validateLogin(email, password);
         if (Object.keys(validationErrores).length > 0) {
             setErrores(validationErrores);
         } else {
-            setErrores({});
+            
+
+            try {
+                const response = await fetch('http://192.168.0.113:5000/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password,
+                    }),
+                });
+                
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Manejar el éxito del login
+                    Alert.alert('Login exitoso', 'Has iniciado sesión correctamente.');
+                    await AsyncStorage.setItem('token', data.token);
+
+                    // navigation.navigate('TabNavigator', { screen: 'Home' });
+                    navigation.navigate('TabNav', { screen: 'Home1' });
+
+                } else {
+                    // Manejar errores de autenticación
+                    Alert.alert('Error', data.message || 'Credenciales incorrectas');
+                }
+                // const data = await response.json();
+    
+                // if (response.ok) {
+                //     // Si el login es exitoso, guarda el token en las cookies
+                //     await CookieManager.set({
+                //         name: 'token',
+                //         value: data.token,
+                //         domain: '192.168.0.113',
+                //         path: '/',
+                //         version: '1',
+                //         expiration: '2025-12-31T23:59:59.999Z', // La fecha de expiración del token
+                //     });
+        
+                //     // Luego de guardar el token, redirige dependiendo del rol del usuario
+                //     const userInfoResponse = await fetch('http://192.168.0.113:5000/api/auth/userInfo', {
+                //         method: 'GET',
+                //         headers: {
+                //             'Authorization': `Bearer ${data.token}`, // Usar el token para obtener los datos del usuario
+                //         },
+                //     });
+        
+                //     const userInfo = await userInfoResponse.json();
+        
+                //     if (userInfoResponse.ok) {
+                //         // Verifica el rol y redirige a la vista correspondiente
+                //         if (userInfo.role === 'patient') {
+                //             navigation.navigate('TabNavigator', { screen: 'Home' });
+                //         } else if (userInfo.role === 'doctor') {
+                //             navigation.navigate('TabNav', { screen: 'Home1' });
+                //         } else {
+                //             Alert.alert('Error', 'Rol no reconocido');
+                //         }
+                //     } else {
+                //         Alert.alert('Error', userInfo.message || 'No se pudo obtener la información del usuario.');
+                //     }
+        
+                // } else {
+                //     // Si las credenciales son incorrectas, muestra un mensaje
+                //     Alert.alert('Error', data.message || 'Credenciales incorrectas');
+                // }
+            } catch (error) {
+                // Manejar errores de red u otros problemas
+                console.error('Error en la solicitud:', error);
+                Alert.alert('Error', 'Hubo un problema con la solicitud. Inténtalo más tarde.');
+            }
             // Aquí puedes manejar la lógica para enviar los datos al servidor o API
-            Alert.alert("Login exitoso", "Usuario autenticado correctamente");
-            // navigation.navigate('TabNavigator', { screen: 'Home' });
-            navigation.navigate('TabNav', { screen: 'Home1' });
+            // Alert.alert("Login exitoso", "Usuario autenticado correctamente");
+            // navigation.navigate('TabNav', { screen: 'Home1' });
         }
     };
 
@@ -55,6 +126,7 @@ export default function Login ({ navigation }) {
                             style={styles.input}
                             value={email}
                             onChangeText={setEmail}
+                            autoCapitalize='none'
                         />
                         {errores.email ? <Text style={{color: 'red'}}>{errores.email}</Text> : null}
                     
