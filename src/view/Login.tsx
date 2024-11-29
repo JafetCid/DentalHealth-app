@@ -30,7 +30,7 @@ export default function Login ({ navigation }) {
             
 
             try {
-                const response = await fetch('http://192.168.0.113:5000/api/auth/login', {
+                const response = await fetch('http://192.168.0.119:5000/api/auth/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
