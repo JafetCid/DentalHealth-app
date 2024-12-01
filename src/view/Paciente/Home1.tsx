@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from 'react';
 import {
   View,
   StyleSheet,
@@ -48,13 +48,50 @@ const TabBarIcon = ({ name, color }) => {
 };
 
 function Home1() {
+
+  interface Promotion {
+    promotionalImageUrl: string;
+    title: string;
+    description: string;
+  }
+
+  const [data, setData] = useState<Promotion[] | null>(null);
+  const [error, setError] = useState('');
+  const [imageDimensions, setImageDimensions] = useState<{ width: number, height: number } | null>(null);
+
+  const calculateImageStyle = (dimensions: { width: number, height: number }) => {
+    const ratio = dimensions.width / dimensions.height;
+    if (ratio > 1) {
+      // Imagen más ancha que alta, ajusta al ancho
+      return { width: screenWidth * 0.8, height: 300 }; // Usamos un valor numérico para el ancho
+    } else {
+      // Imagen más alta que ancha, ajusta a la altura
+      return { width: 'auto', height: 300 };
+    }
+  };
+
+
+  useEffect(() => {
+    // Función para hacer la solicitud GET
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://192.168.0.119:5000/api/promotion/get');
+        if (!response.ok) {
+          throw new Error('Error en la solicitud');
+        }
+
+        const data = await response.json(); // Convierte la respuesta en un objeto JSON
+        setData(data); // Guarda los datos en el estado
+      } catch (error) {
+        setError(error.message); // Guarda el error en el estado
+      }
+    };
+
+    fetchData(); // Llama a la función fetchData cuando se monta el componente
+    console.log(data);
+  }, []);
+
   const navigation = useNavigation(); // Use navigation hook
-  const data = [
-    { id: 1, image: require("../../../assets/images/imageHome.png") },
-    { id: 2, image: require("../../../assets/images/sukuna.jpeg") },
-    { id: 3, image: require("../../../assets/images/Gojo.jpeg") },
-    { id: 4, image: require("../../../assets/images/logo.png") },
-  ];
 
   const handlePress = (item) => {
     // navigation.navigate("Promociones", { promotionId: item.id });
@@ -63,40 +100,51 @@ function Home1() {
   return (
     <View style={styles.container}>
       <ScrollView>
-        <Header title={""} showArrow={false} showP={true} onPress={""} point={'PerfilP'}/>
+        <Header title={""} showArrow={false} showP={true} onPress={""} point={'PerfilP'} />
         <View style={styles.content}>
-          {/* <Text style={styles.textT}>Bienvenido</Text>
-          <Text style={styles.textT}>Doctor [Nombre del Paciente]</Text> */}
-          
-
+          <Text style={styles.textT}>Bienvenido</Text>
+          <Text style={styles.textT}>[Nombre del Paciente]</Text>
           {/* Carrusel */}
-          <Carousel
-            loop
-            width={screenWidth * 0.8}
-            height={200}
-            style={styles.carousel}
-            autoPlay={true}
-            autoPlayInterval={3000}
-            data={data}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                style={styles.carouselItem}
-                onPress={() => handlePress(item)}
-              >
-                <Image source={item.image} style={styles.carouselImage} />
-              </TouchableOpacity>
-            )}
-          />
-
-          <Text style={styles.textS}>Promoción</Text>
-          <Text style={styles.descripcionS}>descripción</Text>
-
-          <View style={styles.contTextL}>
-            <Text style={styles.textL}>"Tu sonrisa, nuestra prioridad. Agenda tu cita fácilmente con nuestra app dental."</Text>
-            <Text style={styles.textL2}>Nuestra aplicación está diseñada para ser intuitiva y fácil de usar. 
-              Desde cualquier lugar y en cualquier momento, puedes programar, modificar o cancelar tus citas.</Text>
-          </View>
-          
+          {data && data.length > 0 ? (
+            <Carousel
+              loop
+              width={screenWidth * 0.8}
+              height={470}
+              style={styles.carousel}
+              autoPlay={true}
+              autoPlayInterval={3000}
+              data={data}
+              renderItem={({ item }: { item: Promotion }) => (
+                <View style={styles.contenImageC}>
+                  <TouchableOpacity
+                    style={styles.carouselItem}
+                    onPress={() => handlePress(item)}
+                  >
+                    <Image
+                      source={{ uri: item.promotionalImageUrl }}
+                      style={[
+                        styles.carouselImage,
+                        imageDimensions
+                          ? calculateImageStyle(imageDimensions)
+                          : { width: screenWidth * 0.8, height: 300 }
+                      ]}
+                      onLoad={(e) => {
+                        const { width, height } = e.nativeEvent.source;
+                        setImageDimensions({ width, height });
+                      }}
+                      resizeMode="contain"
+                    />
+                  </TouchableOpacity>
+                  <View style={styles.textPromo}>
+                    <Text style={styles.textS}>{item.title}</Text>
+                    <Text style={styles.descripcionS}>{item.description}</Text>
+                  </View>
+                </View>
+              )}
+            />
+          ) : (
+            <Text>No hay datos</Text>
+          )}
         </View>
       </ScrollView>
     </View>
@@ -108,7 +156,7 @@ export default function TabNavigator() {
 
   return (
     <Tab.Navigator
-    initialRouteName="Home" 
+      initialRouteName="Home"
       screenOptions={({ route }) => ({
         tabBarActiveTintColor: Colors[colorScheme ?? "dark"].tint,
         tabBarInactiveTintColor: Colors[colorScheme ?? "dark"].tabIconDefault,
@@ -157,7 +205,7 @@ export default function TabNavigator() {
           title: "Home",
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="home" color={color} />
-        ),
+          ),
         }}
       />
       <Tab.Screen
@@ -193,8 +241,15 @@ const styles = StyleSheet.create({
   content: {
     alignItems: "center",
   },
+  textT: {
+    fontSize: 24,
+    marginBottom: 10,
+  },
   carousel: {
-    marginBottom: 20,
+    marginBottom: 10,
+  },
+  contenImageC: {
+    height: '100%',
   },
   carouselItem: {
     borderRadius: 10,
@@ -206,25 +261,16 @@ const styles = StyleSheet.create({
     height: '100%',
     resizeMode: "cover",
   },
+  textPromo: {
+    alignSelf: 'center',
+  },
   textS: {
     fontSize: 18,
     fontWeight: 'bold',
     alignSelf: 'center',
   },
   descripcionS: {
-    alignSelf: 'center',
+    textAlign: 'center',
     fontSize: 16,
-  },
-  contTextL: {
-    width: '90%',
-    marginTop: 30,
-    alignItems: 'center',
-  },
-  textL:{
-    fontSize:18,
-    marginBottom: 20,
-  },
-  textL2:{
-    fontSize:15,
   },
 });

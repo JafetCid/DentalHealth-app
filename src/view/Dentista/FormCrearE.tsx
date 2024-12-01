@@ -364,7 +364,7 @@ export default function FormCrearE({ navigation }) {
 
       try {
         // Enviar el formulario al servidor
-        const response = await fetch('http://192.168.0.113:5000/api/medicalForm/register/6', {
+        const response = await fetch('http://192.168.0.119:5000/api/medicalForm/register/6', {
           method: 'POST',
           body: formDataToSend,  // Enviar el objeto FormData
         });
