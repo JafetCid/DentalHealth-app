@@ -1,42 +1,50 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { Menu, Provider } from 'react-native-paper';
 import Header from './components/Header';
+import { API_URL } from '@env';
 
-const Patients = ({navigation}) => {
-  const [patients, setPatients] = useState([
-    { name: 'Alvarez', lastAppointment: '26/05/2024', id: 'A' },
-    { name: 'Arguello', lastAppointment: '26/05/2024', id: 'B' },
-    { name: 'Bolaños', lastAppointment: '26/05/2024', id: 'C' },
-    { name: 'Castillo', lastAppointment: '26/05/2024', id: 'D' },
-    { name: 'Cid', lastAppointment: '26/05/2024', id: 'E' },
-    { name: 'Duran', lastAppointment: '26/05/2024', id: '1' },
-    { name: 'Espinoza', lastAppointment: '26/05/2024', id: '2' },
-    { name: 'Martinez', lastAppointment: '26/05/2024', id: '3' },
-    { name: 'Marreros', lastAppointment: '26/05/2024', id: '4' },
-    { name: 'Muñoz', lastAppointment: '26/05/2024', id: '5' },
-    { name: 'Merchant', lastAppointment: '26/05/2024', id: '6' },
-  ]);
+const Patients = ({ navigation }) => {
 
+  const [patients, setPatients] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedLetter, setSelectedLetter] = useState(null);
   const [menuVisible, setMenuVisible] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${API_URL}/api/auth/getPatient`); // URL de la API
+        if (!response.ok) {
+          throw new Error('Error en la solicitud');
+        }
+        const data = await response.json(); // Convierte la respuesta en un objeto JSON
+        setPatients(data); // Guarda los datos en el estado
+        // console.log(data);
+
+      } catch (error) {
+        console.log('Error:', error);
+      }
+    };
+
+    fetchData()
+  }, [])
 
   const handleSearch = (text) => {
     setSearchQuery(text);
   };
 
   const filteredPatients = patients.filter((patient) =>
-    patient.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-    (selectedLetter ? patient.name[0].toUpperCase() === selectedLetter : true)
+    patient.Login.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+    (selectedLetter ? patient.Login.name[0].toUpperCase() === selectedLetter : true)
   );
 
   // Agrupar pacientes por letras
   const groupByLetter = (patients) => {
     const grouped = {};
     patients.forEach((patient) => {
-      const firstLetter = patient.name[0].toUpperCase();
+      const firstLetter = patient.Login.name[0].toUpperCase();
       if (!grouped[firstLetter]) {
         grouped[firstLetter] = [];
       }
@@ -47,6 +55,7 @@ const Patients = ({navigation}) => {
 
   const groupedPatients = groupByLetter(filteredPatients);
 
+
   const openMenu = (patientId) => {
     setMenuVisible(patientId);
   };
@@ -55,13 +64,13 @@ const Patients = ({navigation}) => {
     setMenuVisible(null);
   };
 
-  const contactPatient = () => {
-    navigation.navigate('Chat');
+  const contactPatient = (id) => {
+    navigation.navigate('Chat2', {id});
     closeMenu();
   };
 
-  const viewDetails = () => {
-    navigation.navigate('Pdetalles');
+  const viewDetails = (id) => {
+    navigation.navigate('Pdetalles', {id});
     closeMenu();
   };
 
@@ -69,7 +78,7 @@ const Patients = ({navigation}) => {
     <Provider>
       <ScrollView>
         <View style={styles.container}>
-          <Header title={''} onPress={''} showLogo={false} showArrow={false} point={''}/>
+          <Header title={''} onPress={''} showLogo={false} showArrow={false} point={''} />
           <Text style={styles.title}>Pacientes</Text>
           <TextInput
             style={styles.searchInput}
@@ -86,9 +95,11 @@ const Patients = ({navigation}) => {
                   {groupedPatients[letter].map((patient) => (
                     <View key={patient.id} style={styles.patientCard}>
                       <View>
-                        <Text style={styles.patientName}>{patient.name}</Text>
+                        <Text style={styles.patientName}>
+                          {patient.Login?.name || 'Nombre no disponible'}
+                        </Text>
                         <Text style={styles.lastAppointment}>
-                          Última cita: {patient.lastAppointment}
+                          Teléfono: {patient.Login?.phoneNumber || 'No disponible'}
                         </Text>
                       </View>
                       <Menu
@@ -102,8 +113,8 @@ const Patients = ({navigation}) => {
                         contentStyle={styles.menuContent}
                       >
                         <View style={styles.roundedMenu}>
-                          <Menu.Item onPress={contactPatient} title="Contactar" />
-                          <Menu.Item onPress={viewDetails} title="Ver detalles" />
+                          <Menu.Item onPress={() => contactPatient(patient.id)} title="Contactar" />
+                          <Menu.Item onPress={() => viewDetails(patient.id)} title="Ver detalles" />  
                         </View>
                       </Menu>
                     </View>
@@ -170,7 +181,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: 3,
-    marginLeft:35,
+    marginLeft: 35,
   },
   patientName: {
     fontSize: 18,

@@ -6,6 +6,7 @@ import styles from '../../../assets/styles/StepperFormCE';
 import { View, Text, TextInput, ScrollView, Alert } from 'react-native';
 import { Checkbox } from 'react-native-paper';
 import { validarFormCE } from '../../utils/Validation';
+import { API_URL } from '@env';
 
 const { width } = Dimensions.get('window');
 
@@ -364,7 +365,7 @@ export default function FormCrearE({ navigation }) {
 
       try {
         // Enviar el formulario al servidor
-        const response = await fetch('http://192.168.0.119:5000/api/medicalForm/register/6', {
+        const response = await fetch(`${API_URL}/api/medicalForm/register/6`, {
           method: 'POST',
           body: formDataToSend,  // Enviar el objeto FormData
         });

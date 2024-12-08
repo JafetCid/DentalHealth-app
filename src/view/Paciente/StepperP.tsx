@@ -7,6 +7,7 @@ import Header from '../components/Header';
 import InputDate from '../components/InputDate';
 import InputImage from '../components/InputImage';
 import { validarPaso1P, validarPaso2P } from '../../utils/Validation';
+import { API_URL } from '@env';
 
 const StepperP = ({ navigation }) => {
     
@@ -204,7 +205,8 @@ const StepperP = ({ navigation }) => {
 
             try {
                 // Enviar el formulario al servidor
-                const response = await fetch('http://192.168.0.113:5000/api/auth/registerPatient', {
+                const response = await fetch(`${API_URL}/api/auth/registerPatient`, {
+                // const response = await fetch('https://dental-health-api.onrender.com/api/auth/registerPatient', {
                     method: 'POST',
                     body: formDataToSend,  // Enviar el objeto FormData
                 });

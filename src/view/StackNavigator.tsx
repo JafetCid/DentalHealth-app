@@ -23,6 +23,7 @@ import VerExamenDental from './VerExamenDental'
 import TabNavigator1 from './Dentista/Home';
 import { VerExpedienteM } from './VerExpedienteM';
 import { CardPerfilP } from './components/CardPerfilP';
+import ChatDoc2 from './ChatDoc2';
 
 const Stack = createNativeStackNavigator();
 
@@ -41,6 +42,7 @@ const StackNavigator = () => {
       <Stack.Screen name="AgendaScreen" component={AgendaScreen} />
       <Stack.Screen name="CrearExpediente" component={FormCrearE} />
       <Stack.Screen name='Chat' component={Chat}/>
+      <Stack.Screen name='Chat2' component={ChatDoc2}/>
       <Stack.Screen name='TabNavigator' component={TabNavigator}/>
       <Stack.Screen name='ExamenAdult' component={DentalExamScreen}/>
       <Stack.Screen name='Pdetalles' component={PatientsDetalles}/>

@@ -221,20 +221,20 @@ export const validarPaso2P = ( estadoC, ocupacion, direccion, procedencia, email
 
   if (!estadoC) {
     errores.estadoC = 'El estado civil es obligatorio';
-  }else if (estadoC.length < 15) {
-    errores.estadoC = 'La dirección no puede tener menos de 15 caracteres';
+  }else if (estadoC.length < 3) {
+    errores.estadoC = 'La dirección no puede tener menos de 3 caracteres';
   }
 
   if (!ocupacion) {
     errores.ocupacion = 'La ocupacion es obligatorio';
-  } else if (ocupacion.length < 15) {
-    errores.ocupacion = 'La dirección no puede tener menos de 15 caracteres';
+  } else if (ocupacion.length < 5) {
+    errores.ocupacion = 'La dirección no puede tener menos de 5 caracteres';
   }
   
   if (!direccion) {
     errores.direccion = 'La dirección es obligatoria';
-  } else if (direccion.length < 15) {
-    errores.direccion = 'La dirección no puede tener menos de 15 caracteres';
+  } else if (direccion.length < 5) {
+    errores.direccion = 'La dirección no puede tener menos de 5 caracteres';
   }
 
   if (!procedencia) {
@@ -348,4 +348,22 @@ export const validarFormCE = (peso, talla, ta, fc, fr, t, motivoC, medidaH, salu
   }
   
   return errores;
+}
+
+export const validarFormCP = (title, description) => {
+  const errores = {};
+
+  if (!title) {
+    errores.title = 'El title es obligatorio';
+  } else if (title.length < 4) {
+    errores.title = 'El title debe contener por lo menos 4 caracteres';
+  }
+
+  if (!description) {
+    errores.description = 'Los description es obligatoria';
+  } else if (description.length < 8) {
+    errores.description = 'Los description deben contener por lo menos 10 caracteres';
+  } 
+
+  return errores
 }

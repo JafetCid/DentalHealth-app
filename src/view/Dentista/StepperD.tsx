@@ -13,6 +13,7 @@ import * as DocumentPicker from 'expo-document-picker'
 import { useNavigation } from '@react-navigation/native';;
 import { validarPaso1, validarPaso2, validarPaso3 } from '../../utils/Validation';
 import * as FileSystem from 'expo-file-system';
+import { API_URL } from '@env';
 
 const StepperD = () => {
   
@@ -317,7 +318,7 @@ const StepperD = () => {
       
       try {
         // Enviar el formulario al servidor
-        const response = await fetch('http://192.168.0.113:5000/api/auth/registerDoctor', {
+        const response = await fetch(`${API_URL}/api/auth/registerDoctor`, {
           method: 'POST',
           body: formDataToSend,  // Enviar el objeto FormData
         });
@@ -409,8 +410,8 @@ const StepperD = () => {
                   onValueChange={(value) => handleInputChange('genero', value)}
                   value={stepData.genero}
                   items={[
-                    { label: 'Masculino', value: 'masculino' },
-                    { label: 'Femenino', value: 'femenino' },
+                    { label: 'Masculino', value: 'Masculino' },
+                    { label: 'Femenino', value: 'Femenino' },
                   ]}
                   placeholder={{ label: 'Seleccione su género', value: null }}
                 > 

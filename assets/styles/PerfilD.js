@@ -9,7 +9,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: '5%',
     },
-    
     card: {
         padding: 8,
         elevation: 5,

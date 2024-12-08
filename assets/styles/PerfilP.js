@@ -120,10 +120,8 @@ const styles = StyleSheet.create({
     },
     textEnd: {
         fontSize: 18,
-        width: '75%',
+        // width: '75%',
         color:'#888888',
-        alignSelf: 'center',
-
     },  
     
     //Estilos de los botones 

@@ -1,13 +1,14 @@
-import { TextInput, Text, View, ScrollView, TouchableOpacity, Alert} from 'react-native';
+import { TextInput, Text, View, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import styles from '../../assets/styles/Login';
 import Header from "./components/Header";
 import React, { useState } from 'react';
 import ButtonIn from './components/ButtonIn';
 import { Checkbox } from 'react-native-paper';
 import { validateLogin } from '../utils/Validation';
-import AsyncStorage from '@react-native-async-storage/async-storage'; 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_URL } from '@env';
 
-export default function Login ({ navigation }) {
+export default function Login({ navigation }) {
 
     const [isSelected, setSelected] = useState({
         check: false,
@@ -21,16 +22,16 @@ export default function Login ({ navigation }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errores, setErrores] = useState<Errores>({});
-      
+
     const handleLogin = async () => {
         const validationErrores = validateLogin(email, password);
         if (Object.keys(validationErrores).length > 0) {
             setErrores(validationErrores);
         } else {
-            
+
 
             try {
-                const response = await fetch('http://192.168.0.119:5000/api/auth/login', {
+                const response = await fetch(`${API_URL}/api/auth/login`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -42,59 +43,30 @@ export default function Login ({ navigation }) {
                 });
                 
                 const data = await response.json();
+                console.log(data);
 
                 if (response.ok) {
                     // Manejar el éxito del login
                     Alert.alert('Login exitoso', 'Has iniciado sesión correctamente.');
                     await AsyncStorage.setItem('token', data.token);
 
-                    // navigation.navigate('TabNavigator', { screen: 'Home' });
-                    navigation.navigate('TabNav', { screen: 'Home1' });
+                    // Verifica el rol y redirige a la vista correspondiente
+                    if (data.role === 'patient') {
+                        navigation.navigate('TabNavigator', { screen: 'Home' });
+
+                    } else if (data.role === 'doctor') {
+                        navigation.navigate('TabNav', { screen: 'Home1' });
+
+                    } else {
+                        Alert.alert('Error', 'Rol no reconocido');
+
+                    }
+
 
                 } else {
-                    // Manejar errores de autenticación
+                    // Si las credenciales son incorrectas, muestra un mensaje
                     Alert.alert('Error', data.message || 'Credenciales incorrectas');
                 }
-                // const data = await response.json();
-    
-                // if (response.ok) {
-                //     // Si el login es exitoso, guarda el token en las cookies
-                //     await CookieManager.set({
-                //         name: 'token',
-                //         value: data.token,
-                //         domain: '192.168.0.113',
-                //         path: '/',
-                //         version: '1',
-                //         expiration: '2025-12-31T23:59:59.999Z', // La fecha de expiración del token
-                //     });
-        
-                //     // Luego de guardar el token, redirige dependiendo del rol del usuario
-                //     const userInfoResponse = await fetch('http://192.168.0.113:5000/api/auth/userInfo', {
-                //         method: 'GET',
-                //         headers: {
-                //             'Authorization': `Bearer ${data.token}`, // Usar el token para obtener los datos del usuario
-                //         },
-                //     });
-        
-                //     const userInfo = await userInfoResponse.json();
-        
-                //     if (userInfoResponse.ok) {
-                //         // Verifica el rol y redirige a la vista correspondiente
-                //         if (userInfo.role === 'patient') {
-                //             navigation.navigate('TabNavigator', { screen: 'Home' });
-                //         } else if (userInfo.role === 'doctor') {
-                //             navigation.navigate('TabNav', { screen: 'Home1' });
-                //         } else {
-                //             Alert.alert('Error', 'Rol no reconocido');
-                //         }
-                //     } else {
-                //         Alert.alert('Error', userInfo.message || 'No se pudo obtener la información del usuario.');
-                //     }
-        
-                // } else {
-                //     // Si las credenciales son incorrectas, muestra un mensaje
-                //     Alert.alert('Error', data.message || 'Credenciales incorrectas');
-                // }
             } catch (error) {
                 // Manejar errores de red u otros problemas
                 console.error('Error en la solicitud:', error);
@@ -108,14 +80,14 @@ export default function Login ({ navigation }) {
 
     const handleCheckboxChange = (condition) => {
         setSelected((prevState) => ({
-        ...prevState,
-        [condition]: !prevState[condition],
+            ...prevState,
+            [condition]: !prevState[condition],
         }));
     };
-    return(
+    return (
         <ScrollView>
             <View>
-                <Header title={''} onPress={''} showArrow={false} point={''}/>
+                <Header title={''} onPress={''} showArrow={false} point={''} />
                 <View style={styles.container}>
                     <Text style={styles.title}> Bienvenido de nuevo </Text>
                 </View>
@@ -128,8 +100,8 @@ export default function Login ({ navigation }) {
                             onChangeText={setEmail}
                             autoCapitalize='none'
                         />
-                        {errores.email ? <Text style={{color: 'red'}}>{errores.email}</Text> : null}
-                    
+                        {errores.email ? <Text style={{ color: 'red' }}>{errores.email}</Text> : null}
+
                     </View>
                     <View style={styles.form}>
                         <Text style={styles.textI}>Contraseña</Text>
@@ -139,16 +111,16 @@ export default function Login ({ navigation }) {
                             value={password}
                             onChangeText={setPassword}
                         />
-                        {errores.password ? <Text style={{color: 'red'}}>{errores.password}</Text> : null}
+                        {errores.password ? <Text style={{ color: 'red' }}>{errores.password}</Text> : null}
 
                         <TouchableOpacity style={styles.link}>
                             <Text style={styles.linkText}> ¿Olvidaste tu contraseña?</Text>
                         </TouchableOpacity>
                     </View>
-                    <ButtonIn 
-                        Title={'Iniciar sesión '} textStyle={{color: '#308CFF'}} 
-                        buttonStyle={{borderColor: '#308CFF', borderWidth: 1, marginTop: 30}} 
-                        onPress={handleLogin}/>
+                    <ButtonIn
+                        Title={'Iniciar sesión '} textStyle={{ color: '#308CFF' }}
+                        buttonStyle={{ borderColor: '#308CFF', borderWidth: 1, marginTop: 30 }}
+                        onPress={handleLogin} />
                     <View style={styles.cuent}>
                         <Text>¿Cuentas con una cuenta?</Text>
                         <TouchableOpacity>
@@ -166,9 +138,9 @@ export default function Login ({ navigation }) {
                         </TouchableOpacity>
                     </View>
                     {/* <GoogleIconButton/> */}
-                </View> 
+                </View>
             </View>
         </ScrollView>
-        
+
     )
 }

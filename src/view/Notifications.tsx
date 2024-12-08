@@ -31,7 +31,7 @@ export default function NotificationScreen() {
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.notificationItem}
-    //onPress={() => navigation.navigate('NotificationDetail', { notification: item })}
+      // onPress={() => navigation.navigate('NotificationDetail', { notification: item })}
     >
       <View style={styles.notificationContent}>
         <Text style={styles.title}>{item.title}</Text>

@@ -10,6 +10,7 @@ import {
 import { Provider } from 'react-native-paper';
 import styles from '../../assets/styles/ExamAdult';
 import Header from './components/Header';
+import { API_URL } from '@env';
 
 const DentalExamCreateScreen = ({ navigation }) => {
     const [selectedType, setSelectedType] = useState('adult');
@@ -133,7 +134,7 @@ const DentalExamCreateScreen = ({ navigation }) => {
                 dientes: data // `data` ya contiene los objetos con los dientes seleccionados
             };
 
-            const response = await fetch('http://192.168.0.113:5000/api/dentalExam/create/1', {
+            const response = await fetch(`${API_URL}/api/dentalExam/create/1`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

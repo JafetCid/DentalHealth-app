@@ -1,6 +1,7 @@
 import Header from './components/Header';
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Alert, Pressable, Modal } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Alert, Pressable, Modal, Image
+ } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import styles from '../../assets/styles/AgendaScreen';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
@@ -9,6 +10,7 @@ import 'dayjs/locale/es';
 import { Checkbox } from 'react-native-paper';
 import ButtonIn from './components/ButtonIn';
 import { parse, format } from "date-fns";
+import { API_URL } from '@env';
 
 // Configuración del calendario en español
 LocaleConfig.locales['es'] = {
@@ -29,9 +31,11 @@ LocaleConfig.locales['es'] = {
 LocaleConfig.defaultLocale = 'es';
 
 export default function AgendaScreen({ navigation }) {
+
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [busyDays, setBusyDays] = useState<string[]>([]);
+  const [citas, setCitas] = useState<{ freeHours: string[] }>({ freeHours: [] });
 
   //Modal y checkBox
   const [isVisible, setIsVisible] = useState(false);
@@ -87,12 +91,8 @@ export default function AgendaScreen({ navigation }) {
   };
 
   const handleTimeSelect = (time) => {
-    // Convertimos la hora seleccionada en formato "h:mm a" a un objeto Date
-    const parsedTime = parse(time, "h:mm a", new Date());
-    // Convertimos la hora al formato "HH:mm:ss" (24 horas)
-    const formattedTime = format(parsedTime, "HH:mm:ss");
-    // Guardamos la hora en el estado como "HH:mm:ss"
-    setSelectedTime(formattedTime);
+    console.log(time)
+    setSelectedTime(time);
   };
 
   //CheckBox
@@ -117,7 +117,7 @@ export default function AgendaScreen({ navigation }) {
 
       try {
         // Enviar el formulario al servidor
-        const response = await fetch('http://192.168.0.119:5000/api/appointment/create/3', {
+        const response = await fetch(`${API_URL}/api/appointment/create/3`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",  // Indicamos que estamos enviando JSON
@@ -143,15 +143,36 @@ export default function AgendaScreen({ navigation }) {
     // Aquí puedes agregar la lógica para agendar la cita
   };
 
+  useEffect(() => {
+    fetchAppointmentsData(selectedDay)
+  }, [selectedDay])
+
+  const fetchAppointmentsData = async (date) => {
+    try {
+      console.log(date)
+      const response = await fetch(`${API_URL}/api/appointment/availableHours?date=${date}`);
+      if (response.ok) {
+        const data = await response.json();
+        setCitas(data);
+        console.log(data)
+      } else {
+        // console.error('Error al obtener las citas');
+        Alert.alert('No puede agendar esta cita')
+      }
+    } catch (error) {
+      console.error('Error en la solicitud: ', error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <Header title={''} showLogo={false} onPress={() => navigation.goBack()} point={''} />
         <View style={styles.contLT}>
-          <FontAwesome name="user-circle-o" size={60} color="white" style={styles.icon} />
-          {/* <Image source={require('../../assets/images/Genshi.jpeg')} style={styles.icon}/> */}
+          {/* <FontAwesome name="user-circle-o" size={60} color="white" style={styles.icon} /> */}
+          <Image source={require('../../assets/images/Doc.jpeg')} style={styles.icon}/>
           <View style={styles.contName}>
-            <Text style={styles.name}>Nombre del Doctor</Text>
+            <Text style={styles.name}>Jose Alberto Lopez Jimenez</Text>
           </View>
         </View>
         <View style={styles.contAgenda}>
@@ -177,24 +198,32 @@ export default function AgendaScreen({ navigation }) {
           />
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Horarios disponibles</Text>
-            <Text style={styles.subTitle}>Mañana</Text>
+            {/* <Text style={styles.subTitle}>Mañana</Text> */}
             <View style={styles.contHorarios}>
               <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.timeSlotsContainer}>
-                {['9:00 am', '10:00 am', '11:00 am'].map((time) => {
-                  const isSelected = selectedTime === format(parse(time, "h:mm a", new Date()), "HH:mm:ss"); // Comparación en formato "HH:mm:ss"
-                  return (
-                    <TouchableOpacity
-                      key={time}
-                      style={[styles.timeSlot, isSelected && styles.selectedTimeSlot]}
-                      onPress={() => handleTimeSelect(time)}
-                    >
-                      <Text style={[isSelected && styles.selectedTimeText]}>{time}</Text>
-                    </TouchableOpacity>
-                  );
-                })}
+                {citas.freeHours && citas.freeHours.length > 0 ? (
+                  citas.freeHours.map((time) => {
+                    const formattedTime = format(parse(time, "HH:mm:ss", new Date()), "h:mm a");
+                    const isSelected = selectedTime === time;
+
+                    return (
+                      <TouchableOpacity
+                        key={time}
+                        style={[styles.timeSlot, isSelected && styles.selectedTimeSlot]}
+                        onPress={() => handleTimeSelect(time)}
+                      >
+                        <Text style={[isSelected && styles.selectedTimeText]}>
+                          {formattedTime}
+                        </Text>
+                      </TouchableOpacity>
+                    );
+                  })
+                ) : (
+                  <Text>No hay citas disponibles en este momento.</Text>
+                )}
               </ScrollView>
             </View>
-            <Text style={styles.subTitle}>Tarde</Text>
+            {/* <Text style={styles.subTitle}>Tarde</Text>
             <View style={styles.contHorarios}>
               <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.timeSlotsContainer}>
                 {['1:00 pm', '2:00 pm', '5:00 pm'].map((time) => {
@@ -210,7 +239,7 @@ export default function AgendaScreen({ navigation }) {
                   );
                 })}
               </ScrollView>
-            </View>
+            </View> */}
           </View>
         </View>
         <View style={styles.contCartaC}>

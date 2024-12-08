@@ -13,8 +13,8 @@ import Header from "../components/Header";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native"; // Import useNavigation
-
 import Pacientes from "../Pacientes";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Agenda1 from "../Agenda1";
 import Promociones from "../Dentista/Promociones";
 import Carousel from "react-native-reanimated-carousel";
@@ -22,8 +22,8 @@ import NotificationScreen from "../Notifications";
 import Chat from "../Chat";
 import PerfilP from "./PerfilP";
 import DentalHealthScreen from "../Calendar";
-import InfoCard from "../components/InfoCard";
 import { CardPerfilP } from "../components/CardPerfilP";
+import { API_URL } from '@env';
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -55,9 +55,11 @@ function Home1() {
     description: string;
   }
 
+  const [user, setUser] = useState(null);
   const [data, setData] = useState<Promotion[] | null>(null);
   const [error, setError] = useState('');
   const [imageDimensions, setImageDimensions] = useState<{ width: number, height: number } | null>(null);
+  const navigation = useNavigation();
 
   const calculateImageStyle = (dimensions: { width: number, height: number }) => {
     const ratio = dimensions.width / dimensions.height;
@@ -75,7 +77,7 @@ function Home1() {
     // Función para hacer la solicitud GET
     const fetchData = async () => {
       try {
-        const response = await fetch('http://192.168.0.119:5000/api/promotion/get');
+        const response = await fetch(`${API_URL}/api/promotion/get`);
         if (!response.ok) {
           throw new Error('Error en la solicitud');
         }
@@ -88,10 +90,43 @@ function Home1() {
     };
 
     fetchData(); // Llama a la función fetchData cuando se monta el componente
-    console.log(data);
-  }, []);
+    fetchUserInfo();
+    // Escucha cuando el componente recibe enfoque o se vuelve visible
+    const unsubscribe = navigation.addListener('focus', () => {
+      fetchUserInfo();
+      fetchData(); // Vuelve a hacer la solicitud de las promociones cada vez que se regresa a esta pantalla
+    });
+    console.log('datos:', user)
+    return unsubscribe; // Devuelve la función de limpieza para que no haya fugas de memoria
+  }, [navigation]);
 
-  const navigation = useNavigation(); // Use navigation hook
+  //Obtener la informacion del usuario
+  const fetchUserInfo = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      console.log('Token: ', token)
+
+      const response = await fetch(`${API_URL}/api/auth/userinfo`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `${token}`,
+        },
+      });
+
+      console.log('Estado de la respuesta:', response.status);
+
+      const data = await response.json();
+      setUser(data)
+
+    } catch (error) {
+      console.error('Error al obtener la información del usuario:', error);
+    }
+  };
+
+  // Muestra las promociones o un mensaje de error
+  if (error) {
+    return <Text>Error al cargar las promociones: {error}</Text>;
+  }
 
   const handlePress = (item) => {
     // navigation.navigate("Promociones", { promotionId: item.id });
@@ -103,7 +138,11 @@ function Home1() {
         <Header title={""} showArrow={false} showP={true} onPress={""} point={'PerfilP'} />
         <View style={styles.content}>
           <Text style={styles.textT}>Bienvenido</Text>
-          <Text style={styles.textT}>[Nombre del Paciente]</Text>
+          {user && user.Login && user.Login.name ? (
+            <Text style={styles.textT}>{`${user.Login.name} ${user.Login.lastName}`}</Text>
+          ) : (
+            <Text style={styles.textT}>Nombre</Text>
+          )}
           {/* Carrusel */}
           {data && data.length > 0 ? (
             <Carousel

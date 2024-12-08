@@ -13,12 +13,12 @@ import Header from "../components/Header";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native"; // Import useNavigation
-
 import Pacientes from "../Pacientes";
 import Agenda1 from "../Agenda1";
 import Promociones from "../Dentista/Promociones";
 import Carousel from "react-native-reanimated-carousel";
 import NotificationScreen from "../Notifications";
+import { API_URL } from '@env';
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -43,6 +43,9 @@ const TabBarIcon = ({ name, color }) => {
 };
 
 function Home() {
+
+  const navigation = useNavigation(); // Use navigation hook
+
   interface Promotion {
     promotionalImageUrl: string;
     title: string;
@@ -50,8 +53,9 @@ function Home() {
   }
 
   const [data, setData] = useState<Promotion[] | null>(null);
-  const [error, setError] = useState('');
   const [imageDimensions, setImageDimensions] = useState<{ width: number, height: number } | null>(null);
+  const [doctorInfo, setDoctorInfo] = useState(null);
+  const [error, setError] = useState('');
 
   const calculateImageStyle = (dimensions: { width: number, height: number }) => {
     const ratio = dimensions.width / dimensions.height;
@@ -64,16 +68,38 @@ function Home() {
     }
   };
 
+  // useEffect(() => {
+  //   const fetchDoctorInfo = async () => {
+  //     try {
+  //       const token = await AsyncStorage.getItem('token');
+  //       const response = await fetch(`http://192.168.0.116:5000/api/auth/userinfo`, {
+  //         method: 'GET',
+  //         headers: {
+  //           'Authorization': `Bearer ${token}`, // Reemplaza con tu token
+  //         },
+  //       });
+
+  //       if (!response.ok) {
+  //         throw new Error('Error al obtener la información');
+  //       }
+
+  //       const data = await response.json();
+  //       setDoctorInfo(data);
+  //     } catch (err) {
+  //       setError(err.message);
+  //     }
+  //   };
+
+  //   fetchDoctorInfo();
+  // }, []);
 
   useEffect(() => {
-    // Función para hacer la solicitud GET
     const fetchData = async () => {
       try {
-        const response = await fetch('http://192.168.0.119:5000/api/promotion/get');
+        const response = await fetch(`${API_URL}/api/promotion/get`);
         if (!response.ok) {
           throw new Error('Error en la solicitud');
         }
-
         const data = await response.json(); // Convierte la respuesta en un objeto JSON
         setData(data); // Guarda los datos en el estado
       } catch (error) {
@@ -81,11 +107,20 @@ function Home() {
       }
     };
 
-    fetchData(); // Llama a la función fetchData cuando se monta el componente
-    console.log(data);
-  }, []);
+    fetchData();
+    // Escucha cuando el componente recibe enfoque o se vuelve visible
+    const unsubscribe = navigation.addListener('focus', () => {
+      fetchData(); // Vuelve a hacer la solicitud de las promociones cada vez que se regresa a esta pantalla
+    });
 
-  const navigation = useNavigation(); // Use navigation hook
+    return unsubscribe; // Devuelve la función de limpieza para que no haya fugas de memoria
+  }, [navigation]);
+
+  // Muestra las promociones o un mensaje de error
+  if (error) {
+    return <Text>Error al cargar las promociones: {error}</Text>;
+  }
+
 
   const handlePress = (item) => {
     // navigation.navigate("Promociones", { promotionId: item.id });
@@ -94,9 +129,9 @@ function Home() {
   return (
     <View style={styles.container}>
       <ScrollView>
-        <Header title={""} showArrow={false} showP={true} onPress={""} point={'PerfilD'} />
+        <Header title={""} showArrow={false} showP={true} onPress={""} point={'PerfilD'}/>
         <View style={styles.content}>
-          <Text style={styles.textT}>Doctor [Nombre del Doctor]</Text>
+          <Text style={styles.textT}>Dr. Jose Alberto López Jiménez</Text>
           <Text style={styles.textE}>Tus promociones publicadas</Text>
           {/* Carrusel */}
           {data && data.length > 0 ? (

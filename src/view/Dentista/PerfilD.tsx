@@ -1,9 +1,9 @@
-import React from 'react'
 import { View, Text, TouchableOpacity, Pressable, Modal, TouchableWithoutFeedback } from 'react-native'
 import { Ionicons, MaterialIcons, FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons'
-import Header from '../components/Header'
 import styles from '../../../assets/styles/PerfilD'
 import { useState } from 'react'
+import Header from '../components/Header'
+import React from 'react'
 
 export default function PerfilD({ navigation }) {
 
@@ -16,9 +16,8 @@ export default function PerfilD({ navigation }) {
 
   return (
     <View>
-        <Header title={''} 
-            onPress={() => navigation.goBack('Inicio')} showP={true} point={''}/>
-        <Text style={styles.text}>Nombre del Doctor</Text>
+        <Header title={''} onPress={() => navigation.goBack('Inicio')} showProfilePD={true} point={''} showLogo={false}/>
+        <Text style={styles.text}>Jose Alberto López Jiménez</Text>
         <View style={styles.content}>
             <View style={styles.card}>
                 <View style={styles.text2}>
@@ -28,16 +27,6 @@ export default function PerfilD({ navigation }) {
                     <Ionicons name="ellipsis-vertical" size={22} color="gray" />
                 </TouchableOpacity>
                 {isVisible &&
-                    // <Pressable style={styles.centeredView} onPress={toggleModal}>
-                    //     <View>
-                    //         <View style={styles.modalView}>
-                    //             <Pressable 
-                    //                 onPress={() => navigation.navigate('StepperD')}>
-                    //                 <Text style={styles.modalText}>Editar perfil</Text>
-                    //             </Pressable>
-                    //         </View>
-                    //     </View>
-                    // </Pressable>
                     <Modal
                         animationType="slide"
                         transparent={true}

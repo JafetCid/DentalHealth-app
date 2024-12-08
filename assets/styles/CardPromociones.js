@@ -14,11 +14,13 @@ const styles = StyleSheet.create({
         width: '85%',
         backgroundColor: '#fff',
         elevation: 5,
+        marginBottom: 30,
     },
 
     img: {
         width: '28%',
-        height: 'auto',
+        // height: '100%',
+        aspectRatio: 0.5,  // Controla la relación de aspecto de la imagen (puedes ajustarlo según tu diseño)
     },
 
     title: {

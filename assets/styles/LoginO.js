@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
   },
 
   // estilos del modal
-
   centeredView: {
     flex: 1,
     justifyContent: 'center',
