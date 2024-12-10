@@ -24,6 +24,10 @@ import PerfilP from "./PerfilP";
 import DentalHealthScreen from "../Calendar";
 import { CardPerfilP } from "../components/CardPerfilP";
 import { API_URL } from '@env';
+import io from 'socket.io-client';
+const socket = io('https://dental-health-backend.onrender.com', {
+  transports: ['websocket']
+});
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -48,6 +52,8 @@ const TabBarIcon = ({ name, color }) => {
 };
 
 function Home1() {
+
+  const API_URL = 'https://dental-health-backend.onrender.com';
 
   interface Promotion {
     promotionalImageUrl: string;
@@ -117,6 +123,7 @@ function Home1() {
 
       const data = await response.json();
       setUser(data)
+      socket.emit('register', data.Login.id);
 
     } catch (error) {
       console.error('Error al obtener la información del usuario:', error);
@@ -136,6 +143,7 @@ function Home1() {
     <View style={styles.container}>
       <ScrollView>
         <Header title={""} showArrow={false} showP={true} onPress={""} point={'PerfilP'} />
+        
         <View style={styles.content}>
           <Text style={styles.textT}>Bienvenido</Text>
           {user && user.Login && user.Login.name ? (
@@ -191,6 +199,22 @@ function Home1() {
 }
 
 export default function TabNavigator() {
+
+  const [notification, setNotification] = useState(false);
+  const [notificationCount, setNotificationCount] = useState(0);
+
+  useEffect(() => {
+    socket.on('receive_private_notification', (data) => {
+      console.log(data.message); // Ver mensaje de notificación en consola
+      setNotificationCount((prevCount) => prevCount + 1); // Incrementa el contador
+    });
+
+    // Limpia el evento al desmontar el componente
+    return () => {
+      socket.off('receive_private_notification');
+    };
+  }, [])
+
   const colorScheme = useColorScheme();
 
   return (
@@ -227,7 +251,7 @@ export default function TabNavigator() {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Expedientes"
         component={CardPerfilP}
         options={{
@@ -236,7 +260,7 @@ export default function TabNavigator() {
             <TabBarIcon name="file-tray-full" color={color} />
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Home"
         component={Home1}
@@ -255,7 +279,14 @@ export default function TabNavigator() {
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="notifications" color={color} />
           ),
-          tabBarBadge: "+99",
+          // Muestra el badge solo si hay notificaciones
+          tabBarBadge: notificationCount > 0 ? notificationCount : null,
+        }}
+        listeners={{
+          tabPress: () => {
+            // Restablece el contador cuando se accede a la pestaña
+            setNotificationCount(0);
+          },
         }}
       />
       <Tab.Screen

@@ -9,6 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function PerfilP({ navigation }) {
 
+  const API_URL = 'https://dental-health-backend.onrender.com';
   const [user, setUser] = useState(null);
 
   useEffect(() => {

@@ -10,6 +10,8 @@ import { API_URL } from '@env';
 
 export default function Login({ navigation }) {
 
+    const API_URL = 'https://dental-health-backend.onrender.com';
+
     const [isSelected, setSelected] = useState({
         check: false,
     });
@@ -28,7 +30,6 @@ export default function Login({ navigation }) {
         if (Object.keys(validationErrores).length > 0) {
             setErrores(validationErrores);
         } else {
-
 
             try {
                 const response = await fetch(`${API_URL}/api/auth/login`, {
@@ -61,7 +62,6 @@ export default function Login({ navigation }) {
                         Alert.alert('Error', 'Rol no reconocido');
 
                     }
-
 
                 } else {
                     // Si las credenciales son incorrectas, muestra un mensaje
@@ -113,9 +113,9 @@ export default function Login({ navigation }) {
                         />
                         {errores.password ? <Text style={{ color: 'red' }}>{errores.password}</Text> : null}
 
-                        <TouchableOpacity style={styles.link}>
+                        {/* <TouchableOpacity style={styles.link}>
                             <Text style={styles.linkText}> ¿Olvidaste tu contraseña?</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                     </View>
                     <ButtonIn
                         Title={'Iniciar sesión '} textStyle={{ color: '#308CFF' }}

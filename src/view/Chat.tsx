@@ -5,26 +5,36 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import io from 'socket.io-client';
 import Header from './components/Header';
 import { API_URL } from '@env';
-const socket = io('https://dental-health-api.onrender.com', {
+const socket = io('https://dental-health-backend.onrender.com', {
   transports: ['websocket']
 });
 
 export default function Chat({ navigation }) {
 
   const [user, setUser] = useState(null);
+  const [userLogin, setUserLogin] = useState(null);
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const flatListRef = useRef<FlatList>(null); // Ref para FlatList
   const listenerRegistered = useRef(false);
+  const API_URL = 'https://dental-health-backend.onrender.com';
+
+  useEffect(() => {
+    const initialize = async () => {
+      await fetchUserInfo(); // Espera a que se cargue la información del usuario
+    };
+
+    initialize();
+  }, []);
 
   useEffect(() => {
     fetchUserInfo();
-    fetchMessages(1);
+    fetchMessages(user);
     if (!listenerRegistered.current) {
       listenerRegistered.current = true;
-      socket.emit('register', 1);
+      socket.emit('register', user);
 
       socket.on('receive_private_message', (data) => {
         setMessages((prevMensajes) => [
@@ -42,7 +52,7 @@ export default function Chat({ navigation }) {
       socket.off('receive_private_message');
       listenerRegistered.current = false;
     };
-  }, []);
+  }, [user]);
 
   //Obtener la informacion del usuario
   const fetchUserInfo = async () => {
@@ -62,8 +72,9 @@ export default function Chat({ navigation }) {
       const data = await response.json();
       console.log(data);
 
-      setUser(data.id)
-      
+      setUser(data.Login.id)
+      // setUserLogin(data.Login.id)
+      console.log('id del patient:', data.Login.id)
 
     } catch (error) {
       console.error('Error al obtener la información del usuario:', error);
@@ -72,7 +83,7 @@ export default function Chat({ navigation }) {
 
   const fetchMessages = async (id) => {
     try {
-      const response = await fetch(`${API_URL}/api/message/messages/${id}/4`);
+      const response = await fetch(`${API_URL}/api/message/messages/${id}/14`);
       const data = await response.json();
       setMessages(data);
       console.log(data)
@@ -93,7 +104,7 @@ export default function Chat({ navigation }) {
       // Enviar mensaje al backend
       socket.emit("send_private_message", {
         fromUserId: user, // Cambia esto por el ID del doctor
-        toUserId: 4, // ID del paciente seleccionado
+        toUserId: 14, // ID del paciente seleccionado
         message: message,
       });
 
@@ -122,7 +133,7 @@ export default function Chat({ navigation }) {
       <Header title={''} showLogo={false} onPress={() => navigation.goBack()} point={''} />
       <View style={styles.contLT}>
         {/* <FontAwesome name="user-circle-o" size={60} color="white" style={styles.icon} /> */}
-        <Image source={require('../../assets/images/Doc.jpeg')} style={styles.icon}/>
+        <Image source={require('../../assets/images/Doc.jpeg')} style={styles.icon} />
         <View style={styles.contName}>
           <Text style={styles.name}>Jose Alberto Lopez Jimenez</Text>
         </View>

@@ -62,6 +62,46 @@ const styles = StyleSheet.create({
         color: 'red',
     },
 
+    // estilos del modal
+    centeredViewM: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 22,
+    },
+    modalViewM: {
+        width: '80%',
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 25,
+        elevation: 5,
+    },
+    button: {
+        borderRadius: 10,
+        padding: 10,
+        elevation: 2,
+        width: '30%',
+    },
+    buttonClose: {
+        backgroundColor: '#2196F3',
+    },
+    buttonClose2: {
+        backgroundColor: '#FF0000',
+    },
+    textStyle: {
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    modalTextM: {
+        marginBottom: 15,
+        fontSize: 24,
+    },
+    btnModal: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+    }
 });
 
 export default styles;

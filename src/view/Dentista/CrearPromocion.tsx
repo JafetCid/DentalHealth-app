@@ -3,24 +3,52 @@ import ButtonIn from "../components/ButtonIn";
 import Header from "../components/Header";
 import { View, Text, TextInput, StyleSheet, Alert, ScrollView } from "react-native";
 import InputImage from "../components/InputImage";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { API_URL } from '@env';
 import { validarFormCP } from '../../utils/Validation';
 
-export default function CrearPromocion({ navigation }) {
+export default function CrearPromocion({ navigation, route }) {
 
+    const API_URL = 'https://dental-health-backend.onrender.com';
     const [stepData, setStepData] = useState({
         title: '',
         description: '',
-
     });
 
     const [errores, setErrores] = useState({
         title: '',
         description: '',
     });
-    
+
     const [promotionalImage, setPromotionalImage] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const { promotionId } = route?.params || {}; // Obtener el parámetro de navegación
+
+    useEffect(() => {
+        console.log('Promotion ID:', promotionId);
+        if (promotionId) {
+            const fetchPromotion = async () => {
+                try {
+                    setLoading(true);
+                    const response = await fetch(`${API_URL}/api/promotion/get/${promotionId}`);
+                    if (!response.ok) {
+                        throw new Error('Error al obtener datos de la promoción');
+                    }
+                    const data = await response.json();
+                    setStepData({
+                        title: data.title,
+                        description: data.description,
+                    });
+                    setPromotionalImage(data.promotionalImageUrl);  // Cargar la imagen existente
+
+                } catch (error) {
+                    console.error('Error al obtener datos:', error);
+                }
+            };
+            fetchPromotion();
+        }
+    }, [promotionId]);
+
 
     const handleInputChange = (e, value) => {
         if (e === 'title') {
@@ -36,10 +64,10 @@ export default function CrearPromocion({ navigation }) {
 
         if (e === 'description') {
             // value = value.replace(/\d/g, '');
-            if (value.length > 100) {
+            if (value.length > 200) {
                 setErrores(prevErrores => ({
                     ...prevErrores,
-                    description: 'La descripción no puede tener más de 100 caracteres.',
+                    description: 'La descripción no puede tener más de 200 caracteres.',
                 }));
                 return; // No actualiza el estado si excede el límite de caracteres
             }
@@ -83,7 +111,7 @@ export default function CrearPromocion({ navigation }) {
             formDataToSend.append('title', stepData.title);
             formDataToSend.append('description', stepData.description);
 
-            if (promotionalImage) {
+            if (promotionalImage) { 
                 const imageName = promotionalImage.split('/').pop();
                 const imageType = promotionalImage.endsWith('.png') ? 'image/png' : 'image/jpeg';
                 // Agregar la imagen al FormData
@@ -92,25 +120,28 @@ export default function CrearPromocion({ navigation }) {
                     name: imageName,
                     type: imageType,
                 } as unknown as Blob);
+                console.log('Imagen añadida correctamente');
                 console.log(promotionalImage)
             }
 
             try {
-                const response = await fetch(`http://192.168.0.116:5000/api/promotion/create/1`, {
-                    method: 'POST',
+                const endpoint = promotionId
+                    ? `${API_URL}/api/promotion/update/${promotionId}`
+                    : `${API_URL}/api/promotion/create/1`;
+
+                const response = await fetch(endpoint, {
+                    method: promotionId ? 'PUT' : 'POST',
                     body: formDataToSend,
                 });
 
                 if (response.ok) {
-
-                    navigation.navigate('Promociones')
-
+                    Alert.alert('Éxito', promotionId ? 'Promoción actualizada' : 'Promoción creada');
+                    navigation.navigate('Promociones');
                 } else {
-                    console.log('no hay dinero para las putas :,,(')
+                    console.log('Error al guardar la promoción');
                 }
             } catch (error) {
-                console.error("Error al guardar la promoción:", error);
-
+                Alert.alert('Hubo un problema al editar la información vuelva a intentar guardarla nuenvamente');
             }
         }
     };
@@ -127,7 +158,7 @@ export default function CrearPromocion({ navigation }) {
                             style={styles.input}
                             inputMode='text'
                             value={stepData.title}
-                            onChangeText={(value) =>  handleInputChange('title', value)}
+                            onChangeText={(value) => handleInputChange('title', value)}
                         />
                         {errores.title && <Text style={{ color: 'red' }}>{errores.title}</Text>}
 

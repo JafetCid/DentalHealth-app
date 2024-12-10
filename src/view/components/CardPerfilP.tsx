@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, Pressable, Modal, TouchableWithoutFeedback, Image } from 'react-native'
-import { Ionicons, MaterialIcons, FontAwesome, FontAwesome5 } from '@expo/vector-icons'
+import { Ionicons, MaterialIcons, FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import styles from '../../../assets/styles/PerfilP'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from 'react'
@@ -10,6 +10,7 @@ export const CardPerfilP = ({ navigation, showElipse = false, showHeader = true,
 
     const [user, setUser] = useState(null);
     const [isVisible, setIsVisible] = useState(false);
+    const API_URL = 'https://dental-health-backend.onrender.com';
 
     useEffect(() => {
         //Obtener la informacion del usuario
@@ -64,6 +65,18 @@ export const CardPerfilP = ({ navigation, showElipse = false, showHeader = true,
             {showHeader && (
                 <Header title={''} showArrow={showArrowV} showLogo={false} onPress={() => navigation.goBack()} point={''} />
             )}
+             <View style={styles.logoC}>
+                    {user && user.profilePictureUrl ? (
+                        <Image
+                            source={
+                                user.profilePictureUrl
+                                    ? { uri: `${user.profilePictureUrl}` }  // Usar imagen desde la URL proporcionada por la base de datos
+                                    : require('../../../assets/images/Perfil.png')  // Imagen por defecto
+                            }
+                            style={styles.imgLogo}
+                        />
+                    ) : null}
+            </View>
 
             {user && user.Login && user.Login.name ? (
                 <Text style={styles.titleN}>{`${user.Login.name} ${user.Login.lastName}`}</Text>
@@ -93,7 +106,7 @@ export const CardPerfilP = ({ navigation, showElipse = false, showHeader = true,
                                         <Pressable
                                             onPress={() => {
                                                 setIsVisible(false);
-                                                navigation.navigate('StepperD')
+                                                navigation.navigate('StepperP')
                                             }}>
                                             <Text style={styles.modalText}>Editar perfil</Text>
                                         </Pressable>

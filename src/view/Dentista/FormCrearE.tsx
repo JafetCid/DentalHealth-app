@@ -1,6 +1,6 @@
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import Header from '../components/Header';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Dimensions } from 'react-native';
 import styles from '../../../assets/styles/StepperFormCE';
 import { View, Text, TextInput, ScrollView, Alert } from 'react-native';
@@ -11,8 +11,10 @@ import { API_URL } from '@env';
 const { width } = Dimensions.get('window');
 
 
-export default function FormCrearE({ navigation }) {
+export default function FormCrearE({ navigation, route }) {
 
+  const API_URL = 'https://dental-health-backend.onrender.com';
+  
   const [stepData, setStepData] = useState({
     peso: '',
     talla: '',
@@ -129,6 +131,13 @@ export default function FormCrearE({ navigation }) {
     subluxacion: false,
     espasmo: false,
   });
+
+  const { patientsId } = route.params;
+  useEffect(() => {
+    if (patientsId) {
+      console.log('id Patient en el estado:', patientsId);
+    }
+  }, [patientsId]);
 
   const handleCheckboxChange = (condition) => {
     setSelected((prevState) => ({
@@ -365,14 +374,14 @@ export default function FormCrearE({ navigation }) {
 
       try {
         // Enviar el formulario al servidor
-        const response = await fetch(`${API_URL}/api/medicalForm/register/6`, {
+        const response = await fetch(`${API_URL}/api/medicalForm/register/${patientsId}`, {
           method: 'POST',
           body: formDataToSend,  // Enviar el objeto FormData
         });
   
         if (response.ok) {
-          console.log('Formulario enviado con éxito');
-          navigation.navigate('ExpedienteLista');
+          console.log('Formulario enviado con éxito', patientsId);
+          navigation.navigate('ExpedienteLista', { id: patientsId });
 
         } else {
           console.error('Error al enviar el formulario');

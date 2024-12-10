@@ -18,6 +18,8 @@ import { API_URL } from '@env';
 const StepperD = () => {
   
   const navigation = useNavigation();
+  const API_URL = 'https://dental-health-backend.onrender.com';
+  
   const [stepData, setStepData] = useState({ 
     nombre: '', 
     apellidos: '', 
@@ -37,7 +39,6 @@ const StepperD = () => {
     profilePicture: null,
     clinicLogo: null
   });
-
 
   const [errores, setErrores] = useState({
     nombre: '', 
@@ -327,7 +328,8 @@ const StepperD = () => {
           console.log('Formulario enviado con éxito');
           console.log(formDataToSend);
 
-          navigation.navigate('TabNav', { screen: 'Home1' });
+          // navigation.navigate('TabNav', { screen: 'Home1' });
+          navigation.navigate('Login');
 
         } else {
           console.error('Error al enviar el formulario');

@@ -11,6 +11,7 @@ const Patients = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedLetter, setSelectedLetter] = useState(null);
   const [menuVisible, setMenuVisible] = useState(null);
+  const API_URL = 'https://dental-health-backend.onrender.com';
 
   useEffect(() => {
     const fetchData = async () => {

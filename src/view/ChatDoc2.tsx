@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import io from 'socket.io-client';
 import Header from './components/Header';
 import { API_URL } from '@env';
-const socket = io(`${API_URL}`, {
+const socket = io(`https://dental-health-backend.onrender.com`, {
     transports: ['websocket']
 });
 
@@ -20,6 +20,8 @@ export default function ChatDoc2({ navigation, route }) {
     const listenerRegistered = useRef(false);
     const flatListRef = useRef<FlatList>(null); // Ref para FlatList
     const { id } = route.params; // Obtener el parámetro de navegación
+    const API_URL = 'https://dental-health-backend.onrender.com';
+
     // console.log('-------', id)
 
     useEffect(() => {

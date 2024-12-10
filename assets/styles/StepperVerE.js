@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 30,
     },
-    text: {
+    text2: {
         textAlign: 'center',
         fontSize: 20,
     },
@@ -41,6 +41,80 @@ const styles = StyleSheet.create({
         color: 'black',
         marginBottom: 15,
     },
+    content: {
+        alignItems: 'center',
+        marginTop: '5%',
+    },
+    
+    card: {
+        padding: 8,
+        elevation: 5,
+        borderRadius: 25,
+        width: '80%',
+        height: 'auto',
+        overflow: 'hidden',
+        backgroundColor: '#fff',
+        marginBottom: 30,
+    },
+
+    text: {
+        width: '100%',
+        padding: 5,
+        fontSize: 20,
+        alignContent: 'center',
+        alignItems: 'center',
+    },
+    
+    title: {
+        fontSize: 18,
+        marginBottom: 10,
+    },
+
+    icon: {
+        width: '100%',
+        marginTop: '4%',
+        position: 'absolute',
+        alignItems: 'flex-end',
+    },
+    info: {
+        padding: 5,
+    },
+    infoContCardCake: {
+        fontSize: 18,
+        marginBottom: 10,
+        flexDirection: 'row',
+        width: '100%',
+        right: 4,
+    },
+    infoContCard: {
+        fontSize: 18,
+        marginBottom: 10,
+        flexDirection: 'row',
+    },
+    iconCard: {
+        width: 30,
+        height: 32,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    infoContText: {
+        left: 5,
+        width: '80%',
+        alignSelf: 'center',
+        
+    },
+    textInf: {
+        fontSize: 18,
+    },
+    textCard: {
+        color:'#888888',
+        fontSize: 15,
+    },
+    textEnd: {
+        fontSize: 18,
+        // width: '75%',
+        color:'#888888',
+    },  
 
   //estilos del form Crear Expediente
     contenS: {

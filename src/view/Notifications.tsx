@@ -1,25 +1,122 @@
-import Header from './components/Header';
-import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, Image, Modal, Pressable, Alert, Dimensions } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
+import React, { useState, useEffect } from 'react';
+import Header from './components/Header';
 import axios from 'axios';
 
 export default function NotificationScreen() {
-  const [notifications, setNotifications] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedNotification, setSelectedNotification] = useState(null);
+
+  // const [notifications, setNotifications] = useState([
+  //   {
+  //     id: 'static1',
+  //     title: 'Notificación importante',
+  //     body: 'Recuerda confirmar tu cita programada.',
+  //   },
+  // ]);
+  // const [loading, setLoading] = useState(true);
+  // const [selectedNotification, setSelectedNotification] = useState(null);
+  type Notification = {
+    id: number;
+    status: string;
+    date: string;
+    time: string;
+  };
+
   const [actionType, setActionType] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [notifications1, setNotifications1] = useState<Notification[]>([]);
+  const [user, setUser] = useState(null);
   const navigation = useNavigation();
 
-  const handleAction = (type, notification) => {
-    setActionType(type);
-    setSelectedNotification(notification);
-    setModalVisible(true);
+  const API_URL = 'https://dental-health-backend.onrender.com';
+
+  useEffect(() => {
+    //Obtener la informacion del usuario
+    const fetchUserInfo = async () => {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        console.log('Token: ', token)
+
+        const response = await fetch(`${API_URL}/api/auth/userinfo`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `${token}`,
+          },
+        });
+
+        const data = await response.json();
+        setUser(data)
+        console.log('Datos del usuario:', data);
+
+      } catch (error) {
+        console.error('Error al obtener la información del usuario:', error);
+      }
+    };
+
+    fetchUserInfo();
+
+  }, [])
+
+  useEffect(() => {
+    // Solo llamar a fetchNotifications cuando `user` esté disponible y tenga `id`
+    if (user && user.id) {
+      const fetchNotifications = async () => {
+        try {
+          const token = await AsyncStorage.getItem('token');
+          console.log('Token: ', token)
+
+          const response = await fetch(`${API_URL}/api/notification/getNotificationsById/${user.id}`);
+
+          console.log('Estado de la respuesta:', response.status);
+
+          const data = await response.json();
+          console.log(data);
+
+          // Mapeamos el status de cada notificación
+          const notificationsWithStatus = data.map(item => ({
+            id: item.id,
+            status: item.Appointment.status,  // 'confirmed' o 'canceled'
+            date: item.Appointment.date,      // Fecha de la cita
+            time: item.Appointment.time,      // Hora de la cita
+          }));
+
+          setNotifications1(notificationsWithStatus)
+          console.log('Datos de las Notificaciones:', notificationsWithStatus);
+
+        } catch (error) {
+          console.error('Error al obtener la información de las notificaciones:', error);
+        }
+      };
+
+      fetchNotifications();
+    }
+
+  }, [user])
+
+  const handleDelete = async (id) => {
+
+    try {
+      const response = await fetch(`${API_URL}/api/notification/delete/${id}`, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        console.log('Exito')
+        // Solo actualiza si notifications1 está definido y es un array
+        if (notifications1 && Array.isArray(notifications1)) {
+          const updatedNotifications = notifications1.filter(notification => notification.id !== id);
+          setNotifications1(updatedNotifications);
+        }
+      } else {
+        console.log('Fallo al eliminar la notificación');
+      }
+    } catch (error) {
+      console.error("Error al eliminar la promoción:", error);
+      // setNotification({ message: "Ocurrió un error al intentar eliminar la promoción.", type: "error" });
+    }
   };
 
   const confirmAction = () => {
-
     setModalVisible(false);
     Alert.alert('Confirmado', `Cita ${actionType === 'confirm' ? 'confirmada' : 'reprogramada'} exitosamente.`);
   };
@@ -29,26 +126,24 @@ export default function NotificationScreen() {
   };
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.notificationItem}
-      // onPress={() => navigation.navigate('NotificationDetail', { notification: item })}
-    >
+
+    <TouchableOpacity style={styles.notificationItem}>
       <View style={styles.notificationContent}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.body}>{item.body}</Text>
+        <Text style={styles.title}>
+          {item.status === 'aceptada' ? 'Cita Confirmada' : 'Cita Cancelada'}
+        </Text>
+        <Text style={styles.body}>
+          {item.date && item.time ? `Fecha: ${item.date} - Hora: ${item.time}` : 'Información no disponible'}
+
+        </Text>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.confirmButton}
-            onPress={() => handleAction('confirm', item)}
+            onPress={() => handleDelete(item.id)}
           >
-            <Text style={styles.buttonText}>Confirmar cita</Text>
+            <Text style={styles.buttonText}>Confirmar</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.rescheduleButton}
-            onPress={() => handleAction('reschedule', item)}
-          >
-            <Text style={styles.buttonText}>Reprogramar</Text>
-          </TouchableOpacity>
+
         </View>
       </View>
     </TouchableOpacity>
@@ -58,12 +153,12 @@ export default function NotificationScreen() {
 
   return (
     <View style={styles.container}>
-      <Header title={'Notificaciones'} showLogo={false} onPress={''} showArrow={false} point={''}/>
+      <Header title={'Notificaciones'} showLogo={false} onPress={''} showArrow={false} point={''} />
       <View style={styles.content}>
-        
-        {notifications.length > 0 ? (
+
+        {!notifications1 ? (
           <FlatList
-            data={notifications}
+            data={notifications1}
             renderItem={renderItem}
             keyExtractor={item => item.id}
           />
@@ -79,7 +174,7 @@ export default function NotificationScreen() {
       </View>
 
       {/* Modal */}
-      <Modal
+      {/* <Modal
         transparent={true}
         visible={modalVisible}
         animationType="slide"
@@ -107,7 +202,7 @@ export default function NotificationScreen() {
             </View>
           </View>
         </View>
-      </Modal>
+      </Modal> */}
     </View>
   );
 }
@@ -123,17 +218,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: -70,
 
-
   },
   notificationItem: {
     backgroundColor: '#ffffff',
     borderRadius: 10,
-    marginBottom: 10,
-    shadowColor: '#000000',
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
+    marginBottom: 30,
     elevation: 5,
-    
   },
   notificationContent: {
     padding: 15,
@@ -210,7 +300,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)',
   },
   modalContent: {
     backgroundColor: 'white',

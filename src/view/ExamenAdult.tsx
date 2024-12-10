@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     View,
     Text,
@@ -12,13 +12,21 @@ import styles from '../../assets/styles/ExamAdult';
 import Header from './components/Header';
 import { API_URL } from '@env';
 
-const DentalExamCreateScreen = ({ navigation }) => {
+const DentalExamCreateScreen = ({ navigation, route }) => {
+
     const [selectedType, setSelectedType] = useState('adult');
     const [selectedTooth, setSelectedTooth] = useState(null);
     const [showColorSelector, setShowColorSelector] = useState(false);
     const [toothStates, setToothStates] = useState({});
     const [data, setData] = useState([]);
+    const API_URL = 'https://dental-health-backend.onrender.com';
 
+    const { patientsId } = route.params;
+    useEffect(() => {
+        if (patientsId) {
+            console.log('id del paciente en el estado:', patientsId);
+        }
+    }, [patientsId]);
 
     const teethQuadrants = [
         { quadrant: 'Cuadrante 1', teeth: [18, 17, 16, 15, 14, 13, 12, 11] },
@@ -127,14 +135,13 @@ const DentalExamCreateScreen = ({ navigation }) => {
     };
 
     const handleFinalSubmit = async () => {
-        console.log(data)
+        // console.log(data)
         try {
 
             const payload = {
                 dientes: data // `data` ya contiene los objetos con los dientes seleccionados
             };
-
-            const response = await fetch(`${API_URL}/api/dentalExam/create/1`, {
+            const response = await fetch(`${API_URL}/api/dentalExam/create/${patientsId}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -142,11 +149,14 @@ const DentalExamCreateScreen = ({ navigation }) => {
                 body: JSON.stringify(payload),
             });
 
-            console.log(data) 
+            console.log(data)
+
             if (response.ok) {
+                navigation.navigate('ExamDent', { id: patientsId })
                 const result = await response.json();
                 console.log("Datos guardados exitosamente:", result);
-                console.log(data)
+                // console.log(data)
+
             } else {
                 console.error("Error al guardar los datos");
             }

@@ -43,7 +43,8 @@ const TabBarIcon = ({ name, color }) => {
 };
 
 function Home() {
-
+  
+  const API_URL = 'https://dental-health-backend.onrender.com';
   const navigation = useNavigation(); // Use navigation hook
 
   interface Promotion {

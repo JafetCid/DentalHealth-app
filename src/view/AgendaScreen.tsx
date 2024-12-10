@@ -1,10 +1,12 @@
 import Header from './components/Header';
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Alert, Pressable, Modal, Image
- } from 'react-native';
+import {
+  View, Text, TouchableOpacity, ScrollView, Alert, Pressable, Modal, Image
+} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import styles from '../../assets/styles/AgendaScreen';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
 import { Checkbox } from 'react-native-paper';
@@ -36,7 +38,9 @@ export default function AgendaScreen({ navigation }) {
   const [selectedTime, setSelectedTime] = useState(null);
   const [busyDays, setBusyDays] = useState<string[]>([]);
   const [citas, setCitas] = useState<{ freeHours: string[] }>({ freeHours: [] });
+  const [user, setUser] = useState(null);
 
+  const API_URL = 'https://dental-health-backend.onrender.com';
   //Modal y checkBox
   const [isVisible, setIsVisible] = useState(false);
   const [isSelected, setSelected] = useState({
@@ -103,6 +107,36 @@ export default function AgendaScreen({ navigation }) {
     }));
   };
 
+  useEffect(() => {
+    //Obtener la informacion del usuario
+    const fetchUserInfo = async () => {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        console.log('Token: ', token)
+
+        const response = await fetch(`${API_URL}/api/auth/userinfo`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `${token}`,
+          },
+        });
+
+        console.log('Estado de la respuesta:', response.status);
+
+        const data = await response.json();
+        setUser(data)
+        console.log('datos del usuario:', data);
+
+      } catch (error) {
+        console.error('Error al obtener la información del usuario:', error);
+      }
+    };
+
+    fetchUserInfo();
+
+  }, [])
+
+
   // Validación al presionar el botón "Agendar"
   const handleAgendarPress = async () => {
     if (!selectedDay || !selectedTime) {
@@ -117,7 +151,7 @@ export default function AgendaScreen({ navigation }) {
 
       try {
         // Enviar el formulario al servidor
-        const response = await fetch(`${API_URL}/api/appointment/create/3`, {
+        const response = await fetch(`${API_URL}/api/appointment/create/${user.id}`, { //mandar a traer el id del paciente
           method: "POST",
           headers: {
             "Content-Type": "application/json",  // Indicamos que estamos enviando JSON
@@ -157,7 +191,7 @@ export default function AgendaScreen({ navigation }) {
         console.log(data)
       } else {
         // console.error('Error al obtener las citas');
-        Alert.alert('No puede agendar esta cita')
+        // Alert.alert('No puede agendar esta cita')
       }
     } catch (error) {
       console.error('Error en la solicitud: ', error);
@@ -170,7 +204,7 @@ export default function AgendaScreen({ navigation }) {
         <Header title={''} showLogo={false} onPress={() => navigation.goBack()} point={''} />
         <View style={styles.contLT}>
           {/* <FontAwesome name="user-circle-o" size={60} color="white" style={styles.icon} /> */}
-          <Image source={require('../../assets/images/Doc.jpeg')} style={styles.icon}/>
+          <Image source={require('../../assets/images/Doc.jpeg')} style={styles.icon} />
           <View style={styles.contName}>
             <Text style={styles.name}>Jose Alberto Lopez Jimenez</Text>
           </View>

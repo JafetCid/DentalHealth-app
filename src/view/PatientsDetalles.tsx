@@ -9,8 +9,10 @@ import Header from './components/Header'
 export default function PatientsDetalles({ navigation, route }) {
 
     const [patients, setPatients] = useState(null);
+    // const [patientsId, setPatientsId] = useState()
+    const API_URL = 'https://dental-health-backend.onrender.com';
     const { id } = route.params; // Obtener el parámetro de navegación
-    console.log(id)
+    console.log('id del paciente:',id)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -21,6 +23,7 @@ export default function PatientsDetalles({ navigation, route }) {
                 }
                 const data = await response.json(); // Convierte la respuesta en un objeto JSON
                 setPatients(data); // Guarda los datos en el estado
+                // setPatientsId(data.id);
                 console.log(data);
 
             } catch (error) {
@@ -159,13 +162,13 @@ export default function PatientsDetalles({ navigation, route }) {
                     Title="Ver expediente"
                     buttonStyle={styles.buttonAgendar}
                     textStyle={styles.buttonText}
-                    onPress={() => navigation.navigate('ExpedienteLista')} //ExpedienteLista
+                    onPress={() => navigation.navigate('ExpedienteLista', { id })} //ExpedienteLista
                 />
                 <ButtonIn
                     Title="Ver Examen dental"
                     buttonStyle={styles.buttonAgendar}
                     textStyle={styles.buttonText}
-                    onPress={() => navigation.navigate('ExamDent')} //ExamenDent
+                    onPress={() => navigation.navigate('ExamDent', { id })} //ExamenDent
                 />
             </View>
         </View>
@@ -210,6 +213,7 @@ const styles = StyleSheet.create({
         height: 150,
         width: 150,
         borderRadius: 80,
+        marginTop: -33,
     },
     card: {
         padding: 8,

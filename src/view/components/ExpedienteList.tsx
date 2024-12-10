@@ -5,7 +5,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 type Expediente = {
   id: string;
   titulo: string;
-  ultimaCita: string;
+  // ultimaCita: string;
+  createdAt: string;  // Añadir esta propiedad
 };
 
 type Examen = {
@@ -22,11 +23,12 @@ type Props = {
   onEliminar: (id: string) => void;
 };
 
-const ExpedienteList: React.FC<Props> = ({ expedientes, onVerDetalles, onEditar, onEliminar }) => {
+const ExpedienteList: React.FC<Props> = ({ expedientes = [], onVerDetalles, onEditar, onEliminar }) => {
   const [visibleMenuId, setVisibleMenuId] = useState<string | null>(null);
 
   const toggleMenu = (id: string) => {
     setVisibleMenuId((prev) => (prev === id ? null : id));
+    console.log('id del expediente:', id);
   };
 
   const hideMenu = () => {
@@ -36,35 +38,47 @@ const ExpedienteList: React.FC<Props> = ({ expedientes, onVerDetalles, onEditar,
   return (
     <TouchableWithoutFeedback onPress={hideMenu}>
       <View style={styles.container}>
-        {expedientes.map((expediente) => (
-          <View
-            key={expediente.id}
-            style={[
-              styles.expedienteContainer,
-              visibleMenuId === expediente.id && styles.expedienteContainerWithMenu // Aumenta el zIndex de la tarjeta con menú visible
-            ]}
-          >
-            <Text style={styles.titulo}>{expediente.titulo}</Text>
-            <Text style={styles.ultimaCita}>Última cita: {expediente.ultimaCita}</Text>
-            <TouchableOpacity onPress={() => toggleMenu(expediente.id)} style={styles.menuIcon}>
-              <MaterialIcons name="more-vert" size={24} color="#333" />
-            </TouchableOpacity>
-            {/* Menú de opciones */}
-            {visibleMenuId === expediente.id && (
-              <View style={styles.menuOptions}>
-                <TouchableOpacity onPress={() => { onVerDetalles(expediente.id); hideMenu(); }} style={styles.menuItem}>
-                  <Text style={styles.menuText}>Ver detalles</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => { onEditar(expediente.id); hideMenu(); }} style={styles.menuItem}>
-                  <Text style={styles.menuText}>Editar</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => { onEliminar(expediente.id); hideMenu(); }} style={styles.deleteItem}>
-                  <Text style={styles.deleteText}>Eliminar</Text>
-                </TouchableOpacity>
-              </View>
-            )}
-          </View>
-        ))}
+        {Array.isArray(expedientes) && expedientes.length > 0 ? (
+          expedientes.map((expediente) => (
+            <View
+              key={expediente.id}
+              style={[
+                styles.expedienteContainer,
+                visibleMenuId === expediente.id && styles.expedienteContainerWithMenu
+              ]}
+            >
+              <Text style={styles.titulo}>Expediente: {expediente.id}</Text>
+              <Text style={styles.ultimaCita}>
+                Fecha: {new Date(expediente.createdAt).toISOString().split('T')[0]}
+              </Text>
+
+              {/* Menú de opciones */}
+              <TouchableOpacity onPress={() => toggleMenu(expediente.id)} style={styles.menuIcon}>
+                <MaterialIcons name="more-vert" size={24} color="#333" />
+              </TouchableOpacity>
+
+              {visibleMenuId === expediente.id && (
+                <View style={styles.menuOptions}>
+                  <TouchableOpacity onPress={() => { onVerDetalles(expediente.id); hideMenu(); }} style={styles.menuItem}>
+                    <Text style={styles.menuText}>Ver detalles</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity onPress={() => { onEditar(expediente.id); hideMenu(); }} style={styles.menuItem}>
+                    <Text style={styles.menuText}>Editar</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity onPress={() => { onEliminar(expediente.id); hideMenu(); }} style={styles.deleteItem}>
+                    <Text style={styles.deleteText}>Eliminar</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </View>
+          ))
+        ) : (
+          <Text style={styles.textNoExpedientes}>
+            No hay expedientes disponibles
+          </Text>
+        )}
       </View>
     </TouchableWithoutFeedback>
   );
@@ -127,6 +141,11 @@ const styles = StyleSheet.create({
   deleteText: {
     color: '#ff5252',
     fontWeight: 'bold',
+  },
+  textNoExpedientes: {
+    textAlign: 'center',
+    fontSize: 18,
+    color: '#333',
   },
 });
 

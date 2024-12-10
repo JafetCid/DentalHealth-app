@@ -4,6 +4,7 @@ import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { Menu, Provider } from 'react-native-paper';
 import Header from './components/Header';
 
+
 const getCurrentWeekDates = () => {
   const currentDate = new Date();
   const firstDayOfWeek = currentDate.getDate() - currentDate.getDay() + 1; // Lunes como primer día de la semana
@@ -25,6 +26,7 @@ const year = today.getFullYear();
 const formattedDate = `${monthShort.charAt(0).toUpperCase() + monthShort.slice(1)} ${day}, ${year}`;
 
 const ScheduleView = ({ navigation }) => {
+
   const weekDays = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
   const weekDates = getCurrentWeekDates();
   const today = new Date().getDate();
@@ -53,7 +55,7 @@ const ScheduleView = ({ navigation }) => {
   return (
     <Provider>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <Header onPress={''} title={''} showArrow={false} point={''} showLogo={false}/>
+        <Header onPress={''} title={''} showArrow={false} point={''} showLogo={false} />
         <View style={styles.header}>
           {weekDays.map((day, index) => (
             <View key={index} style={styles.dayContainer}>
@@ -139,7 +141,7 @@ const styles = StyleSheet.create({
   highlightedDate: {
     color: 'white',
     fontWeight: 'bold',
-    
+
   },
   dateAbreviate: {
     color: 'white',
@@ -208,9 +210,9 @@ const styles = StyleSheet.create({
     elevation: 4,
     alignItems: 'center',
     justifyContent: 'center',
-    
-    
-    },
+
+
+  },
 });
 
 export default ScheduleView;

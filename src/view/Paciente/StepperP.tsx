@@ -11,6 +11,8 @@ import { API_URL } from '@env';
 
 const StepperP = ({ navigation }) => {
     
+    const API_URL = 'https://dental-health-backend.onrender.com';
+    
     const [stepData, setStepData] = useState({
         nombre: '',
         apellidos: '',
@@ -206,7 +208,6 @@ const StepperP = ({ navigation }) => {
             try {
                 // Enviar el formulario al servidor
                 const response = await fetch(`${API_URL}/api/auth/registerPatient`, {
-                // const response = await fetch('https://dental-health-api.onrender.com/api/auth/registerPatient', {
                     method: 'POST',
                     body: formDataToSend,  // Enviar el objeto FormData
                 });
@@ -216,8 +217,8 @@ const StepperP = ({ navigation }) => {
                     console.log(formDataToSend);
                     console.log('Datos enviados:', stepData);
                     
-                    navigation.navigate('TabNavigator', { screen: 'Home' });
-                    // navigation.navigate('TabNav', { screen: 'Home1' });
+                    // navigation.navigate('TabNavigator', { screen: 'Home' });
+                    navigation.navigate('Login');
       
                 } else {
                   console.error('Error al enviar el formulario');
@@ -237,7 +238,6 @@ const StepperP = ({ navigation }) => {
     };
 
     return (
-
         <ScrollView>
             <View style={styles.container}>
                 <Header title={'Crear Cuenta'} showLogo={false} onPress={() => navigation.goBack()} point={''}/>
